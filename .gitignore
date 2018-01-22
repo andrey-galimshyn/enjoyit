@@ -1,0 +1,11 @@
+# Project Files
+.project
+.classpath
+**/.settings/
+
+#target folders
+**/target/
+**/bin/
+
+# Log file
+**lasso.log**
