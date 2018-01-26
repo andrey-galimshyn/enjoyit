@@ -262,7 +262,10 @@ public class AppController {
         if (result.hasErrors()) {
             return "registration";
         }
-        
+        // Set recorder of place as currently logged in user
+        User user = userService.findBySSO(getPrincipal());
+        place.setRecorder(user);
+        //
         placeService.savePlace(place);
  
         model.addAttribute("success", "Place " + place.getName() + " "+ place.getAddress() + " registered successfully");
@@ -382,6 +385,10 @@ String[]{user.getSsoId()}, Locale.getDefault()));
         if (result.hasErrors()) {
             return "createPlace";
         }
+
+        // Set recorder of place as currently logged in user
+        User user = userService.findBySSO(getPrincipal());
+        place.setRecorder(user);
 
         placeService.updatePlace(place);
  

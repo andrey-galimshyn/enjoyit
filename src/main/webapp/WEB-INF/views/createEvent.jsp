@@ -10,12 +10,18 @@
     <link href="<c:url value='/static/css/bootstrap.css' />" rel="stylesheet"></link>
     <link href="<c:url value='/static/css/app.css' />" rel="stylesheet"></link>
 
-    <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.1.4/semantic.min.css"/>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.1.4/semantic.min.js"></script>
-    <script type="text/javascript" src="<c:url value='/static/js/jquery-duration-picker.min.js' />"></script>
     <link href="http://www.jqueryscript.net/css/jquerysctipttop.css" rel="stylesheet" type="text/css">
-    <link rel="stylesheet" href="<c:url value='/static/css/jquery-duration-picker.rtl.min.css' />"></link>
+
+
+    <!-- That's all for duration picker -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" crossorigin="anonymous">
+    <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" href="<c:url value='/static/css/bootstrap-duration-picker.css' />"></link>
+    <script src="<c:url value='/static/js/bootstrap-duration-picker.js' />"></script>
    
 </head>
  
@@ -61,13 +67,22 @@
                 </div>
             </div>
         </div>
- 
+
+        <c:choose>
+            <c:when test="${edit}">
+                <c:set var="durSecs" value="${event.duration.seconds}"/>
+            </c:when>
+            <c:otherwise>
+                <c:set var="durSecs" value="0"/>
+            </c:otherwise>
+        </c:choose>
+
         <div class="row">
             <div class="form-group col-md-12">
                 <label class="col-md-3 control-lable" for="duration">Event duration</label>
                 <div class="col-md-7">
 	                <div class="ui input">
-	                    <form:input type="text" path="duration" id="duration" value="1450"/>
+	                    <form:input type="text" path="duration" id="duration" class="form-control input-sm" value="${durSecs}" />
 	                    <div class="has-error">
 	                        <form:errors path="duration" class="help-inline"/>
 	                    </div>
@@ -78,8 +93,12 @@
 
  
  <script type="text/javascript">
-
-    $('#duration').duration_picker();
+    
+    $('#duration').durationPicker({
+        showDays: false,
+        onChanged: function (newVal) {
+        }
+      });
 
 </script>
 
