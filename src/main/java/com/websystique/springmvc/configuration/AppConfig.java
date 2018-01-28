@@ -18,6 +18,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
 
+import com.websystique.springmvc.converter.DateTimeConverter;
 import com.websystique.springmvc.converter.DurationConverter;
 import com.websystique.springmvc.converter.PlaceIdToPlaceConverter;
 import com.websystique.springmvc.converter.RoleToUserProfileConverter;
@@ -66,6 +67,7 @@ public class AppConfig extends WebMvcConfigurerAdapter{
         registry.addConverter(roleToUserProfileConverter);
         registry.addConverter(new PlaceIdToPlaceConverter(placeService));
         registry.addConverter(new DurationConverter());
+        registry.addConverter(new DateTimeConverter());
     }
      
  

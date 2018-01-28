@@ -31,7 +31,7 @@ public class Event {
 
     @Column(name="DATE", nullable=false)
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
-    @Temporal(TemporalType.DATE)
+    @Temporal(TemporalType.TIMESTAMP)
 	private Date when;
 	
     @Column(name="DURATION", nullable=false)

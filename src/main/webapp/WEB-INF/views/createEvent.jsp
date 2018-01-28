@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
  
 <html>
  
@@ -23,6 +24,10 @@
     <link rel="stylesheet" href="<c:url value='/static/css/bootstrap-duration-picker.css' />"></link>
     <script src="<c:url value='/static/js/bootstrap-duration-picker.js' />"></script>
    
+   
+    <!--That's all for Date\Time picker-->
+	<script type="text/javascript" src="<c:url value='/static/js/jquery.simple-dtpicker.js' />"></script>
+	<link type="text/css" rel="stylesheet" href="<c:url value='/static/css/jquery.simple-dtpicker.css' />" />
 </head>
  
 <body>
@@ -55,12 +60,35 @@
                 </div>
             </div>
         </div>
+        
+        <c:choose>
+            <c:when test="${edit}">
+                <c:set var="durSecs" value="${event.duration.seconds}"/>
+                
+                
+                
+                <fmt:formatDate value="${event.when}" pattern="yyyy/MM/dd HH:mm" var="evStarts"/>
+               
+            </c:when>
+            <c:otherwise>
+                <c:set var="durSecs" value="0"/>
+                <c:set var="evStarts" value=""/>
+            </c:otherwise>
+        </c:choose>
  
         <div class="row">
             <div class="form-group col-md-12">
                 <label class="col-md-3 control-lable" for="when">When Event happens</label>
                 <div class="col-md-7">
-                    <form:input type="datetime-local" path="when" id="when" class="form-control input-sm" />
+                    <form:input type="text" path="when" id="when" name="when" class="form-control input-sm" value="${evStarts}"/>
+
+	<script type="text/javascript">
+		$(function(){
+			$('*[name=when]').appendDtpicker();
+		});
+	</script>
+                    
+                    
                     <div class="has-error">
                         <form:errors path="when" class="help-inline"/>
                     </div>
@@ -68,14 +96,6 @@
             </div>
         </div>
 
-        <c:choose>
-            <c:when test="${edit}">
-                <c:set var="durSecs" value="${event.duration.seconds}"/>
-            </c:when>
-            <c:otherwise>
-                <c:set var="durSecs" value="0"/>
-            </c:otherwise>
-        </c:choose>
 
         <div class="row">
             <div class="form-group col-md-12">
@@ -92,7 +112,7 @@
         </div>
 
  
- <script type="text/javascript">
+<script type="text/javascript">
     
     $('#duration').durationPicker({
         showDays: false,
