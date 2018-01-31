@@ -1,5 +1,6 @@
 package com.websystique.springmvc.dao;
 
+import java.util.Date;
 import java.util.List;
 
 import org.hibernate.Criteria;
@@ -26,6 +27,16 @@ public class EventDaoImpl  extends AbstractDao<Integer, Event> implements EventD
 	public List<Event> findAllEvents() {
         Criteria criteria = createEntityCriteria().addOrder(Order.asc("when"));
         criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);//To avoid duplicates.
+        List<Event> events = (List<Event>) criteria.list();
+         
+        return events;
+	}
+
+	public List<Event> findEventsInRange(Date to, Date from) {
+        Criteria criteria = createEntityCriteria().addOrder(Order.asc("when"));
+        criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);//To avoid duplicates.
+        criteria.add(Restrictions.ge("when", to)); 
+        criteria.add(Restrictions.lt("when", from));
         List<Event> events = (List<Event>) criteria.list();
          
         return events;

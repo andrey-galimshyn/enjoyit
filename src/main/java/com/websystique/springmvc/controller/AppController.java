@@ -1,6 +1,9 @@
 package com.websystique.springmvc.controller;
  
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -45,6 +48,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
@@ -187,8 +191,44 @@ public class AppController {
     }
 
     @RequestMapping(value = {  "/", "/listEvents" }, method = RequestMethod.GET)
-    public String listEvents(ModelMap model) {
-        List<Event> events = eventService.findAllEvents();
+    public String listEvents(ModelMap model, @RequestParam(value = "range", required = false) String range) throws java.text.ParseException {
+
+    	// Piece to process select range
+    	String defaultRange = "";
+    	String from = "";
+    	String to = "";
+    	DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+    	Date dateFrom = new Date();
+    	Date dateTo = new Date();
+    	Calendar c = Calendar.getInstance();
+    	if (range != null) {
+    		String [] rangeParsed  = range.split("to");
+    		from = rangeParsed[0].trim();
+    		to = rangeParsed[1].trim();
+    		dateFrom = dateFormat.parse(from);
+    		if ("Invalid date".equals(to)) {
+    			to = from;
+    	    	c.setTime(dateFrom);
+    	    	c.add(Calendar.DATE, 1);  // add one day to not make zero range 
+    	    	dateTo = c.getTime();
+    		} else {
+    			dateTo = dateFormat.parse(to);
+    		}
+    	} else {
+	    	from = dateFormat.format(dateFrom);
+	    	//
+	    	c.setTime(dateFrom);
+	    	c.add(Calendar.DATE, 3);  // number of days to add for default period
+	    	dateTo = c.getTime();
+	    	//
+	    	to = dateFormat.format(c.getTime());
+    	}
+    	defaultRange = from + " to " + to;
+    	//
+
+        //List<Event> events = eventService.findAllEvents();
+        List<Event> events = eventService.findEventsInRange(dateFrom, dateTo);
+        model.addAttribute("defaultRange", defaultRange);
         model.addAttribute("events", events);
         model.addAttribute("loggedinuser", getPrincipal());
         return "eventslist";

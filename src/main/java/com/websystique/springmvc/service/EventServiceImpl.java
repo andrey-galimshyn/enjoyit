@@ -1,5 +1,6 @@
 package com.websystique.springmvc.service;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,10 @@ public class EventServiceImpl implements EventService {
 
     public List<Event> findAllEvents() {
         return dao.findAllEvents();
+    }
+
+    public List<Event> findEventsInRange(Date to, Date from) {
+    	return dao.findEventsInRange(to, from);
     }
 
     public void saveEvent(Event event) {

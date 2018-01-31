@@ -13,11 +13,22 @@
     <link href="<c:url value='/static/css/app.css' />" rel="stylesheet"></link>
     <script type="text/javascript" src="<c:url value='/static/js/jquery-3.2.1.min.js' />"></script>
 
- 
+
+    <!-- Date Range picker -->
+    <link rel="stylesheet" href="<c:url value='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css' />" />
+	<link rel="stylesheet" href="<c:url value='/static/css/daterangepicker.min.css' />" />
+	<script src="<c:url value='https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js" type="text/javascript' />"></script>
+	<script src="<c:url value='https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.16.0/moment.min.js" type="text/javascript' />"></script>
+	<script src="<c:url value='/static/js/jquery.daterangepicker.js' />"></script>
+
+
+
 </head>
  
 <body>
+<sec:authorize var="loggedIn" access="isAuthenticated()" />
 
+<c:if test="${loggedIn}">
  <script type="text/javascript">
     var csrfParameter = '${_csrf.parameterName}';
     var csrfToken = '${_csrf.token}';    // join to the event
@@ -70,13 +81,43 @@
 			}
 		});
     };
+    
+    // init date range picker
+	$(function()
+	{
+		$('#date-range').dateRangePicker({
+			language:'en'
+		}).bind('datepicker-apply',function(event,obj){
+			console.log('apply',obj);
+			alert("Apply data range: " + obj.date1 + "    ----- " + obj.date2);
+			// adopt for my needs
+			var url = window.location.href;   
+			
+			url = url.split('?')[0];
+            url += '?range=' + obj.value;
+			window.location.href = url;
+		});
+	});
+    
 </script>
-
+</c:if>
 
     <div class="generic-container">
-        <%@include file="authheader.jsp" %>   
+    
+    
+        <%@include file="authheader.jsp" %>
         <div class="panel panel-default">
-              <!-- Default panel contents -->
+        
+        
+        
+            <c:if test="${loggedIn}">
+                 <label for="date-range">Date Range: </label>
+                <input id="date-range" value="${defaultRange}">         
+            </c:if>
+
+
+
+            <!-- Default panel contents -->
             <div class="panel-heading"><span class="lead">List of Events</span></div>
             <table class="table table-hover">
                 <thead>
