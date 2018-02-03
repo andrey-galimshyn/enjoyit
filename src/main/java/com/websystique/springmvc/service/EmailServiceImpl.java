@@ -41,12 +41,10 @@ public class EmailServiceImpl  implements EmailService  {
         }
     }
 
-    public void sendEmail(String to, String subject, String msg) {
+    public void sendEmail(final String to, String subject, String msg) {
     	   taskExecutor.execute( new Runnable() {
     		   public void run() {
     		    try {
-    		        String to = "gallekn2@ukr.net";
-    		       
     		  
     		        final String from ="andrey.galimshyn@gmail.com";
     		        final  String password ="1Heckfyjdf";

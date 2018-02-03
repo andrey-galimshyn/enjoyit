@@ -89,8 +89,6 @@
 			language:'en'
 		}).bind('datepicker-apply',function(event,obj){
 			console.log('apply',obj);
-			alert("Apply data range: " + obj.date1 + "    ----- " + obj.date2);
-			// adopt for my needs
 			var url = window.location.href;   
 			
 			url = url.split('?')[0];
@@ -124,6 +122,7 @@
                     <tr>
                         <th>Name</th>
                         <th>Description</th>
+                        <th>Organizer</th>
                         <th>Date and Time</th>
                         <th>Duration</th>
                         <th>Place</th>
@@ -139,6 +138,7 @@
                     <tr>
                         <td>${event.name}</td>
                         <td>${event.description}</td>
+                        <td>${event.organizer.firstName} ${event.organizer.lastName}</td>
                         <td>
                             <fmt:formatDate type = "both" dateStyle = "short" timeStyle = "short" value = "${event.when}" />
                         </td>

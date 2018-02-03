@@ -112,10 +112,12 @@ public class AppController {
     	users.add(user);
     	event.setParticipants(users);
     	eventService.saveEvent(event);
-    	//email to organizer
+  	
         emailService.sendEmail(event.getOrganizer().getEmail(), 
         		user.getFirstName() + " " + user.getLastName() + " has Joined", 
-        		getEmailBody(event.getParticipants(), 
+        		getEmailBody(event.getParticipants(),
+        				event.getName(),
+        				event.getWhen(),
         				user.getFirstName() + " " + user.getLastName(), 
         				event.getOrganizer().getFirstName() + " " + event.getOrganizer().getLastName(), true));
     	
@@ -145,14 +147,24 @@ public class AppController {
     	//email to organizer
         emailService.sendEmail(event.getOrganizer().getEmail(), 
         		user.getFirstName() + " " + user.getLastName() + " has Left", 
-        		getEmailBody(event.getParticipants(), 
+        		getEmailBody(event.getParticipants(),
+        				event.getName(),
+        				event.getWhen(),
         				user.getFirstName() + " " + user.getLastName(), 
         				event.getOrganizer().getFirstName() + " " + event.getOrganizer().getLastName(), false));
     	
         return "{\"message\":\"Handled application/json request\", \"freeSpaces\": \"" + (event.getPlace().getPlacesQuantity() - users.size()) + "\" }"; 
     }    
 
-    private String getEmailBody(Set<User> participants, String hero, String organizer, boolean joined) {
+    private String getEmailBody(Set<User> participants, 
+    		String eventName,
+    		Date eventDate,
+    		String hero, 
+    		String organizer, 
+    		boolean joined) {
+    	
+    	
+    	
     	StringBuffer emailBody = new StringBuffer();
     	emailBody.append("Hello Dear " + organizer + "\n\n");
     	if (joined) {
@@ -160,6 +172,8 @@ public class AppController {
     	} else {
     	    emailBody.append(hero + " unfortunately has left\n\n");
     	}
+    	DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+    	emailBody.append("Event: " + eventName + " at " + dateFormat.format(eventDate) + "\n\n");
     	emailBody.append("Total participants count: " + participants.size() + "\n");
     	for (User user : participants) {
     		emailBody.append(user.getFirstName() + " " + user.getLastName() + "\n");
@@ -218,7 +232,7 @@ public class AppController {
 	    	from = dateFormat.format(dateFrom);
 	    	//
 	    	c.setTime(dateFrom);
-	    	c.add(Calendar.DATE, 3);  // number of days to add for default period
+	    	c.add(Calendar.DATE, 10);  // number of days to add for default period
 	    	dateTo = c.getTime();
 	    	//
 	    	to = dateFormat.format(c.getTime());
