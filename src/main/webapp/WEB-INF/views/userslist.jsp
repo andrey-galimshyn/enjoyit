@@ -40,12 +40,12 @@
                         <td>${user.firstName}</td>
                         <td>${user.lastName}</td>
                         <td>${user.email}</td>
-                        <td>${user.ssoId}</td>
+                        <td>${user.ssoid}</td>
                         <sec:authorize access="hasRole('ADMIN') or hasRole('DBA')">
-                            <td><a href="<c:url value='/edit-user-${user.ssoId}' />" class="btn btn-success custom-width">edit</a></td>
+                            <td><a href="<c:url value='/edit-user-${user.ssoid}' />" class="btn btn-success custom-width">edit</a></td>
                         </sec:authorize>
                         <sec:authorize access="hasRole('ADMIN')">
-                            <td><a href="<c:url value='/delete-user-${user.ssoId}' />" class="btn btn-danger custom-width">delete</a></td>
+                            <td><a href="<c:url value='/delete-user-${user.ssoid}' />" class="btn btn-danger custom-width">delete</a></td>
                         </sec:authorize>
                     </tr>
                 </c:forEach>

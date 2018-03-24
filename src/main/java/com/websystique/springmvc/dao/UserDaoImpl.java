@@ -26,14 +26,25 @@ public class UserDaoImpl extends AbstractDao<Integer, User> implements UserDao {
     public User findBySSO(String sso) {
         System.out.println("SSO : "+sso);
         Criteria crit = createEntityCriteria();
-        crit.add(Restrictions.eq("ssoId", sso));
+        crit.add(Restrictions.eq("ssoid", sso));
         User user = (User)crit.uniqueResult();
         if(user!=null){
             Hibernate.initialize(user.getUserProfiles());
         }
         return user;
     }
- 
+    
+    public User findByEmail(String email) {
+
+        Criteria crit = createEntityCriteria();
+        crit.add(Restrictions.eq("email", email));
+        User user = (User)crit.uniqueResult();
+        if(user!=null){
+            Hibernate.initialize(user.getUserProfiles());
+        }
+        return user;
+    }
+    
     @SuppressWarnings("unchecked")
     public List<User> findAllUsers() {
         Criteria criteria = createEntityCriteria().addOrder(Order.asc("firstName"));
@@ -55,7 +66,7 @@ public class UserDaoImpl extends AbstractDao<Integer, User> implements UserDao {
  
     public void deleteBySSO(String sso) {
         Criteria crit = createEntityCriteria();
-        crit.add(Restrictions.eq("ssoId", sso));
+        crit.add(Restrictions.eq("ssoid", sso));
         User user = (User)crit.uniqueResult();
         delete(user);
     }

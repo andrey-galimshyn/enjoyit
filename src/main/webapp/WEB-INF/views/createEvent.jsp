@@ -181,7 +181,7 @@ href="<c:url value='/listEvents' />">Cancel</a>
                         <td>${user.firstName}</td>
                         <td>${user.lastName}</td>
                         <td>${user.email}</td>
-                        <td>${user.ssoId}</td>
+                        <td>${user.ssoid}</td>
                         <td>
                             hello
                         </td>

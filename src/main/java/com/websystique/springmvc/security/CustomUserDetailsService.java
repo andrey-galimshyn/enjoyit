@@ -1,8 +1,10 @@
 package com.websystique.springmvc.security;
  
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
- 
+import java.util.Set;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,9 +15,11 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
- 
+
+import com.websystique.springmvc.model.ExampleUserDetails;
 import com.websystique.springmvc.model.User;
 import com.websystique.springmvc.model.UserProfile;
+import com.websystique.springmvc.security.util.SecurityUtil;
 import com.websystique.springmvc.service.UserService;
  
  
@@ -26,7 +30,7 @@ public class CustomUserDetailsService implements UserDetailsService{
      
     @Autowired
     private UserService userService;
-     
+    
     @Transactional(readOnly=true)
     public UserDetails loadUserByUsername(String ssoId)
             throws UsernameNotFoundException {
@@ -36,20 +40,23 @@ public class CustomUserDetailsService implements UserDetailsService{
             logger.info("User not found");
             throw new UsernameNotFoundException("Username not found");
         }
-            return new org.springframework.security.core.userdetails.User(user.getSsoId(), user.getPassword(), 
-                 true, true, true, true, getGrantedAuthorities(user));
+        
+        
+        ExampleUserDetails principal = ExampleUserDetails.getBuilder()
+                .firstName(user.getFirstName())
+                .id(new Long(user.getId()))
+                .lastName(user.getLastName())
+                .password(user.getPassword())
+                .role(SecurityUtil.getGrantedAuthorities(user))
+                .socialSignInProvider(user.getSignInProvider())
+                .username(user.getEmail())
+                .build();
+        
+        
+        return principal;
     }
  
      
-    private List<GrantedAuthority> getGrantedAuthorities(User user){
-        List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
-         
-        for(UserProfile userProfile : user.getUserProfiles()){
-            logger.info("UserProfile : {}", userProfile);
-            authorities.add(new SimpleGrantedAuthority("ROLE_"+userProfile.getType()));
-        }
-        logger.info("authorities : {}", authorities);
-        return authorities;
-    }
      
+    
 }

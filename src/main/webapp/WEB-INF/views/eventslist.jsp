@@ -158,11 +158,11 @@
                             ${event.place.placesQuantity - fn:length(event.participants)}
                         </td>
                         <sec:authorize access="isAuthenticated()">
-	                        <c:if test="${event.organizer.ssoId != loggedinuser}">
+	                        <c:if test="${event.organizer.ssoid != loggedinuser}">
 	                   
 								<c:set var="joined" value="false" />
 								<c:forEach var="participant" items="${event.participants}">
-								  <c:if test="${participant.ssoId eq loggedinuser}">
+								  <c:if test="${participant.ssoid eq loggedinuser}">
 								    <c:set var="joined" value="true" />
 								  </c:if>
 								</c:forEach>	                        
@@ -180,7 +180,7 @@
 								</c:if>
 	                        </c:if>
 	                        
-	                        <c:if test="${event.organizer.ssoId == loggedinuser}">
+	                        <c:if test="${event.organizer.ssoid == loggedinuser}">
 		                        <td>
 		                            <a href="<c:url value='/edit-event-${event.id}' />" class="btn btn-success custom-width">edit</a>
 		                        </td>

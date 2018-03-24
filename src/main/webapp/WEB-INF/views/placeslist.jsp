@@ -41,7 +41,7 @@
                         <td>${place.address}</td>
                         <td>${place.placesQuantity}</td>
                         <c:choose>
-	                        <c:when test="${(place.recorder.ssoId == loggedinuser) or isAdmin}">
+	                        <c:when test="${(place.recorder.ssoid == loggedinuser) or isAdmin}">
 		                        <td>
 		                            <a href="<c:url value='/edit-place-${place.id}' />" class="btn btn-success custom-width">edit</a></td>
 		                        <td>

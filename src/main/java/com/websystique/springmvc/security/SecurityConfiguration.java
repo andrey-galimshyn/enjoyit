@@ -16,6 +16,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenBasedRememberMeServices;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
+import org.springframework.social.security.SocialUserDetailsService;
+import org.springframework.social.security.SpringSocialConfigurer;
  
 @Configuration
 @EnableWebSecurity
@@ -40,9 +42,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         .antMatchers("/listPlaces", "/newplace", "/newevent", "/edit-place-*", 
         		"/edit-event-*", "/join", "/reject").access("hasRole('USER') or hasRole('ADMIN') or hasRole('DBA')")
         .antMatchers("/list", "/newuser/**", "/delete-user-*", "/edit-user-*").access("hasRole('ADMIN')")
-        .and().formLogin().loginPage("/login").loginProcessingUrl("/login").usernameParameter("ssoId").passwordParameter("password")
+        .and().formLogin().loginPage("/login").loginProcessingUrl("/login").usernameParameter("ssoid").passwordParameter("password")
         .and().rememberMe().rememberMeParameter("remember-me").tokenRepository(tokenRepository).tokenValiditySeconds(86400)
-        .and().exceptionHandling().accessDeniedPage("/Access_Denied");
+        .and().exceptionHandling().accessDeniedPage("/Access_Denied")
+        .and().apply(new SpringSocialConfigurer());
         
         http.csrf().disable();
     }
@@ -71,5 +74,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     public AuthenticationTrustResolver getAuthenticationTrustResolver() {
         return new AuthenticationTrustResolverImpl();
     }
- 
+    
+    @Bean
+    public SocialUserDetailsService socialUserDetailsService() {
+        return new SimpleSocialUserDetailsService();
+    }
 }

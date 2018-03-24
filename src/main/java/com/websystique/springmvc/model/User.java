@@ -4,6 +4,8 @@ import java.util.Set;
  
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -24,10 +26,9 @@ public class User {
  
     @NotEmpty
     @Column(name="SSO_ID", unique=true, nullable=false)
-    private String ssoId;
+    private String ssoid;
      
-    @NotEmpty
-    @Column(name="PASSWORD", nullable=false)
+    @Column(name="PASSWORD")
     private String password;
          
     @NotEmpty
@@ -49,6 +50,10 @@ public class User {
              inverseJoinColumns = { @JoinColumn(name = "USER_PROFILE_ID") })
     private Set<UserProfile> userProfiles = new HashSet<UserProfile>();
  
+    @Enumerated(EnumType.STRING)
+    @Column(name = "sign_in_provider", length = 20)
+    private SocialMediaService signInProvider;
+    
     public Integer getId() {
         return id;
     }
@@ -57,12 +62,12 @@ public class User {
         this.id = id;
     }
  
-    public String getSsoId() {
-        return ssoId;
+    public String getSsoid() {
+        return ssoid;
     }
  
-    public void setSsoId(String ssoId) {
-        this.ssoId = ssoId;
+    public void setSsoid(String ssoId) {
+        this.ssoid = ssoId;
     }
  
     public String getPassword() {
@@ -110,7 +115,7 @@ public class User {
         final int prime = 31;
         int result = 1;
         result = prime * result + ((id == null) ? 0 : id.hashCode());
-        result = prime * result + ((ssoId == null) ? 0 : ssoId.hashCode());
+        result = prime * result + ((ssoid == null) ? 0 : ssoid.hashCode());
         return result;
     }
  
@@ -128,19 +133,27 @@ public class User {
                 return false;
         } else if (!id.equals(other.id))
             return false;
-        if (ssoId == null) {
-            if (other.ssoId != null)
+        if (ssoid == null) {
+            if (other.ssoid != null)
                 return false;
-        } else if (!ssoId.equals(other.ssoId))
+        } else if (!ssoid.equals(other.ssoid))
             return false;
         return true;
     }
  
     @Override
     public String toString() {
-        return "User [id=" + id + ", ssoId=" + ssoId + ", password=" + password
+        return "User [id=" + id + ", ssoId=" + ssoid + ", password=" + password
                 + ", firstName=" + firstName + ", lastName=" + lastName
                 + ", email=" + email + "]";
     }
+
+	public SocialMediaService getSignInProvider() {
+		return signInProvider;
+	}
+
+	public void setSignInProvider(SocialMediaService signInProvider) {
+		this.signInProvider = signInProvider;
+	}
  
 }

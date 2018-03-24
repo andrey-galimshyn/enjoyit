@@ -138,7 +138,7 @@ public class AppController {
     	Set<User> users = event.getParticipants();
     	for (Iterator<User> i = users.iterator(); i.hasNext();) {
     	    User participant = i.next();
-    	    if (participant.getSsoId().equals(user.getSsoId())) {
+    	    if (participant.getSsoid().equals(user.getSsoid())) {
     	        i.remove();
     	    }
     	}
@@ -257,7 +257,7 @@ public class AppController {
         model.addAttribute("user", user);
         model.addAttribute("edit", false);
         model.addAttribute("loggedinuser", getPrincipal());
-        return "registration";
+        return "createUser";
     }
  
     /**
@@ -269,7 +269,7 @@ public class AppController {
             ModelMap model) {
  
         if (result.hasErrors()) {
-            return "registration";
+            return "createUser";
         }
  
         /*
@@ -280,10 +280,10 @@ public class AppController {
          * framework as well while still using internationalized messages.
          * 
          */
-        if(!userService.isUserSSOUnique(user.getId(), user.getSsoId())){
-            FieldError ssoError =new FieldError("user","ssoId",messageSource.getMessage("non.unique.ssoId", new String[]{user.getSsoId()}, Locale.getDefault()));
+        if(!userService.isUserSSOUnique(user.getId(), user.getSsoid())){
+            FieldError ssoError =new FieldError("user","ssoid",messageSource.getMessage("non.unique.ssoId", new String[]{user.getSsoid()}, Locale.getDefault()));
             result.addError(ssoError);
-            return "registration";
+            return "createUser";
         }
          
         userService.saveUser(user);
@@ -314,10 +314,10 @@ public class AppController {
     public String savePlace(@Valid Place place, BindingResult result, ModelMap model) {
 
         if (result.hasErrors()) {
-            return "registration";
+            return "createPlace";
         }
         // Set recorder of place as currently logged in user
-        User user = userService.findBySSO(getPrincipal());
+        User user = userService.findByEmail(getPrincipal());
         place.setRecorder(user);
         //
         placeService.savePlace(place);
@@ -352,7 +352,7 @@ public class AppController {
         }
  
         // Logged user is organizer of the event
-        User organizer = userService.findBySSO(getPrincipal());
+        User organizer = userService.findByEmail(getPrincipal());
         event.setOrganizer(organizer);
         
         eventService.saveEvent(event);
@@ -364,9 +364,9 @@ public class AppController {
 
     /////////////////////////////////////////////////////
     
-    @RequestMapping(value = { "/delete-user-{ssoId}" }, method = RequestMethod.GET)
-    public String deleteUser(@PathVariable String ssoId) {
-        userService.deleteUserBySSO(ssoId);
+    @RequestMapping(value = { "/delete-user-{ssoid}" }, method = RequestMethod.GET)
+    public String deleteUser(@PathVariable String ssoid) {
+        userService.deleteUserBySSO(ssoid);
         return "redirect:/list";
     }
 
@@ -528,7 +528,7 @@ String[]{user.getSsoId()}, Locale.getDefault()));
             return "redirect:/list";  
         }
     }
- 
+
     /**
      * This method handles logout requests.
      * Toggle the handlers if you are RememberMe functionality is useless in your app.

@@ -11,6 +11,7 @@
         <springsecurity.version>4.0.4.RELEASE</springsecurity.version>
         <hibernate.version>4.3.10.Final</hibernate.version>
         <mysql.connector.version>5.1.31</mysql.connector.version>
+        <springsocial.version>1.1.5.RELEASE</springsocial.version>
     </properties>
  
     <dependencies>
@@ -41,7 +42,19 @@
             <version>${springframework.version}</version>
         </dependency>
         
+		<!-- Use Apache HttpClient as HTTP Client -->
+		<dependency>
+		    <groupId>org.apache.httpcomponents</groupId>
+		    <artifactId>httpclient</artifactId>
+		    <version>4.3.2</version>
+		</dependency>
+
   <!-- Spring Security -->
+	    <dependency>
+		    <groupId>org.springframework.security</groupId>
+		    <artifactId>spring-security-core</artifactId>
+		    <version>${springsecurity.version}</version>
+		</dependency>
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-web</artifactId>
@@ -130,11 +143,47 @@
 	    <groupId>javax.mail</groupId>
 	    <artifactId>mail</artifactId>
 	    <version>1.4</version>
-	</dependency>    	
-    	
-    	
-    	
+	</dependency>
+
+<!-- Spring Social -->
+<dependency>
+    <groupId>org.springframework.social</groupId>
+    <artifactId>spring-social-config</artifactId>
+    <version>${springsocial.version}</version>
+</dependency>
+<dependency>
+    <groupId>org.springframework.social</groupId>
+    <artifactId>spring-social-core</artifactId>
+    <version>${springsocial.version}</version>
+</dependency>
+<dependency>     
+    <groupId>org.springframework.social</groupId>
+    <artifactId>spring-social-security</artifactId>
+    <version>${springsocial.version}</version>
+</dependency>
+<dependency>
+    <groupId>org.springframework.social</groupId>
+    <artifactId>spring-social-web</artifactId>
+    <version>${springsocial.version}</version>
+</dependency>
+  
+<!-- Spring Social Facebook -->
+<dependency>
+    <groupId>org.springframework.social</groupId>
+    <artifactId>spring-social-facebook</artifactId>
+    <version>2.0.3.RELEASE</version>
+</dependency>
+<dependency>
+    <groupId>org.apache.commons</groupId>
+    <artifactId>commons-lang3</artifactId>
+    <version>3.7</version>
+</dependency>	
+	
     </dependencies>
+    
+    
+    
+    
   <build>
     <finalName> enjoyit </finalName>
     <pluginManagement>
