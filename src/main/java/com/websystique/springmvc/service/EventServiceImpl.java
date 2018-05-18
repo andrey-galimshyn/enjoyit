@@ -25,6 +25,20 @@ public class EventServiceImpl implements EventService {
     	return dao.findEventsInRange(to, from);
     }
 
+    public List<Event> findEventsInRangByOrganizer(Date to, Date from, String organizerEmail) {
+    	return dao.findEventsInRangByOrganizer(to, from, organizerEmail);
+    }
+
+    @Override
+    public List<Event> findEventsForVisitor() {
+    	return dao.findEventsForVisitor();
+    }
+    
+    @Override
+    public List<Event> findEventsByOrganizer(String organizerEmail) {
+    	return dao.findEventsByOrganizer(organizerEmail);
+    }
+
     public void saveEvent(Event event) {
         dao.save(event);
     }
@@ -44,10 +58,20 @@ public class EventServiceImpl implements EventService {
         if(entity!=null){
             entity.setName(event.getName());
             entity.setDescription(event.getDescription());
-            entity.setPlace(event.getPlace());
+            entity.setPlaceCount(event.getPlaceCount());
             entity.setWhen(event.getWhen());
             entity.setDuration(event.getDuration());
         }
     }
+
+	@Override
+	public List<Event> findSuscribedEvents(String email) {
+		return dao.findSuscribedEvents(email);
+	}
+
+	@Override
+	public List<Event> findNotSubsribedEvents(String email) {
+		return dao.findNotSubsribedEvents(email);
+	}
 
 }

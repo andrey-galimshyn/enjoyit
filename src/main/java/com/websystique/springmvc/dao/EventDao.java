@@ -14,7 +14,20 @@ public interface EventDao {
     
     List<Event> findAllEvents();
     
-    List<Event> findEventsInRange(Date to, Date from);
+    List<Event> findEventsInRange(Date from, Date to);
+    
+	List<Event> findEventsInRangByOrganizer(Date from, Date to, String organizerEmail);
     
     void deleteById(int id);
+
+	List<Event> findEventsForAssign();
+
+	List<Event> findEventsByOrganizer(String organizerEmail);
+
+	List<Event> findEventsForVisitor();
+	
+	List<Event> findSuscribedEvents(String email);
+	
+	List<Event> findNotSubsribedEvents(String email);
+	
 }

@@ -103,7 +103,7 @@ public class AppController {
     	JSONObject json = (JSONObject) parser.parse(requestBody);
     	Integer eventId = Integer.parseInt(json.get("eventId").toString());
     	// get user and join she to event
-    	User user = userService.findBySSO(getPrincipal());
+    	User user = userService.findByEmail(getPrincipal());
     	Event event = eventService.findById(eventId);
     	Set<User> users = event.getParticipants();
     	if(users == null || users.isEmpty()) {
@@ -121,7 +121,7 @@ public class AppController {
         				user.getFirstName() + " " + user.getLastName(), 
         				event.getOrganizer().getFirstName() + " " + event.getOrganizer().getLastName(), true));
     	
-        return "{\"message\":\"Handled application/json request\", \"freeSpaces\": \"" + (event.getPlace().getPlacesQuantity() - users.size()) + "\" }"; 
+        return "{\"message\":\"Handled application/json request\", \"freeSpaces\": \"" + (event.getPlaceCount() - users.size()) + "\" }"; 
     }
 
     @Transactional
@@ -133,7 +133,7 @@ public class AppController {
     	JSONObject json = (JSONObject) parser.parse(requestBody);
     	Integer eventId = Integer.parseInt(json.get("eventId").toString());
     	// get user and remove him from event participants
-    	User user = userService.findBySSO(getPrincipal());
+    	User user = userService.findByEmail(getPrincipal());
     	Event event = eventService.findById(eventId);
     	Set<User> users = event.getParticipants();
     	for (Iterator<User> i = users.iterator(); i.hasNext();) {
@@ -153,7 +153,7 @@ public class AppController {
         				user.getFirstName() + " " + user.getLastName(), 
         				event.getOrganizer().getFirstName() + " " + event.getOrganizer().getLastName(), false));
     	
-        return "{\"message\":\"Handled application/json request\", \"freeSpaces\": \"" + (event.getPlace().getPlacesQuantity() - users.size()) + "\" }"; 
+        return "{\"message\":\"Handled application/json request\", \"freeSpaces\": \"" + (event.getPlaceCount()  - users.size()) + "\" }"; 
     }    
 
     private String getEmailBody(Set<User> participants, 
@@ -205,9 +205,26 @@ public class AppController {
     }
 
     @RequestMapping(value = {  "/", "/listEvents" }, method = RequestMethod.GET)
-    public String listEvents(ModelMap model, @RequestParam(value = "range", required = false) String range) throws java.text.ParseException {
+    public String listEvents(ModelMap model, @RequestParam(value = "subscribed", required = false) String subscribed
+    		                               , @RequestParam(value = "free", required = false) String free) throws java.text.ParseException {
+    	List<Event> events = new ArrayList<Event>();
+    	if (subscribed != null) {
+    		events = eventService.findSuscribedEvents(getPrincipal());
+    	} else if (free != null) {
+    		events = eventService.findNotSubsribedEvents(getPrincipal());
+    	} else {
+            events = eventService.findEventsForVisitor();
+    	}
+        model.addAttribute("events", events);
+        model.addAttribute("loggedinuser", getPrincipal());
+        return "eventslist";
+    }
 
-    	// Piece to process select range
+    @RequestMapping(value = { "/myEvents" }, method = RequestMethod.GET)
+    public String myEvents(ModelMap model, @RequestParam(value = "range", required = false) String range) throws java.text.ParseException {
+
+    	// Piece to process select range. This may be used in future.
+    	/*
     	String defaultRange = "";
     	String from = "";
     	String to = "";
@@ -238,14 +255,15 @@ public class AppController {
 	    	to = dateFormat.format(c.getTime());
     	}
     	defaultRange = from + " to " + to;
+    	*/
     	//
 
         //List<Event> events = eventService.findAllEvents();
-        List<Event> events = eventService.findEventsInRange(dateFrom, dateTo);
-        model.addAttribute("defaultRange", defaultRange);
+        List<Event> events = eventService.findEventsByOrganizer(getPrincipal());
+        // model.addAttribute("defaultRange", defaultRange);
         model.addAttribute("events", events);
         model.addAttribute("loggedinuser", getPrincipal());
-        return "eventslist";
+        return "myEvents";
     }
 
     /**
@@ -336,6 +354,7 @@ public class AppController {
     public String newEvent(ModelMap model) {
         Event event = new Event();
         model.addAttribute("event", event);
+        model.addAttribute("newEvent", true);
         model.addAttribute("loggedinuser", getPrincipal());
         return "createEvent";
     }
@@ -379,7 +398,7 @@ public class AppController {
         model.addAttribute("user", user);
         model.addAttribute("edit", true);
         model.addAttribute("loggedinuser", getPrincipal());
-        return "registration";
+        return "createUser";
     }
      
     /**
@@ -391,7 +410,7 @@ public class AppController {
             ModelMap model, @PathVariable String ssoId) {
  
         if (result.hasErrors()) {
-            return "registration";
+            return "createUser";
         }
  
         /*//Uncomment below 'if block' if you WANT TO ALLOW UPDATING SSO_ID in UI which is a unique key to a User.
@@ -487,12 +506,7 @@ String[]{user.getSsoId()}, Locale.getDefault()));
         model.addAttribute("loggedinuser", getPrincipal());
         return "createEventSuccess";
     }
- 
-
 ////////////////////////////////////////////////////
-    
-    
-    
     /**
      * This method will provide UserProfile list to views
      */

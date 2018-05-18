@@ -71,7 +71,6 @@ public class RegistrationController {
     private User createUserAccount(RegistrationForm userAccountData, BindingResult result) {
         User registered = null;
  
-        
         UserProfile userProfile = profileService.findByType(UserProfileType.USER.getUserProfileType());
         try {
             registered = service.registerNewUserAccount(userAccountData, userProfile);
@@ -117,8 +116,8 @@ public class RegistrationController {
  
         if (connection != null) {
         	org.springframework.social.connect.UserProfile socialMediaProfile = connection.fetchUserProfile();
-
-            dto.setEmail(socialMediaProfile.getEmail());
+        	dto.setSocialProfImageURL(connection.getImageUrl());
+        	dto.setEmail(socialMediaProfile.getEmail());
             dto.setFirstName(socialMediaProfile.getFirstName());
             dto.setLastName(socialMediaProfile.getLastName());
             dto.setSsoid(socialMediaProfile.getEmail().split("@")[0]);

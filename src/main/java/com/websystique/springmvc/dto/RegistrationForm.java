@@ -46,11 +46,9 @@ public class RegistrationForm {
     private SocialMediaService signInProvider;
     
     private String ssoid;
+
+    private String socialProfImageURL;
     
-    public RegistrationForm() {
-
-    }
-
     public boolean isNormalRegistration() {
         return signInProvider == null;
     }
@@ -124,6 +122,14 @@ public class RegistrationForm {
 
 	public void setSsoid(String ssoid) {
 		this.ssoid = ssoid;
+	}
+
+	public String getSocialProfImageURL() {
+		return socialProfImageURL;
+	}
+
+	public void setSocialProfImageURL(String socialURL) {
+		this.socialProfImageURL = socialURL;
 	}
 
 }

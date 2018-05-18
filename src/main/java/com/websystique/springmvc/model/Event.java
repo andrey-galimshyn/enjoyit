@@ -34,7 +34,7 @@ public class Event {
     @Temporal(TemporalType.TIMESTAMP)
 	private Date when;
 	
-    @Column(name="DURATION", nullable=false)
+    @Column(name="DURATION", nullable=true)
 	private Duration duration;
 
     @Column(name="NAME")
@@ -44,9 +44,13 @@ public class Event {
     @Column(name="DESCRIPTION", nullable=false)
     private String description;
 
+    /*
 	@ManyToOne(optional = false)
 	@JoinColumn(name = "PLACE_ID")
-	private Place place;
+	private Place place;*/
+
+    @Column(name="PLACE_COUNT", nullable=true)
+	private Integer placeCount;
 
 	@ManyToOne(optional = false)
 	@JoinColumn(name = "ORGANIZER_ID")
@@ -89,7 +93,7 @@ public class Event {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
+/*
 	public Place getPlace() {
 		return place;
 	}
@@ -97,7 +101,7 @@ public class Event {
 	public void setPlace(Place place) {
 		this.place = place;
 	}
-
+*/
 	public Duration getDuration() {
 		return duration;
 	}
@@ -120,6 +124,14 @@ public class Event {
 
 	public void setOrganizer(User organizer) {
 		this.organizer = organizer;
+	}
+
+	public Integer getPlaceCount() {
+		return placeCount;
+	}
+
+	public void setPlaceCount(Integer placeCount) {
+		this.placeCount = placeCount;
 	}
 
 }

@@ -10,6 +10,8 @@ public interface EventService {
 
     List<Event> findEventsInRange(Date to, Date from);
 
+    public List<Event> findEventsInRangByOrganizer(Date to, Date from, String organizerEmail);
+    	 
     public void saveEvent(Event event);
 
     public void deleteEventById(Integer id);
@@ -17,5 +19,13 @@ public interface EventService {
     Event findById(int id);
 
 	void updateEvent(Event event);
+
+	List<Event> findEventsByOrganizer(String organizerEmail);
+
+	List<Event> findSuscribedEvents(String organizerEmail);
+	
+	List<Event> findNotSubsribedEvents(String organizerEmail);
+	
+	List<Event> findEventsForVisitor();
 
 }
