@@ -1,63 +1,56 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
-<%@ page isELIgnored="false" %>
+<!DOCTYPE html>
+<%@ page language="java" pageEncoding="UTF-8"%>
+<%@ page contentType="text/html;charset=UTF-8"%>
+
+
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-        <title>Login page</title>
+        <title><spring:message code="login.title"/></title>
         <link href="<c:url value='/static/css/bootstrap.css' />"  rel="stylesheet"></link>
         <link href="<c:url value='/static/css/app.css' />" rel="stylesheet"></link>
-        <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.2.0/css/font-awesome.css" />
     </head>
  
     <body>
         <div id="mainWrapper">
         
             <sec:authorize access="isAnonymous()">
-	            <div class="login-container">
-	                <div class="login-card">
-	                    <div class="login-form">
+	            <div>
+	                <div>
+	                    <div>
 	                        <c:url var="loginUrl" value="/login" />
-	                        <form action="${loginUrl}" method="post" class="form-horizontal">
+	                        <form action="${loginUrl}" method="post">
 	                            <c:if test="${param.error != null}">
-	                                <div class="alert alert-danger">
-	                                    <p>Invalid username and password.</p>
+	                                <div>
+	                                    <p><spring:message code="login.error.inalidCredentials"/></p>
 	                                </div>
 	                            </c:if>
 	                            <c:if test="${param.logout != null}">
-	                                <div class="alert alert-success">
-	                                    <p>You have been logged out successfully.</p>
+	                                <div>
+	                                    <p><spring:message code="login.logOutSuccess"/></p>
 	                                </div>
 	                            </c:if>
-	                            <div class="input-group input-sm">
-	                                <label class="input-group-addon" for="username"><i class="fa fa-user"></i></label>
-	                                <input type="text" class="form-control" id="username" name="ssoid" placeholder="Enter Username" required>
+	                            <div>
+	                                <label for="username"></label>
+	                                <input type="text" id="username" name="ssoid" required>
 	                            </div>
-	                            <div class="input-group input-sm">
-	                                <label class="input-group-addon" for="password"><i class="fa fa-lock"></i></label> 
-	                                <input type="password" class="form-control" id="password" name="password" placeholder="Enter Password" required>
+	                            <div>
+	                                <label for="password"></label> 
+	                                <input type="password" id="password" name="password" required>
 	                            </div>
-	                            <div class="input-group input-sm">
-	                              <div class="checkbox">
-	                                <label><input type="checkbox" id="rememberme" name="remember-me"> Remember Me</label>  
-	                              </div>
-	                            </div>
+
 	                            <input type="hidden" name="${_csrf.parameterName}"  value="${_csrf.token}" />
 	                                 
-	                            <div class="form-actions">
-	                                <input type="submit"
-	                                    class="btn btn-block btn-primary btn-default" value="Log in">
+	                            <div>
+	                                <input type="submit" value="Log in">
 	                            </div>
 	                        </form>
 	                        
-	                        <div class="row">
-                                <div class="form-group col-lg-4">
-                                <!-- Add create user account link -->
-                                <a href="${pageContext.request.contextPath}/user/register">Create your account</a>
-                                </div>
-                            </div>
+
 	                        
 	                        
 	                    </div>
@@ -66,34 +59,23 @@
 	            
 	            
 			    <!-- Social Sign In -->
-			    <div class="panel panel-default">
-			        <div class="panel-body">
-			            <h2>Sign in with your Facebook account</h2>
-			            <div class="row social-button-row">
-			                <div class="col-lg-4">
-			                    <!-- Add Facebook sign in button -->
-			                    <a href="${pageContext.request.contextPath}/auth/facebook">
-			                        <button class="btn btn-facebook">
-			                            <i class="icon-facebook"></i> 
-			                            FACEBOOK
-			                        </button>
-			                    </a>
-			                </div>
-			            </div>
-			        </div>
+			    <div>
+		            <h2><spring:message code="login.signin.facebook"/></h2>
+		            <div>
+	                    <!-- Add Facebook sign in button -->
+	                    <a href="${pageContext.request.contextPath}/auth/facebook">
+	                        <button>
+	                            FACEBOOK
+	                        </button>
+	                    </a>
+		            </div>
 			    </div>	            
-	            
-	            
-	            
-	            
-	            
-	            
 	            
             </sec:authorize>
 
             <!--  -->            
 			<sec:authorize access="isAuthenticated()">
-			    <p>You are already logged in. Nothing to do here, get out!</p>
+			    <p><spring:message code="login.alreadyLoggedIn"/></p>
 			</sec:authorize>            
             
             
