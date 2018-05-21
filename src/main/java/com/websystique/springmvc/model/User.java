@@ -43,7 +43,6 @@ public class User {
     @Column(name="EMAIL", nullable=false)
     private String email;
  
-    @NotEmpty
     @Column(name="SOC_UPIC_URL", nullable=true)
     private String socialProfImageURL;
 

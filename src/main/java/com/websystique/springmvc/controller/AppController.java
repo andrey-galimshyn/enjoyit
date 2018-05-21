@@ -308,6 +308,8 @@ public class AppController {
  
         model.addAttribute("success", "User " + user.getFirstName() + " "+ user.getLastName() + " registered successfully");
         model.addAttribute("loggedinuser", getPrincipal());
+        model.addAttribute("user", user.getFirstName() + " " + user.getLastName());
+        model.addAttribute("operation", "new");
         //return "success";
         return "registrationsuccess";
     }
@@ -424,7 +426,8 @@ String[]{user.getSsoId()}, Locale.getDefault()));
  
         userService.updateUser(user);
  
-        model.addAttribute("success", "User " + user.getFirstName() + " "+ user.getLastName() + " updated successfully");
+        model.addAttribute("user", user.getFirstName() + " " + user.getLastName());
+        model.addAttribute("operation", "edit");
         model.addAttribute("loggedinuser", getPrincipal());
         return "registrationsuccess";
     }
