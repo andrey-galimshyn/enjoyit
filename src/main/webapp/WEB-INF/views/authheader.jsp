@@ -30,3 +30,14 @@
       </div>
     </c:otherwise>
 </c:choose>
+<c:if test="${loggedIn}">
+  <script type="text/javascript">
+    var csrfParameter = '${_csrf.parameterName}';
+    var csrfToken = '${_csrf.token}';    // join to the event
+    window.onload = function() {
+    	if (window.location.href.indexOf('#_=_') > 0) {
+    		window.location = window.location.href.replace(/#.*/, '');
+    	}
+    }
+  </script>
+</c:if>
