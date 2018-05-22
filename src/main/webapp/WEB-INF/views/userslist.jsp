@@ -1,29 +1,27 @@
 <%@ page isELIgnored="false" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 
 <html>
  
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-    <title>Users List</title>
-    <link href="<c:url value='/static/css/bootstrap.css' />" rel="stylesheet"></link>
-    <link href="<c:url value='/static/css/app.css' />" rel="stylesheet"></link>
+    <title><spring:message code="users.list.listTitle"/></title>
 </head>
  
 <body>
-    <div class="generic-container">
+    <div>
         <%@include file="authheader.jsp" %>   
-        <div class="panel panel-default">
+        <div>
               <!-- Default panel contents -->
-            <div class="panel-heading"><span class="lead">List of Users </span></div>
-            <table class="table table-hover">
+            <div><span><spring:message code="users.list.listTitle"/></span></div>
+            <table>
                 <thead>
                     <tr>
-                        <th>Firstname</th>
-                        <th>Lastname</th>
-                        <th>Email</th>
-                        <th>SSO ID</th>
+                        <th><spring:message code="users.list.firstName"/></th>
+                        <th><spring:message code="users.list.lastName"/></th>
+                        <th><spring:message code="users.list.email"/></th>
+                        <th><spring:message code="users.list.ssoid"/></th>
                         <sec:authorize access="hasRole('ADMIN') or hasRole('DBA')">
                             <th width="100"></th>
                         </sec:authorize>
@@ -41,10 +39,10 @@
                         <td>${user.email}</td>
                         <td>${user.ssoid}</td>
                         <sec:authorize access="hasRole('ADMIN') or hasRole('DBA')">
-                            <td><a href="<c:url value='/edit-user-${user.ssoid}' />" class="btn btn-success custom-width">edit</a></td>
+                            <td><a href="<c:url value='/edit-user-${user.ssoid}' />">edit</a></td>
                         </sec:authorize>
                         <sec:authorize access="hasRole('ADMIN')">
-                            <td><a href="<c:url value='/delete-user-${user.ssoid}' />" class="btn btn-danger custom-width">delete</a></td>
+                            <td><a href="<c:url value='/delete-user-${user.ssoid}' />">delete</a></td>
                         </sec:authorize>
                     </tr>
                 </c:forEach>
@@ -52,8 +50,8 @@
             </table>
         </div>
         <sec:authorize access="hasRole('ADMIN')">
-            <div class="well">
-                <a href="<c:url value='/newuser' />">Add New User</a>
+            <div>
+                <a href="<c:url value='/newuser' />"><spring:message code="users.list.addNewuser"/></a>
             </div>
         </sec:authorize>
     </div>
