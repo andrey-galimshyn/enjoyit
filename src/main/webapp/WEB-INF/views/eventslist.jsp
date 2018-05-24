@@ -7,19 +7,7 @@
 <html>
  
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
     <title>Events List</title>
-    <link href="<c:url value='/static/css/bootstrap.css' />" rel="stylesheet"></link>
-    <link href="<c:url value='/static/css/app.css' />" rel="stylesheet"></link>
-    <script type="text/javascript" src="<c:url value='/static/js/jquery-3.2.1.min.js' />"></script>
-
-    <!-- Date Range picker -->
-    <link rel="stylesheet" href="<c:url value='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css' />" />
-	<link rel="stylesheet" href="<c:url value='/static/css/daterangepicker.min.css' />" />
-	<script src="<c:url value='https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js" type="text/javascript' />"></script>
-	<script src="<c:url value='https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.16.0/moment.min.js" type="text/javascript' />"></script>
-	<script src="<c:url value='/static/js/jquery.daterangepicker.js' />"></script>
-
   	<script src="<c:url value='/static/js/join_reject.js' />"></script> 
 
 </head>
@@ -27,14 +15,14 @@
 <body>
 <sec:authorize var="loggedIn" access="isAuthenticated()" />
 
-    <div class="generic-container">
+    <div>
     
         <%@include file="authheader.jsp" %>
-        <div class="panel panel-default">
+        <div>
         
             <!-- Default panel contents -->
-            <div class="panel-heading"><span class="lead"><spring:message code="events.list.listTitle"/></span></div>
-            <table class="table table-hover">
+            <div><span><spring:message code="events.list.listTitle"/></span></div>
+            <table>
                 <thead>
                     <tr>
                         <th><spring:message code="events.list.title"/></th>

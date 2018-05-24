@@ -378,7 +378,9 @@ public class AppController {
         
         eventService.saveEvent(event);
  
-        model.addAttribute("success", "Event " + event.getName() + " "+ event.getDescription() + " added successfully");
+        model.addAttribute("create", true);
+        model.addAttribute("name", event.getName());
+
         model.addAttribute("loggedinuser", getPrincipal());
         return "createEventSuccess";
     }
@@ -505,8 +507,11 @@ String[]{user.getSsoId()}, Locale.getDefault()));
 
         eventService.updateEvent(event);
  
-        model.addAttribute("success", "Event " + event.getName() + " "+ event.getDescription() + " updated successfully");
         model.addAttribute("loggedinuser", getPrincipal());
+        model.addAttribute("create", false);
+        model.addAttribute("name", event.getName());
+
+        
         return "createEventSuccess";
     }
 ////////////////////////////////////////////////////

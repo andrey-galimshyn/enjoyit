@@ -1,22 +1,31 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
- 
+ <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
  
 <html>
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-    <title>Create Event Confirmation Page</title>
-    <link href="<c:url value='/static/css/bootstrap.css' />" rel="stylesheet"></link>
-    <link href="<c:url value='/static/css/app.css' />" rel="stylesheet"></link>
+
+    <title><spring:message code="event.edit.confirmation.title"/></title>
+
 </head>
 <body>
-<div class="generic-container">
-    <div class="alert alert-success lead">
-        ${success}
+<div>
+
+
+    <%@include file="authheader.jsp" %>
+
+    <div>
+        <c:if test="${create}">
+            <spring:message code="event.create.success" arguments="<strong>${name}</strong>"/> 
+        </c:if>
+        <c:if test="${!create}">
+            <spring:message code="event.edit.success" arguments="<strong>${name}</strong>"/> 
+        </c:if>
     </div>
      
-    <span class="well floatRight">
-        Go to <a href="<c:url value='/listEvents' />">Events List</a>
+    <span>
+        <spring:message code="event.edit.confirmation.goto"/>
+        <a href="<c:url value='/listEvents' />">
+        <spring:message code="event.edit.confirmation.eventlist"/>
+        </a>
     </span>
 </div>
 </body>

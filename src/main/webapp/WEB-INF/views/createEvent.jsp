@@ -5,24 +5,10 @@
 <html>
  
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
     <title>Event Details</title>
-    <link href="<c:url value='/static/css/bootstrap.css' />" rel="stylesheet"></link>
-    <link href="<c:url value='/static/css/app.css' />" rel="stylesheet"></link>
-
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.1.4/semantic.min.css"/>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.1.4/semantic.min.js"></script>
-    <link href="http://www.jqueryscript.net/css/jquerysctipttop.css" rel="stylesheet" type="text/css">
 
 
-    <!-- That's all for duration picker -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" crossorigin="anonymous">
     <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" crossorigin="anonymous"></script>
-
-    <link rel="stylesheet" href="<c:url value='/static/css/bootstrap-duration-picker.css' />"></link>
-    <script src="<c:url value='/static/js/bootstrap-duration-picker.js' />"></script>
-   
    
     <!--That's all for Date\Time picker-->
 	<script type="text/javascript" src="<c:url value='/static/js/jquery.simple-dtpicker.js' />"></script>
@@ -34,11 +20,11 @@
  
 <body>
  
-    <div class="generic-container">
+    <div>
     
         <%@include file="authheader.jsp" %>
     
-	    <div class="well lead"><spring:message code="details.title"/></div>
+	    <div><spring:message code="details.title"/></div>
 
 	    <c:if test="${ (!newEvent) && (event.organizer.email != loggedinuser) }">
 	
@@ -58,49 +44,46 @@
     
     
     
-	    <form:form method="POST" modelAttribute="event" class="form-horizontal">
+	    <form:form method="POST" modelAttribute="event">
 	        <form:input type="hidden" path="id" id="id"/>
 	         
-	        <div class="row">
-	            <div class="form-group col-md-12">
-	                <label class="col-md-3 control-lable" for="name"><spring:message code="details.event.name"/></label>
-	                <div class="col-md-7">
-	                    <form:input type="text" path="name" id="name" class="form-control input-sm"/>
-	                    <div class="has-error">
-	                        <form:errors path="name" class="help-inline"/>
+	        <div>
+	            <div>
+	                <label for="name"><spring:message code="details.event.name"/></label>
+	                <div>
+	                    <form:input type="text" path="name" id="name"/>
+	                    <div>
+	                        <form:errors path="name"/>
 	                    </div>
 	                </div>
 	            </div>
 	        </div>
 	 
-	        <div class="row">
-	            <div class="form-group col-md-12">
-	                <label class="col-md-3 control-lable" for="description"><spring:message code="details.event.description"/></label>
-	                <div class="col-md-7">
-	                    <form:input type="text" path="description" id="description" class="form-control input-sm" />
-	                    <div class="has-error">
-	                        <form:errors path="description" class="help-inline"/>
+	        <div>
+	            <div>
+	                <label for="description"><spring:message code="details.event.description"/></label>
+	                <div>
+	                    <form:input type="text" path="description" id="description" />
+	                    <div>
+	                        <form:errors path="description"/>
 	                    </div>
 	                </div>
 	            </div>
 	        </div>
 	        
 	        
-	        <div class="row">
-	            <div class="form-group col-md-12">
-	                <label class="col-md-3 control-lable" for="when"><spring:message code="details.event.when"/></label>
-	                <div class="col-md-7">
-	                    <form:input type="text" path="when" id="when" name="when" class="form-control input-sm" value="${evStarts}"/>
-	
-		<script type="text/javascript">
-			$(function(){
-				$('*[name=when]').appendDtpicker();
-			});
-		</script>
-	                    
-	                    
-	                    <div class="has-error">
-	                        <form:errors path="when" class="help-inline"/>
+	        <div>
+	            <div>
+	                <label for="when"><spring:message code="details.event.when"/></label>
+	                <div>
+	                    <form:input type="text" path="when" id="when" name="when" value="${evStarts}"/>
+						<script type="text/javascript">
+							$(function(){
+								$('*[name=when]').appendDtpicker();
+							});
+						</script>
+	                    <div>
+	                        <form:errors path="when"/>
 	                    </div>
 	                </div>
 	            </div>
