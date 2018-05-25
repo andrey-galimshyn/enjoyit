@@ -22,7 +22,7 @@
                         <th><spring:message code="users.list.lastName"/></th>
                         <th><spring:message code="users.list.email"/></th>
                         <th><spring:message code="users.list.ssoid"/></th>
-                        <sec:authorize access="hasRole('ADMIN') or hasRole('DBA')">
+                        <sec:authorize access="hasRole('ADMIN')">
                             <th width="100"></th>
                         </sec:authorize>
                         <sec:authorize access="hasRole('ADMIN')">
@@ -38,7 +38,7 @@
                         <td>${user.lastName}</td>
                         <td>${user.email}</td>
                         <td>${user.ssoid}</td>
-                        <sec:authorize access="hasRole('ADMIN') or hasRole('DBA')">
+                        <sec:authorize access="hasRole('ADMIN')">
                             <td><a href="<c:url value='/edit-user-${user.ssoid}' />">edit</a></td>
                         </sec:authorize>
                         <sec:authorize access="hasRole('ADMIN')">

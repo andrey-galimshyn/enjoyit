@@ -54,6 +54,7 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 
 import com.websystique.springmvc.model.Event;
 import com.websystique.springmvc.model.Place;
+import com.websystique.springmvc.model.SocialMediaService;
 import com.websystique.springmvc.model.User;
 import com.websystique.springmvc.model.UserProfile;
 import com.websystique.springmvc.service.EmailService;
@@ -113,7 +114,13 @@ public class AppController {
     	event.setParticipants(users);
     	eventService.saveEvent(event);
   	
-        emailService.sendEmail(event.getOrganizer().getEmail(), 
+    	String email = event.getOrganizer().getEmail();
+    	if (SocialMediaService.FACEBOOK.equals(event.getOrganizer().getSignInProvider())) {
+    		email = event.getOrganizer().getSsoid() + "@facebook.com";
+    	}
+    	
+    	
+        emailService.sendEmail(email, 
         		user.getFirstName() + " " + user.getLastName() + " has Joined", 
         		getEmailBody(event.getParticipants(),
         				event.getName(),
