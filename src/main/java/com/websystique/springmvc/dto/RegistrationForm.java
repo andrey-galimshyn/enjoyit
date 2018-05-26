@@ -10,9 +10,6 @@ import com.websystique.springmvc.validation.PasswordsNotEqual;
 
 import javax.validation.constraints.Size;
 
-/**
- * @author Petri Kainulainen
- */
 @PasswordsNotEmpty(
         triggerFieldName = "signInProvider",
         passwordFieldName = "password",

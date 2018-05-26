@@ -93,15 +93,7 @@ public class Event {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-/*
-	public Place getPlace() {
-		return place;
-	}
 
-	public void setPlace(Place place) {
-		this.place = place;
-	}
-*/
 	public Duration getDuration() {
 		return duration;
 	}

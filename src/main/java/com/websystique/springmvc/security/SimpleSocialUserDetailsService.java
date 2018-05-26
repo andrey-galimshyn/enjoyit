@@ -16,6 +16,7 @@ public class SimpleSocialUserDetailsService implements SocialUserDetailsService 
 	@Override
 	public SocialUserDetails loadUserByUserId(String ssoid) throws UsernameNotFoundException {
         UserDetails userDetails = customUserDetailsService.loadUserByUsername(ssoid);
-        return (SocialUserDetails) userDetails;	}
+        return (SocialUserDetails) userDetails;	
+    }
 
 }

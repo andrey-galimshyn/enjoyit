@@ -10,7 +10,7 @@ public class DateTimeConverter   implements Converter<String, Date> {
 
 	@Override
 	public Date convert(String dateTime) {
-		// 2018-02-24 01:30
+		// 2018-02-24 01:30 - format example
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 
         try {

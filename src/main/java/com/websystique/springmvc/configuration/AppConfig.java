@@ -1,6 +1,5 @@
 package com.websystique.springmvc.configuration;
  
-import java.nio.charset.Charset;
 import java.util.Locale;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +11,6 @@ import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.core.task.TaskExecutor;
 import org.springframework.format.FormatterRegistry;
-import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
@@ -93,7 +91,8 @@ public class AppConfig extends WebMvcConfigurerAdapter{
         SessionLocaleResolver localeResolver = new SessionLocaleResolver();
         localeResolver.setDefaultLocale(new Locale("uk", "UA")); // change this
         return localeResolver;
-    }  
+    }
+    
     /**Optional. It's only required when handling '.' in @PathVariables which otherwise ignore everything after last '.' in 
  
 @PathVaidables argument.
