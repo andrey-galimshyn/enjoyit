@@ -57,7 +57,12 @@
                            <c:if test="${not empty event.organizer.socialProfImageURL}">
                                <img src="${event.organizer.socialProfImageURL}" alt="Organizer userpic">
                            </c:if>
-                           ${event.organizer.firstName} ${event.organizer.lastName} 
+                           <c:if test="${event.organizer.email != loggedinuserEmail}">
+                               ${event.organizer.firstName} ${event.organizer.lastName}
+                           </c:if>
+                           <c:if test="${event.organizer.email eq loggedinuserEmail}">
+                              <spring:message code="events.list.mine"/>
+                           </c:if>
                         </td>
                         <td>${event.description}</td>
                         <td>
