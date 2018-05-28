@@ -9,7 +9,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
  
-public class ExampleUserDetails extends SocialUser {
+public class JoinMeUserDetails extends SocialUser {
  
     private Long id;
  
@@ -21,7 +21,7 @@ public class ExampleUserDetails extends SocialUser {
  
     private SocialMediaService socialSignInProvider;
  
-    public ExampleUserDetails(String username, String password, Collection<? extends GrantedAuthority> authorities) {
+    public JoinMeUserDetails(String username, String password, Collection<? extends GrantedAuthority> authorities) {
         super(username, password, authorities);
     }
  
@@ -41,8 +41,6 @@ public class ExampleUserDetails extends SocialUser {
  
         private String password;
  
-        //private UserProfileType role;
-        
         private Set<UserProfile> userProfiles;
  
         public Set<UserProfile> getUserProfiles() {
@@ -101,8 +99,8 @@ public class ExampleUserDetails extends SocialUser {
             return this;
         }
  
-        public ExampleUserDetails build() {
-            ExampleUserDetails user = new ExampleUserDetails(username, password, authorities);
+        public JoinMeUserDetails build() {
+            JoinMeUserDetails user = new JoinMeUserDetails(username, password, authorities);
  
             user.id = id;
             user.firstName = firstName;
@@ -129,4 +127,20 @@ public class ExampleUserDetails extends SocialUser {
 			this.lastName = lastName;
 		}
     }
+
+	public String getFirstName() {
+		return firstName;
+	}
+
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+
+	public String getLastName() {
+		return lastName;
+	}
+
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
 }

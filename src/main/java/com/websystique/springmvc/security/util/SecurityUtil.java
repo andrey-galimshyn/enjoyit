@@ -1,6 +1,6 @@
 package com.websystique.springmvc.security.util;
 
-import com.websystique.springmvc.model.ExampleUserDetails;
+import com.websystique.springmvc.model.JoinMeUserDetails;
 import com.websystique.springmvc.model.User;
 import com.websystique.springmvc.model.UserProfile;
 
@@ -21,7 +21,7 @@ public class SecurityUtil {
     public static void logInUser(User user) {
         LOGGER.info("Logging in user: {}", user);
 
-        ExampleUserDetails userDetails = ExampleUserDetails.getBuilder()
+        JoinMeUserDetails userDetails = JoinMeUserDetails.getBuilder()
                 .firstName(user.getFirstName())
                 .id(new Long(user.getId()))
                 .lastName(user.getLastName())

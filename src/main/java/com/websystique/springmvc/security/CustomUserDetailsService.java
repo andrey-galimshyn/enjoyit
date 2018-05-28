@@ -9,7 +9,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.websystique.springmvc.model.ExampleUserDetails;
+import com.websystique.springmvc.model.JoinMeUserDetails;
 import com.websystique.springmvc.model.User;
 import com.websystique.springmvc.security.util.SecurityUtil;
 import com.websystique.springmvc.service.UserService;
@@ -31,7 +31,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 			throw new UsernameNotFoundException("Username not found");
 		}
 
-		ExampleUserDetails principal = ExampleUserDetails.getBuilder().firstName(user.getFirstName())
+		JoinMeUserDetails principal = JoinMeUserDetails.getBuilder().firstName(user.getFirstName())
 				.id(new Long(user.getId())).lastName(user.getLastName()).password(user.getPassword())
 				.role(SecurityUtil.getGrantedAuthorities(user)).socialSignInProvider(user.getSignInProvider())
 				.username(user.getEmail()).build();

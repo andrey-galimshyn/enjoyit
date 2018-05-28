@@ -40,6 +40,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
 import com.websystique.springmvc.model.Event;
+import com.websystique.springmvc.model.JoinMeUserDetails;
 import com.websystique.springmvc.model.Place;
 import com.websystique.springmvc.model.User;
 import com.websystique.springmvc.model.UserProfile;
@@ -87,7 +88,7 @@ public class AppController {
 		JSONObject json = (JSONObject) parser.parse(requestBody);
 		Integer eventId = Integer.parseInt(json.get("eventId").toString());
 		// get user and join she to event
-		User user = userService.findByEmail(getPrincipal());
+		User user = userService.findByEmail(getPrincipalEmail());
 		Event event = eventService.findById(eventId);
 		Set<User> users = event.getParticipants();
 		if (users == null || users.isEmpty()) {
@@ -116,7 +117,7 @@ public class AppController {
 		JSONObject json = (JSONObject) parser.parse(requestBody);
 		Integer eventId = Integer.parseInt(json.get("eventId").toString());
 		// get user and remove him from event participants
-		User user = userService.findByEmail(getPrincipal());
+		User user = userService.findByEmail(getPrincipalEmail());
 		Event event = eventService.findById(eventId);
 		Set<User> users = event.getParticipants();
 		for (Iterator<User> i = users.iterator(); i.hasNext();) {
@@ -165,7 +166,7 @@ public class AppController {
 	public String listUsers(ModelMap model) {
 		List<User> users = userService.findAllUsers();
 		model.addAttribute("users", users);
-		model.addAttribute("loggedinuser", getPrincipal());
+		model.addAttribute("loggedinuser", getPrincipalName());
 		return "userslist";
 	}
 
@@ -173,7 +174,7 @@ public class AppController {
 	public String listPlaces(ModelMap model) {
 		List<Place> places = placeService.findAllPlaces();
 		model.addAttribute("places", places);
-		model.addAttribute("loggedinuser", getPrincipal());
+		model.addAttribute("loggedinuser", getPrincipalName());
 		return "placeslist";
 	}
 
@@ -182,23 +183,24 @@ public class AppController {
 			@RequestParam(value = "free", required = false) String free) throws java.text.ParseException {
 		List<Event> events = new ArrayList<Event>();
 		if (subscribed != null) {
-			events = eventService.findSuscribedEvents(getPrincipal());
+			events = eventService.findSuscribedEvents(getPrincipalEmail());
 		} else if (free != null) {
-			events = eventService.findNotSubsribedEvents(getPrincipal());
+			events = eventService.findNotSubsribedEvents(getPrincipalEmail());
 		} else {
 			events = eventService.findEventsForVisitor();
 		}
 		model.addAttribute("events", events);
-		model.addAttribute("loggedinuser", getPrincipal());
+		model.addAttribute("loggedinuser", getPrincipalName());
+		model.addAttribute("loggedinuserEmail", getPrincipalEmail());
 		return "eventslist";
 	}
 
 	@RequestMapping(value = { "/myEvents" }, method = RequestMethod.GET)
 	public String myEvents(ModelMap model, @RequestParam(value = "range", required = false) String range)
 			throws java.text.ParseException {
-		List<Event> events = eventService.findEventsByOrganizer(getPrincipal());
+		List<Event> events = eventService.findEventsByOrganizer(getPrincipalEmail());
 		model.addAttribute("events", events);
-		model.addAttribute("loggedinuser", getPrincipal());
+		model.addAttribute("loggedinuser", getPrincipalName());
 		return "myEvents";
 	}
 
@@ -210,7 +212,7 @@ public class AppController {
 		User user = new User();
 		model.addAttribute("user", user);
 		model.addAttribute("edit", false);
-		model.addAttribute("loggedinuser", getPrincipal());
+		model.addAttribute("loggedinuser", getPrincipalName());
 		return "createUser";
 	}
 
@@ -246,7 +248,7 @@ public class AppController {
 
 		model.addAttribute("success",
 				"User " + user.getFirstName() + " " + user.getLastName() + " registered successfully");
-		model.addAttribute("loggedinuser", getPrincipal());
+		model.addAttribute("loggedinuser", getPrincipalName());
 		model.addAttribute("user", user.getFirstName() + " " + user.getLastName());
 		model.addAttribute("operation", "new");
 		return "registrationsuccess";
@@ -260,7 +262,7 @@ public class AppController {
 		Place place = new Place();
 		model.addAttribute("place", place);
 		model.addAttribute("edit", false);
-		model.addAttribute("loggedinuser", getPrincipal());
+		model.addAttribute("loggedinuser", getPrincipalName());
 		return "createPlace";
 	}
 
@@ -275,14 +277,14 @@ public class AppController {
 			return "createPlace";
 		}
 		// Set recorder of place as currently logged in user
-		User user = userService.findByEmail(getPrincipal());
+		User user = userService.findByEmail(getPrincipalEmail());
 		place.setRecorder(user);
 
 		placeService.savePlace(place);
 
 		model.addAttribute("success",
 				"Place " + place.getName() + " " + place.getAddress() + " registered successfully");
-		model.addAttribute("loggedinuser", getPrincipal());
+		model.addAttribute("loggedinuser", getPrincipalName());
 		return "createPlaceSuccess";
 	}
 
@@ -294,7 +296,8 @@ public class AppController {
 		Event event = new Event();
 		model.addAttribute("event", event);
 		model.addAttribute("newEvent", true);
-		model.addAttribute("loggedinuser", getPrincipal());
+		model.addAttribute("loggedinuser", getPrincipalName());
+		model.addAttribute("loggedinuserEmail", getPrincipalEmail());
 		return "createEvent";
 	}
 
@@ -310,7 +313,7 @@ public class AppController {
 		}
 
 		// Logged user is organizer of the event
-		User organizer = userService.findByEmail(getPrincipal());
+		User organizer = userService.findByEmail(getPrincipalEmail());
 		event.setOrganizer(organizer);
 
 		eventService.saveEvent(event);
@@ -318,7 +321,7 @@ public class AppController {
 		model.addAttribute("create", true);
 		model.addAttribute("name", event.getName());
 
-		model.addAttribute("loggedinuser", getPrincipal());
+		model.addAttribute("loggedinuser", getPrincipalName());
 		return "createEventSuccess";
 	}
 
@@ -336,7 +339,7 @@ public class AppController {
 		User user = userService.findBySSO(ssoId);
 		model.addAttribute("user", user);
 		model.addAttribute("edit", true);
-		model.addAttribute("loggedinuser", getPrincipal());
+		model.addAttribute("loggedinuser", getPrincipalName());
 		return "createUser";
 	}
 
@@ -365,7 +368,7 @@ public class AppController {
 
 		model.addAttribute("user", user.getFirstName() + " " + user.getLastName());
 		model.addAttribute("operation", "edit");
-		model.addAttribute("loggedinuser", getPrincipal());
+		model.addAttribute("loggedinuser", getPrincipalName());
 		return "registrationsuccess";
 	}
 
@@ -386,10 +389,12 @@ public class AppController {
 		Place place = placeService.findById(id);
 		model.addAttribute("place", place);
 		model.addAttribute("edit", true);
-		model.addAttribute("loggedinuser", getPrincipal());
+		model.addAttribute("loggedinuser", getPrincipalName());
 		return "createPlace";
 	}
 
+	// Obsolete if edit place 
+	/*
 	@RequestMapping(value = { "/edit-place-{id}" }, method = RequestMethod.POST)
 	public String updatePlace(@Valid Place place, BindingResult result, ModelMap model, @PathVariable Integer id) {
 
@@ -406,7 +411,7 @@ public class AppController {
 		model.addAttribute("success", "Place " + place.getName() + " " + place.getAddress() + " updated successfully");
 		model.addAttribute("loggedinuser", getPrincipal());
 		return "createPlaceSuccess";
-	}
+	}*/
 
 	/**
 	 * This method will delete an event by it's SSOID value.
@@ -425,7 +430,8 @@ public class AppController {
 		Event event = eventService.findById(id);
 		model.addAttribute("event", event);
 		model.addAttribute("edit", true);
-		model.addAttribute("loggedinuser", getPrincipal());
+		model.addAttribute("loggedinuser", getPrincipalName());
+		model.addAttribute("loggedinuserEmail", getPrincipalEmail());
 		return "createEvent";
 	}
 
@@ -438,7 +444,7 @@ public class AppController {
 
 		eventService.updateEvent(event);
 
-		model.addAttribute("loggedinuser", getPrincipal());
+		model.addAttribute("loggedinuser", getPrincipalName());
 		model.addAttribute("create", false);
 		model.addAttribute("name", event.getName());
 
@@ -463,7 +469,7 @@ public class AppController {
 	 */
 	@RequestMapping(value = "/Access_Denied", method = RequestMethod.GET)
 	public String accessDeniedPage(ModelMap model) {
-		model.addAttribute("loggedinuser", getPrincipal());
+		model.addAttribute("loggedinuser", getPrincipalName());
 		return "accessDenied";
 	}
 
@@ -497,12 +503,24 @@ public class AppController {
 	/**
 	 * This method returns the principal[user-name] of logged-in user.
 	 */
-	private String getPrincipal() {
+	private String getPrincipalEmail() {
 		String userName = null;
 		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
 		if (principal instanceof UserDetails) {
 			userName = ((UserDetails) principal).getUsername();
+		} else {
+			userName = principal.toString();
+		}
+		return userName;
+	}
+
+	private String getPrincipalName() {
+		String userName = null;
+		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+		if (principal instanceof JoinMeUserDetails) {
+			userName = ((JoinMeUserDetails) principal).getFirstName() + " " + ((JoinMeUserDetails) principal).getLastName();
 		} else {
 			userName = principal.toString();
 		}

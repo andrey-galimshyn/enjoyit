@@ -3,11 +3,14 @@
 <%@ taglib prefix = "fmt" uri = "http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 
 <html>
  
 <head>
-    <title>Events List</title>
+    <title><spring:message code="events.list.listTitle"/></title>
+    
+    <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
   	<script src="<c:url value='/static/js/join_reject.js' />"></script> 
 
 </head>
@@ -64,11 +67,11 @@
                             ${event.placeCount - fn:length(event.participants)}
                         </td>
                         <sec:authorize access="isAuthenticated()">
-	                        <c:if test="${event.organizer.email != loggedinuser}">
+	                        <c:if test="${event.organizer.email != loggedinuserEmail}">
 	                   
 								<c:set var="joined" value="false" />
 								<c:forEach var="participant" items="${event.participants}">
-								  <c:if test="${participant.email eq loggedinuser}">
+								  <c:if test="${participant.email eq loggedinuserEmail}">
 								    <c:set var="joined" value="true" />
 								  </c:if>
 								</c:forEach>	                        

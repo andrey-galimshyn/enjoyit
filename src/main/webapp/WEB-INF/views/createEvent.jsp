@@ -1,11 +1,12 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
- 
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+
 <html>
  
 <head>
-    <title>Event Details</title>
+    <title><spring:message code="details.title"/></title>
 
 
     <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
@@ -26,7 +27,7 @@
     
 	    <div><spring:message code="details.title"/></div>
 
-	    <c:if test="${ (!newEvent) && (event.organizer.email != loggedinuser) }">
+	    <c:if test="${ (!newEvent) && (event.organizer.email != loggedinuserEmail) }">
 	
 		  <script type="text/javascript">
 		    window.onload = function() {
@@ -113,7 +114,7 @@
 	        </div>
 	        
 	        
-	    <c:if test="${ newEvent || (event.organizer.email == loggedinuser) }">
+	    <c:if test="${ newEvent || (event.organizer.email == loggedinuserEmail) }">
 	 
 	        <div class="row" id="submitControls">
 	            <div class="form-actions floatRight">
@@ -143,11 +144,11 @@
 	    
         <div class="row" id="joinReject">
             <div class="form-actions floatRight">
-              <c:if test="${(!newEvent) && (event.organizer.email != loggedinuser)}">
+              <c:if test="${(!newEvent) && (event.organizer.email != loggedinuserEmail)}">
                 
 				<c:set var="joined" value="false" />
 				<c:forEach var="participant" items="${event.participants}">
-				  <c:if test="${participant.email eq loggedinuser}">
+				  <c:if test="${participant.email eq loggedinuserEmail}">
 				    <c:set var="joined" value="true" />
 				  </c:if>
 				</c:forEach>	                        
