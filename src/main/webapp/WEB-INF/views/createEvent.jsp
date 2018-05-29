@@ -34,7 +34,7 @@
 		    	
 		    	document.getElementById("name").readOnly = true;
 		    	document.getElementById("description").readOnly = true;
-		    	document.getElementById("when").readOnly = true;
+		    	document.getElementById("when").disabled = true;
 		    	document.getElementById("placeCount").readOnly = true;
 		    	document.getElementById("submitControls").style.display = 'none';
 		    	
