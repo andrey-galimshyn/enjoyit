@@ -18,6 +18,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -29,6 +30,7 @@ public class Event {
     @Id @GeneratedValue(strategy=GenerationType.AUTO)
     private Integer id;
 
+    @NotNull
     @Column(name="DATE", nullable=false)
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
     @Temporal(TemporalType.TIMESTAMP)
@@ -37,6 +39,7 @@ public class Event {
     @Column(name="DURATION", nullable=true)
 	private Duration duration;
 
+    @NotEmpty
     @Column(name="NAME")
     private String name;
 	
@@ -44,14 +47,11 @@ public class Event {
     @Column(name="DESCRIPTION", nullable=false)
     private String description;
 
-    /*
-	@ManyToOne(optional = false)
-	@JoinColumn(name = "PLACE_ID")
-	private Place place;*/
-
+    @NotEmpty
     @Column(name="PLACE_COUNT", nullable=true)
 	private Integer placeCount;
 
+    @NotEmpty
 	@ManyToOne(optional = false)
 	@JoinColumn(name = "ORGANIZER_ID")
 	private User organizer;
