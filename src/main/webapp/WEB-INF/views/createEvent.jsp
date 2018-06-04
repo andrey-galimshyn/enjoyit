@@ -181,20 +181,25 @@
             <table class="table">
                 <thead>
                     <tr>
-                        <th><spring:message code="details.event.userSirname"/></th>
+                        <th></th>
                         <th><spring:message code="details.event.userName"/></th>
+                        <th><spring:message code="details.event.userSirname"/></th>
                         <th><spring:message code="details.event.userEmail"/></th>
-                        <th><spring:message code="details.event.userSsoId"/></th>
                     </tr>
                 </thead>
                 <tbody>
                 <c:forEach items="${event.participants}" var="user">
                     <tr>
+                    
+                        <td>
+                           <c:if test="${not empty user.socialProfImageURL}">
+                               <img src="${user.socialProfImageURL}" alt="Organizer userpic">
+                           </c:if>
+                        </td>
+                    
                         <td>${user.firstName}</td>
                         <td>${user.lastName}</td>
                         <td>${user.email}</td>
-                        <td>${user.ssoid}</td>
-
 
                     </tr>
                 </c:forEach>

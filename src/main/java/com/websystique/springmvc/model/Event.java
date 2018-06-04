@@ -47,11 +47,10 @@ public class Event {
     @Column(name="DESCRIPTION", nullable=false)
     private String description;
 
-    @NotEmpty
+    @NotNull
     @Column(name="PLACE_COUNT", nullable=true)
 	private Integer placeCount;
 
-    @NotEmpty
 	@ManyToOne(optional = false)
 	@JoinColumn(name = "ORGANIZER_ID")
 	private User organizer;
