@@ -64,7 +64,7 @@
 	            <div>
 	                <label for="description"><spring:message code="details.event.description"/></label>
 	                <div>
-	                    <form:input type="text" path="description" id="description" />
+	                    <form:textarea type="text" path="description" id="description" rows="5" cols="40"/>
 	                    <div>
 	                        <form:errors path="description"/>
 	                    </div>
