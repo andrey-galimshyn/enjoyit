@@ -7,20 +7,26 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 
 <sec:authorize var="loggedIn" access="isAuthenticated()" />
+
+<link type="text/css" rel="stylesheet" href="<c:url value='/static/css/app.css' />" />
+
 <c:choose>
     <c:when test="${loggedIn}">
       <div>
           <span><spring:message code="authheader.welcome" arguments="<strong>${loggedinuser}</strong>"/> </span> 
           
           <div>
-	          <span><a href="<c:url value="/logout" />"><spring:message code="authheader.logout"/></a></span>
+          
+	          <span><a class="topItem" href="<c:url value="/logout" />"><spring:message code="authheader.logout"/></a></span>
+	          
 	          <sec:authorize access="hasRole('ADMIN')">
-	              <span><a href="<c:url value="/list" />"><spring:message code="authheader.users"/></a></span>
+	              <span><a id="listOfUsersItem" class="topItem" href="<c:url value="/list" />"><spring:message code="authheader.users"/></a></span>
 	          </sec:authorize>
-	          <span><a href="<c:url value="/listEvents" />"><spring:message code="authheader.events"/></a></span>
-	          <span><a href="<c:url value="/listEvents?subscribed=true" />"><spring:message code="authheader.subscribed"/></a></span>
-	          <span><a href="<c:url value="/listEvents?free=true" />"><spring:message code="authheader.notsubscribed"/></a></span>
-	          <span><a href="<c:url value="/myEvents" />"><spring:message code="authheader.edit"/></a></span>
+	          
+	          <span><a id="listOfEventsItem" class="topItem" href="<c:url value="/listEvents" />"><spring:message code="authheader.events"/></a></span>
+	          <span><a id="listOfEventsSubscribed" class="topItem" href="<c:url value="/listEvents?subscribed=true" />"><spring:message code="authheader.subscribed"/></a></span>
+	          <span><a id="listOfEventsNotSubscribed" class="topItem" href="<c:url value="/listEvents?free=true" />"><spring:message code="authheader.notsubscribed"/></a></span>
+	          <span><a id="listOfMyEvents" class="topItem" href="<c:url value="/myEvents" />"><spring:message code="authheader.edit"/></a></span>
           </div>
       </div>
     </c:when>
@@ -30,6 +36,9 @@
       </div>
     </c:otherwise>
 </c:choose>
+
+
+
 <c:if test="${loggedIn}">
   <script type="text/javascript">
     var csrfParameter = '${_csrf.parameterName}';
@@ -38,6 +47,25 @@
     	if (window.location.href.indexOf('#_=_') > 0) {
     		window.location = window.location.href.replace(/#.*/, '');
     	}
+    }
+    
+    if (window.location.pathname == "/enjoyit/list") {
+    	var link = document.getElementById("listOfUsersItem");
+    	link.className += " selectedItem";
+    } else if (window.location.pathname == "/enjoyit/myEvents") {
+    	var link = document.getElementById("listOfMyEvents");
+    	link.className += " selectedItem";
+    } else if (window.location.pathname == "/enjoyit/listEvents" && !window.location.search) {
+    	var link = document.getElementById("listOfEventsItem");
+    	link.className += " selectedItem";
+    } else if (window.location.pathname == "/enjoyit/listEvents" 
+    		&& window.location.search == "?subscribed=true") {
+    	var link = document.getElementById("listOfEventsSubscribed");
+    	link.className += " selectedItem";
+    } else if (window.location.pathname == "/enjoyit/listEvents" 
+		    && window.location.search == "?free=true") {
+	    var link = document.getElementById("listOfEventsNotSubscribed");
+	    link.className += " selectedItem";
     }
   </script>
 </c:if>
