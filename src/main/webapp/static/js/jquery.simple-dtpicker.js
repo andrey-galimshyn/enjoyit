@@ -4,7 +4,7 @@
 * (c) Masanori Ohgita.
 * https://github.com/mugifly/jquery-simple-datetimepicker
 **/
-
+	
 (function($) {
 	var lang = {
 		en: {

@@ -1,5 +1,9 @@
 a.topItem:link {
-    color: green;
+    color: #104b0b;
+    font-weight:bold;
+    font-size: 18px;
+    text-transform: uppercase;
+    margin-right: 10px;   
 }
 
 /* visited link */
@@ -19,4 +23,136 @@ a.topItem:active {
 
 a.selectedItem {
     background-color: coral;
+}
+
+
+div.topper {
+    height: 70px;
+    background-color: #f9f9f9;
+    display: table;
+    width: 100%;
+}
+
+img.menu-top-logo{
+    height: 60px;
+    padding: 5px;
+}
+
+div.topper-align {
+	display: table-cell; 
+    vertical-align: middle;
+}
+
+div.keeper {
+    background-color: #f1f1f1;
+}
+
+div.body-container {
+    width: 60%;
+    background-color: #f1f1f1;
+}
+
+div.footer {
+    height: 60px;
+    background-color: #f9f9f9;
+    width: 60%;
+    display: table;
+}
+
+div.error-message {
+	color: red;
+}
+
+div.footer-align {
+	display: table-cell; 
+    vertical-align: middle;
+}
+
+html,body 
+{ 
+	height:100%;
+	background-color:#f1f1f1; 
+}
+
+
+.zui-table {
+	width : 100%;
+    border: solid 1px #278F21;
+    font: normal 13px Arial, sans-serif;
+}
+.zui-table thead th {
+    background-color: #DDEFEF;
+    border: solid 1px #278F21;
+    color: #336B6B;
+    padding: 10px;
+    text-align: left;
+    text-shadow: 1px 1px 1px #fff;
+}
+.zui-table tbody td {
+    border: solid 1px #278F21;
+    color: #333;
+    padding: 10px;
+    text-shadow: 1px 1px 1px #fff;
+}
+
+.buttonlink{
+	display:block;
+	border-style:solid;
+	border-color:#bbb #888 #666 #aaa;
+	border-width:3px 4px 4px 3px;
+	width:100%;
+	background:#c2e8d3;
+	color:#333;
+	line-height:2;
+	text-align:center;
+	text-decoration:none;
+}
+.buttonlink:hover{
+	border-color: #666 #aaa #bbb #888;
+	border-width:4px 3px 3px 4px;
+	color:#000;
+}
+
+.editButtonlink{
+	display:block;
+	border-style:solid;
+	border-color:#bbb #888 #666 #aaa;
+	border-width:3px 4px 4px 3px;
+	background:#36f78c;
+	color:#333;
+	line-height:2;
+	text-align:center;
+	text-decoration:none;
+}
+.editButtonlink:hover{
+	border-color: #666 #aaa #bbb #888;
+	border-width:4px 3px 3px 4px;
+	color:#000;
+}
+
+.deleteButtonlink{
+	display:block;
+	border-style:solid;
+	border-color:#bbb #888 #666 #aaa;
+	border-width:3px 4px 4px 3px;
+	background:#ff776d;
+	color:#333;
+	line-height:2;
+	text-align:center;
+	text-decoration:none;
+}
+.deleteButtonlink:hover{
+	border-color: #666 #aaa #bbb #888;
+	border-width:4px 3px 3px 4px;
+	color:#000;
+}
+
+table.login-table  thead th {
+	padding: 10px;
+    border: solid 1px #278F21;
+}
+
+table.login-table  tbody td {
+	padding: 10px;
+    border: solid 1px #278F21;
 }

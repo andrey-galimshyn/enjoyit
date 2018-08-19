@@ -14,19 +14,18 @@
     <sec:authorize var="loggedIn" access="isAuthenticated()" />
 
 
-    <div>
+    <div align="center">
     
         <%@include file="authheader.jsp" %>
         
-        <div>
+        <div class="body-container" align="left">
 	        <sec:authorize access="isAuthenticated()">
 	            <div>
-	                <a href="<c:url value='/newevent' />"><spring:message code="myevents.list.addNewEvent"/></a>
+	                <a class="buttonlink" href="<c:url value='/newevent' />"><spring:message code="myevents.list.addNewEvent"/></a>
 	            </div>
 	        </sec:authorize>
             <!-- Default panel contents -->
-            <div><span><spring:message code="myevents.list.myListTitle"/></span></div>
-            <table>
+            <table class="zui-table">
                 <thead>
                     <tr>
                         <th><spring:message code="myevents.list.title"/></th>
@@ -34,7 +33,7 @@
                         <th><spring:message code="myevents.list.description"/></th>
                         <th><spring:message code="myevents.list.totalPlaces"/></th>
                         <th><spring:message code="myevents.list.freePlaces"/></th>
-                        <th width="100"></th>
+                        <th colspan="2"></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -53,10 +52,10 @@
                         </td>
                         <sec:authorize access="isAuthenticated()">
 		                    <td>
-	                            <a href="<c:url value='/edit-event-${event.id}' />">edit</a>
+	                            <a class="editButtonlink" href="<c:url value='/edit-event-${event.id}' />">edit</a>
 	                        </td>
 	                        <td>
-	                            <a href="<c:url value='/delete-event-${event.id}' />">delete</a>
+	                            <a class="deleteButtonlink" href="<c:url value='/delete-event-${event.id}' />">delete</a>
 	                        </td>
                         </sec:authorize>
                     </tr>
@@ -64,6 +63,9 @@
                 </tbody>
             </table>
         </div>
+
+        <%@include file="footer.jsp" %>
+
     </div>
 </body>
 </html>

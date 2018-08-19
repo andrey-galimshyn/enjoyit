@@ -8,36 +8,68 @@
 
 <sec:authorize var="loggedIn" access="isAuthenticated()" />
 
-<link type="text/css" rel="stylesheet" href="<c:url value='/static/css/app.css' />" />
+<head>
 
-<c:choose>
-    <c:when test="${loggedIn}">
-      <div>
-          <span><spring:message code="authheader.welcome" arguments="<strong>${loggedinuser}</strong>"/> </span> 
-          
-          <div>
-          
-	          <span><a class="topItem" href="<c:url value="/logout" />"><spring:message code="authheader.logout"/></a></span>
-	          
-	          <sec:authorize access="hasRole('ADMIN')">
-	              <span><a id="listOfUsersItem" class="topItem" href="<c:url value="/list" />"><spring:message code="authheader.users"/></a></span>
-	          </sec:authorize>
-	          
-	          <span><a id="listOfEventsItem" class="topItem" href="<c:url value="/listEvents" />"><spring:message code="authheader.events"/></a></span>
-	          <span><a id="listOfEventsSubscribed" class="topItem" href="<c:url value="/listEvents?subscribed=true" />"><spring:message code="authheader.subscribed"/></a></span>
-	          <span><a id="listOfEventsNotSubscribed" class="topItem" href="<c:url value="/listEvents?free=true" />"><spring:message code="authheader.notsubscribed"/></a></span>
-	          <span><a id="listOfMyEvents" class="topItem" href="<c:url value="/myEvents" />"><spring:message code="authheader.edit"/></a></span>
-          </div>
-      </div>
-    </c:when>
-    <c:otherwise>
-      <div>
-          <span><a href="<c:url value="/login" />"><spring:message code="authheader.login"/></a></span>
-      </div>
-    </c:otherwise>
-</c:choose>
+ 
+ 
+<!-- ******************************************************** -->
+ 
+ 
+    <link type="image/png" rel="icon" href="<c:url value='/static/images/favicon.png'/>">
+    
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+    <link type="text/css" rel="stylesheet" href="<c:url value='/static/css/app.css' />" />
+
+</head>
 
 
+<body>
+
+<div class="keeper" align="center" >
+	<c:choose>
+	    <c:when test="${loggedIn}">
+	
+	            <header style="width:60%">
+	              <br/>	
+	              <div align="left">
+	                <span><spring:message code="authheader.welcome" arguments="${loggedinuser}"/> </span> 
+	              </div>
+	              <br/>
+	              <div class="topper" align="right">
+	                  <a href="<c:url value="/listEvents" />">
+                         <img class="menu-top-logo" alt="Joit It" src="<c:url value="/static/images/Logotip.png" />" align="left">
+                      </a>
+	              <div class="topper-align">
+			          <span><a class="topItem" href="<c:url value="/logout" />"><spring:message code="authheader.logout"/></a></span>
+			          
+			          <sec:authorize access="hasRole('ADMIN')">
+			              <span><a id="listOfUsersItem" class="topItem" href="<c:url value="/list" />"><spring:message code="authheader.users"/></a></span>
+			          </sec:authorize>
+			          
+			          <span><a id="listOfEventsItem" class="topItem" href="<c:url value="/listEvents" />"><spring:message code="authheader.events"/></a></span>
+			          <span><a id="listOfEventsSubscribed" class="topItem" href="<c:url value="/listEvents?subscribed=true" />"><spring:message code="authheader.subscribed"/></a></span>
+			          <span><a id="listOfEventsNotSubscribed" class="topItem" href="<c:url value="/listEvents?free=true" />"><spring:message code="authheader.notsubscribed"/></a></span>
+			          <span><a id="listOfMyEvents" class="topItem" href="<c:url value="/myEvents" />"><spring:message code="authheader.edit"/></a></span>
+	              </div>
+	              </div>    
+	            </header>
+	
+	    </c:when>
+	    <c:otherwise>
+	      <div class="body-container" align="left">
+	          <span><a href="<c:url value="/login" />"><spring:message code="authheader.login"/></a></span>
+	      </div>
+	    </c:otherwise>
+	</c:choose>
+</div>
+<br/>
+</body>
 
 <c:if test="${loggedIn}">
   <script type="text/javascript">
@@ -52,17 +84,17 @@
     if (window.location.pathname == "/enjoyit/list") {
     	var link = document.getElementById("listOfUsersItem");
     	link.className += " selectedItem";
-    } else if (window.location.pathname == "/enjoyit/myEvents") {
+    } else if (window.location.pathname.includes("/enjoyit/myEvents") || window.location.pathname.includes("/enjoyit/edit-event")) {
     	var link = document.getElementById("listOfMyEvents");
     	link.className += " selectedItem";
-    } else if (window.location.pathname == "/enjoyit/listEvents" && !window.location.search) {
+    } else if (window.location.pathname.includes("/enjoyit/listEvents") && !window.location.search) {
     	var link = document.getElementById("listOfEventsItem");
     	link.className += " selectedItem";
-    } else if (window.location.pathname == "/enjoyit/listEvents" 
+    } else if (window.location.pathname.includes("/enjoyit/listEvents") 
     		&& window.location.search == "?subscribed=true") {
     	var link = document.getElementById("listOfEventsSubscribed");
     	link.className += " selectedItem";
-    } else if (window.location.pathname == "/enjoyit/listEvents" 
+    } else if (window.location.pathname.includes("/enjoyit/listEvents") 
 		    && window.location.search == "?free=true") {
 	    var link = document.getElementById("listOfEventsNotSubscribed");
 	    link.className += " selectedItem";

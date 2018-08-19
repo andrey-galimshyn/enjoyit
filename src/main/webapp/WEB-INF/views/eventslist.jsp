@@ -18,14 +18,12 @@
 <body>
 <sec:authorize var="loggedIn" access="isAuthenticated()" />
 
-    <div>
+    <div align="center" >
     
         <%@include file="authheader.jsp" %>
-        <div>
+        <div class="body-container" align="left">
         
-            <!-- Default panel contents -->
-            <div><span><spring:message code="events.list.listTitle"/></span></div>
-            <table>
+            <table class="zui-table">
                 <thead>
                     <tr>
                         <th><spring:message code="events.list.title"/></th>
@@ -34,7 +32,9 @@
                         <th><spring:message code="events.list.description"/></th>
                         <th><spring:message code="events.list.totalPlaces"/></th>
                         <th><spring:message code="events.list.freePlaces"/></th>
-                        <th width="100"></th>
+                        <sec:authorize access="isAuthenticated()">
+                            <th width="100"></th>
+                        </sec:authorize>
                     </tr>
                 </thead>
                 <tbody>
@@ -93,13 +93,18 @@
 			                        </td>
 								</c:if>
 	                        </c:if>
-	                            
+	                        <!-- empty cell if logged user is organizer -->
+	                        <c:if test="${event.organizer.email == loggedinuserEmail}">
+	                            <td/>
+	                        </c:if>
                         </sec:authorize>
                     </tr>
                 </c:forEach>
                 </tbody>
             </table>
         </div>
+        <%@include file="footer.jsp" %>
+
     </div>
 </body>
 </html>

@@ -8,24 +8,26 @@
 <head>
     <title><spring:message code="details.title"/></title>
 
-
     <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
    
     <!--That's all for Date\Time picker-->
 	<script type="text/javascript" src="<c:url value='/static/js/jquery.simple-dtpicker.js' />"></script>
 	<link type="text/css" rel="stylesheet" href="<c:url value='/static/css/jquery.simple-dtpicker.css' />" />
 	
+
   	<script src="<c:url value='/static/js/join_reject.js' />"></script> 
-	
+
 </head>
  
 <body>
- 
-    <div>
+
+    <div align="center">
     
-        <%@include file="authheader.jsp" %>
+      <%@include file="authheader.jsp" %>
+        
+      <div class="body-container" align="left">
     
-	    <div><spring:message code="details.title"/></div>
+	    <div><h3><spring:message code="details.title"/></h3></div>
 
 	    <c:if test="${ (!newEvent) && (event.organizer.email != loggedinuserEmail) }">
 	
@@ -53,7 +55,7 @@
 	                <label for="name"><spring:message code="details.event.name"/></label>
 	                <div>
 	                    <form:input type="text" path="name" id="name"/>
-	                    <div>
+	                    <div class="error-message">
 	                        <form:errors path="name"/>
 	                    </div>
 	                </div>
@@ -65,7 +67,7 @@
 	                <label for="description"><spring:message code="details.event.description"/></label>
 	                <div>
 	                    <form:textarea type="text" path="description" id="description" rows="5" cols="40"/>
-	                    <div>
+	                    <div class="error-message">
 	                        <form:errors path="description"/>
 	                    </div>
 	                </div>
@@ -83,30 +85,20 @@
 								$('*[name=when]').appendDtpicker();
 							});
 						</script>
-	                    <div>
+	                    <div  class="error-message">
 	                        <form:errors path="when"/>
 	                    </div>
 	                </div>
 	            </div>
 	        </div>
 	
-	<script type="text/javascript">
-	    
-	    $('#duration').durationPicker({
-	        showDays: false,
-	        onChanged: function (newVal) {
-	        }
-	      });
-	
-	</script>
-	
-	
-	        <div class="row">
-	            <div class="form-group col-md-12">
-	                <label class="col-md-3 control-lable" for="placeCount"><spring:message code="details.event.quantity"/></label>
-	                <div class="col-md-7">
-	                    <form:input type="text" path="placeCount" id="placeCount" class="form-control input-sm" />
-	                    <div class="has-error">
+
+	        <div>
+	            <div>
+	                <label for="placeCount"><spring:message code="details.event.quantity"/></label>
+	                <div>
+	                    <form:input type="text" path="placeCount" id="placeCount"/>
+	                    <div  class="error-message">
 	                        <form:errors path="placeCount" class="help-inline"/>
 	                    </div>
 	                </div>
@@ -115,18 +107,20 @@
 	        
 	        
 	    <c:if test="${ newEvent || (event.organizer.email == loggedinuserEmail) }">
-	 
-	        <div class="row" id="submitControls">
-	            <div class="form-actions floatRight">
+	        <br/>
+	        <div id="submitControls">
+	            <div>
 	                <c:choose>
 	                    <c:when test="${edit}">
 	                        <spring:message code="details.event.update" var="update"/>
-	                        <input type="submit" value="${update}" class="btn btn-primary btn-sm"/> <spring:message code="details.event.or"/>
+	                        <input type="submit" value="${update}"/> 
+	                        <spring:message code="details.event.or"/>
 	                        <a href="<c:url value='/listEvents' />"><spring:message code="details.event.cancel"/></a>
 	                    </c:when>
 	                    <c:otherwise>
 	                        <spring:message code="details.event.create" var="create"/>
-	                        <input type="submit" value="${create}" class="btn btn-primary btn-sm"/> <spring:message code="details.event.or"/>
+	                        <input type="submit" value="${create}"/> 
+	                        <spring:message code="details.event.or"/>
 	                        <a href="<c:url value='/listEvents' />"><spring:message code="details.event.cancel"/></a>
 	                    </c:otherwise>
 	                </c:choose>
@@ -142,8 +136,8 @@
 	    </div>
 	    
 	    
-        <div class="row" id="joinReject">
-            <div class="form-actions floatRight">
+        <div id="joinReject">
+            <div>
               <c:if test="${(!newEvent) && (event.organizer.email != loggedinuserEmail)}">
                 
 				<c:set var="joined" value="false" />
@@ -175,10 +169,10 @@
     
     
 
-        <div class="panel panel-default">
+        <div>
               <!-- Default panel contents -->
-            <div class="panel-heading"><span class="lead"><spring:message code="details.event.joinedList"/></span></div>
-            <table class="table">
+            <div><span><spring:message code="details.event.joinedList"/></span></div>
+            <table class="zui-table">
                 <thead>
                     <tr>
                         <th></th>
@@ -206,6 +200,10 @@
                 </tbody>
             </table>
         </div>
+      </div>
+
+      <%@include file="footer.jsp" %>
+        
     </div>
 </body>
 </html>
