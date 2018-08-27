@@ -21,39 +21,41 @@
     <div align="center" >
     
         <%@include file="authheader.jsp" %>
-        <div class="body-container" align="left">
         
-            <table class="zui-table">
-                <thead>
-                    <tr>
-                        <th><spring:message code="events.list.title"/></th>
-                        <th><spring:message code="events.list.dateTime"/></th>
-                        <th><spring:message code="events.list.organizer"/></th>
-                        <th><spring:message code="events.list.description"/></th>
-                        <th><spring:message code="events.list.totalPlaces"/></th>
-                        <th><spring:message code="events.list.freePlaces"/></th>
+        <div class="body-container" align="left">
+
+            <div class="rTable">
+
+                <div class="rTableHeadRow">
+
+                        <div class="rTableHeadCell"><spring:message code="events.list.title"/></div>
+                        <div class="rTableHeadCell"><spring:message code="events.list.dateTime"/></div>
+                        <div class="rTableHeadCell"><spring:message code="events.list.organizer"/></div>
+                        <div class="rTableHeadCell"><spring:message code="events.list.description"/></div>
+                        <div class="rTableHeadCell"><spring:message code="events.list.totalPlaces"/></div>
+                        <div class="rTableHeadCell"><spring:message code="events.list.freePlaces"/></div>
                         <sec:authorize access="isAuthenticated()">
-                            <th width="100"></th>
+                            <div class="rTableHeadCell"></div>
                         </sec:authorize>
-                    </tr>
-                </thead>
-                <tbody>
+
+                </div>
+
                 <c:forEach items="${events}" var="event">
-                    <tr>
+                    <div class="rTableRow">
                         <sec:authorize access="isAuthenticated()">
-                            <td>
+                            <div class="rTableCell">
                                 <a href="<c:url value='/edit-event-${event.id}' />">${event.name}</a>
-                            </td>
+                            </div>
                         </sec:authorize>
                         <sec:authorize access="!isAuthenticated()">
-                            <td>
+                            <div class="rTableCell">
                                 ${event.name}
-                            </td>
+                            </div>
                         </sec:authorize>
-                        <td>
+                        <div class="rTableCell">
                             <fmt:formatDate type = "both" dateStyle = "short" timeStyle = "short" value = "${event.when}" />
-                        </td>
-                        <td>
+                        </div>
+                        <div class="rTableCell">
                            <c:if test="${not empty event.organizer.socialProfImageURL}">
                                <img src="${event.organizer.socialProfImageURL}" alt="Organizer userpic">
                            </c:if>
@@ -63,14 +65,14 @@
                            <c:if test="${event.organizer.email eq loggedinuserEmail}">
                               <spring:message code="events.list.mine"/>
                            </c:if>
-                        </td>
-                        <td>${event.description}</td>
-                        <td>
+                        </div>
+                        <div class="rTableCell">${event.description}</div>
+                        <div class="rTableCell">
                             ${event.placeCount}
-                        </td>
-                        <td id="${event.id}fs">
+                        </div>
+                        <div class="rTableCell" id="${event.id}fs">
                             ${event.placeCount - fn:length(event.participants)}
-                        </td>
+                        </div>
                         <sec:authorize access="isAuthenticated()">
 	                        <c:if test="${event.organizer.email != loggedinuserEmail}">
 	                   
@@ -82,27 +84,38 @@
 								</c:forEach>	                        
 	                        
 								<c:if test="${joined}">
-			                        <td>
-			                            <a id="${event.id}jr" href="#" onclick="reject(${event.id});return false;"><spring:message code="events.list.reject"/></a>   
-			                        </td>
+			                        <div class="rTableCell">
+			                            <a class="rejectButtonlink"  id="${event.id}jr" href="#" onclick="reject(${event.id});return false;"><spring:message code="events.list.reject"/></a>   
+			                        </div>
 								</c:if>
 	                            
 								<c:if test="${joined != true}">
-			                        <td>
-			                            <a id="${event.id}jr" href="#" onclick="join(${event.id});return false;"><spring:message code="events.list.join"/></a>   
-			                        </td>
+			                        <div class="rTableCell">
+			                            <a class="joinButtonlink"  id="${event.id}jr" href="#" onclick="join(${event.id});return false;"><spring:message code="events.list.join"/></a>   
+			                        </div>
 								</c:if>
 	                        </c:if>
-	                        <!-- empty cell if logged user is organizer -->
+
 	                        <c:if test="${event.organizer.email == loggedinuserEmail}">
-	                            <td/>
+	                            <div class="rTableCell"></div>
 	                        </c:if>
                         </sec:authorize>
-                    </tr>
+                    </div>
                 </c:forEach>
-                </tbody>
-            </table>
+
+
+            </div>
+            
         </div>
+        
+        
+        
+        
+
+        
+        
+        
+        
         <%@include file="footer.jsp" %>
 
     </div>

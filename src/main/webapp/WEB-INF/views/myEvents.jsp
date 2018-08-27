@@ -25,43 +25,44 @@
 	            </div>
 	        </sec:authorize>
             <!-- Default panel contents -->
-            <table class="zui-table">
-                <thead>
-                    <tr>
-                        <th><spring:message code="myevents.list.title"/></th>
-                        <th><spring:message code="myevents.list.dateTime"/></th>
-                        <th><spring:message code="myevents.list.description"/></th>
-                        <th><spring:message code="myevents.list.totalPlaces"/></th>
-                        <th><spring:message code="myevents.list.freePlaces"/></th>
-                        <th colspan="2"></th>
-                    </tr>
-                </thead>
-                <tbody>
+            <div class="rTable">
+                 <div class="rTableHeadRow">
+
+                        <div class="rTableHeadCell"><spring:message code="myevents.list.title"/></div>
+                        <div class="rTableHeadCell"><spring:message code="myevents.list.dateTime"/></div>
+                        <div class="rTableHeadCell"><spring:message code="myevents.list.description"/></div>
+                        <div class="rTableHeadCell"><spring:message code="myevents.list.totalPlaces"/></div>
+                        <div class="rTableHeadCell"><spring:message code="myevents.list.freePlaces"/></div>
+                        <div class="rTableHeadCell"></div>
+                        <div class="rTableHeadCell"></div>
+
+                </div>
+
                 <c:forEach items="${events}" var="event">
-                    <tr>
-                        <td>${event.name}</td>
-                        <td>
+                    <div class="rTableRow">
+                        <div class="rTableCell">${event.name}</div>
+                        <div class="rTableCell">
                             <fmt:formatDate type = "both" dateStyle = "short" timeStyle = "short" value = "${event.when}" />
-                        </td>
-                        <td>${event.description}</td>
-                        <td>
+                        </div>
+                        <div class="rTableCell">${event.description}</div>
+                        <div class="rTableCell">
                             ${event.placeCount}
-                        </td>
-                        <td id="${event.id}fs">
+                        </div>
+                        <div class="rTableCell" id="${event.id}fs">
                             ${event.placeCount - fn:length(event.participants)}
-                        </td>
+                        </div>
                         <sec:authorize access="isAuthenticated()">
-		                    <td>
+		                    <div class="rTableCell">
 	                            <a class="editButtonlink" href="<c:url value='/edit-event-${event.id}' />">edit</a>
-	                        </td>
-	                        <td>
+	                        </div>
+	                        <div class="rTableCell">
 	                            <a class="deleteButtonlink" href="<c:url value='/delete-event-${event.id}' />">delete</a>
-	                        </td>
+	                        </div>
                         </sec:authorize>
-                    </tr>
+                    </div>
                 </c:forEach>
-                </tbody>
-            </table>
+
+            </div>
         </div>
 
         <%@include file="footer.jsp" %>

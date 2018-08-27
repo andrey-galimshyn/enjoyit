@@ -172,33 +172,31 @@
         <div>
               <!-- Default panel contents -->
             <div><span><spring:message code="details.event.joinedList"/></span></div>
-            <table class="zui-table">
-                <thead>
-                    <tr>
-                        <th></th>
-                        <th><spring:message code="details.event.userName"/></th>
-                        <th><spring:message code="details.event.userSirname"/></th>
-                        <th><spring:message code="details.event.userEmail"/></th>
-                    </tr>
-                </thead>
-                <tbody>
+             <div class="rTable">
+                <div class="rTableHeadRow">
+                     <div class="rTableHeadCell"></div>
+                     <div class="rTableHeadCell"><spring:message code="details.event.userName"/></div>
+                     <div class="rTableHeadCell"><spring:message code="details.event.userSirname"/></div>
+                     <div class="rTableHeadCell"><spring:message code="details.event.userEmail"/></div>
+                </div>
+
                 <c:forEach items="${event.participants}" var="user">
-                    <tr>
+                    <div class="rTableRow">
                     
-                        <td>
+                        <div class="rTableCell">
                            <c:if test="${not empty user.socialProfImageURL}">
                                <img src="${user.socialProfImageURL}" alt="Organizer userpic">
                            </c:if>
-                        </td>
+                        </div>
                     
-                        <td>${user.firstName}</td>
-                        <td>${user.lastName}</td>
-                        <td>${user.email}</td>
+                        <div class="rTableCell">${user.firstName}</div>
+                        <div class="rTableCell">${user.lastName}</div>
+                        <div class="rTableCell">${user.email}</div>
 
-                    </tr>
+                    </div>
                 </c:forEach>
-                </tbody>
-            </table>
+
+            </div>
         </div>
       </div>
 

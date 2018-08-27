@@ -1,9 +1,11 @@
 a.topItem:link {
+	white-space: nowrap;
     color: #104b0b;
     font-weight:bold;
     font-size: 18px;
     text-transform: uppercase;
     margin-right: 10px;   
+    text-decoration: underline;
 }
 
 /* visited link */
@@ -44,12 +46,11 @@ div.topper-align {
 }
 
 div.keeper {
-    background-color: #f1f1f1;
+
 }
 
 div.body-container {
     width: 60%;
-    background-color: #f1f1f1;
 }
 
 div.footer {
@@ -147,6 +148,44 @@ html,body
 	color:#000;
 }
 
+/* ************************************************************ */
+
+.joinButtonlink{
+	display:block;
+	border-style:solid;
+	border-color:#bbb #888 #666 #aaa;
+	border-width:3px 4px 4px 3px;
+	background:#36f78c;
+	color:#333;
+	line-height:2;
+	text-align:center;
+	text-decoration:none;
+}
+.joinButtonlink:hover{
+	border-color: #666 #aaa #bbb #888;
+	border-width:4px 3px 3px 4px;
+	color:#000;
+}
+
+.rejectButtonlink{
+	display:block;
+	border-style:solid;
+	border-color:#bbb #888 #666 #aaa;
+	border-width:3px 4px 4px 3px;
+	background:#ff776d;
+	color:#333;
+	line-height:2;
+	text-align:center;
+	text-decoration:none;
+}
+.rejectButtonlink:hover{
+	border-color: #666 #aaa #bbb #888;
+	border-width:4px 3px 3px 4px;
+	color:#000;
+}
+
+/* ************************************************************ */
+
 table.login-table  thead th {
 	padding: 10px;
     border: solid 1px #278F21;
@@ -155,4 +194,77 @@ table.login-table  thead th {
 table.login-table  tbody td {
 	padding: 10px;
     border: solid 1px #278F21;
+}
+
+header.joiner {
+	width: 60%;
+}
+
+.rTable {
+  	display: table;
+  	width: 100%;
+  	border-collapse: collapse;
+}
+.rTableRow {
+  	display: table-row;
+  	border: 1px solid #999999;
+}
+.rTableHeadRow {
+  	display: table-row;
+  	border: 1px solid #999999;
+}
+.rTableCell {
+  	display: table-cell;
+  	padding: 3px 10px;
+}
+
+.rTableHeadCell {
+  	display: table-cell;
+  	padding: 3px 10px;
+  	background-color: #ddd;
+}
+
+
+.rTableFoot {
+  	display: table-footer-group;
+  	font-weight: bold;
+  	background-color: #ddd;
+}
+.rTableBody {
+  	display: table-row-group;
+}
+
+@media screen and (max-width: 940px) {
+	
+	div.body-container {
+	    width: 100%;
+	}
+	div.footer {
+	    width: 100%;
+	}
+	div.topper {
+        width: 100%;
+    }
+	header.joiner {
+		width: 100%;
+	}
+}
+
+@media screen and (orientation:portrait) {
+	.rTableCell {
+	  	display: list-item;
+	  	width: 100%;
+	}
+	.rTableHeadRow {
+  	    display: none;
+    }
+    
+	.joinButtonlink{
+		float: right;
+	}
+	
+	.rejectButtonlink{
+		float: right;
+	}
+
 }

@@ -9,12 +9,8 @@
 <sec:authorize var="loggedIn" access="isAuthenticated()" />
 
 <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
- 
- 
-<!-- ******************************************************** -->
- 
- 
     <link type="image/png" rel="icon" href="<c:url value='/static/images/favicon.png'/>">
     
     <meta name="description" content="">
@@ -35,7 +31,7 @@
 	<c:choose>
 	    <c:when test="${loggedIn}">
 	
-	            <header style="width:60%">
+	            <header class="joiner">
 	              <br/>	
 	              <div align="left">
 	                <span><spring:message code="authheader.welcome" arguments="${loggedinuser}"/> </span> 
@@ -45,19 +41,21 @@
 	                  <a href="<c:url value="/listEvents" />">
                          <img class="menu-top-logo" alt="Joit It" src="<c:url value="/static/images/Logotip.png" />" align="left">
                       </a>
-	              <div class="topper-align">
-			          <span><a class="topItem" href="<c:url value="/logout" />"><spring:message code="authheader.logout"/></a></span>
-			          
-			          <sec:authorize access="hasRole('ADMIN')">
-			              <span><a id="listOfUsersItem" class="topItem" href="<c:url value="/list" />"><spring:message code="authheader.users"/></a></span>
-			          </sec:authorize>
-			          
-			          <span><a id="listOfEventsItem" class="topItem" href="<c:url value="/listEvents" />"><spring:message code="authheader.events"/></a></span>
-			          <span><a id="listOfEventsSubscribed" class="topItem" href="<c:url value="/listEvents?subscribed=true" />"><spring:message code="authheader.subscribed"/></a></span>
-			          <span><a id="listOfEventsNotSubscribed" class="topItem" href="<c:url value="/listEvents?free=true" />"><spring:message code="authheader.notsubscribed"/></a></span>
-			          <span><a id="listOfMyEvents" class="topItem" href="<c:url value="/myEvents" />"><spring:message code="authheader.edit"/></a></span>
-	              </div>
-	              </div>    
+		              <div class="topper-align">
+				          <span><a class="topItem" href="<c:url value="/logout" />"><spring:message code="authheader.logout"/></a></span>
+				          
+				          <sec:authorize access="hasRole('ADMIN')">
+				              <span><a id="listOfUsersItem" class="topItem" href="<c:url value="/list" />"><spring:message code="authheader.users"/></a></span>
+				          </sec:authorize>
+				          
+				          <span><a id="listOfEventsItem" class="topItem" href="<c:url value="/listEvents" />"><spring:message code="authheader.events"/></a></span>
+				          <span><a id="listOfEventsSubscribed" class="topItem" href="<c:url value="/listEvents?subscribed=true" />"><spring:message code="authheader.subscribed"/></a></span>
+				          <span><a id="listOfEventsNotSubscribed" class="topItem" href="<c:url value="/listEvents?free=true" />"><spring:message code="authheader.notsubscribed"/></a></span>
+				          <span><a id="listOfMyEvents" class="topItem" href="<c:url value="/myEvents" />"><spring:message code="authheader.edit"/></a></span>
+		              </div>
+	              </div>   
+	              
+           	               
 	            </header>
 	
 	    </c:when>

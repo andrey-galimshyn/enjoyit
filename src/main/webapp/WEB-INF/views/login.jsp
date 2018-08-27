@@ -20,7 +20,7 @@
     </head>
  
     <body>
-        <div align="center">
+        <div class="keeper" align="center">
           <div class="body-container" align="left">
             <sec:authorize access="isAnonymous()">
             
@@ -30,35 +30,28 @@
                     </div>
                 </c:if>
 
-                <table class="login-table">
-	                <thead>
-	                    <tr>
-	                    <th>
+                 <div class="rTable">
+	                <div class="rTableHeadRow">
+	                    <div class="rTableHeadCell">
   			                <h3><spring:message code="login.signin.facebook"/></h3>
-	                    </th>
-	                    <th>
+	                    </div>
+	                    <div class="rTableHeadCell">
 				            <h3><spring:message code="login.signin.admin"/></h3>
-	                    </th>
-	                    </tr>
-	                </thead>
-	                <tr>
-		                <td>
+	                    </div>
+
+	                </div>
+	                <div class="rTableRow">
+		                <div class="rTableCell">
 						    <!-- Social Sign In -->
-						    <div>
-					            <div>
 				                    <!-- Add Facebook sign in button -->
 				                    <a href="${pageContext.request.contextPath}/auth/facebook">
 				                        <button>
 				                            FACEBOOK
 				                        </button>
 				                    </a>
-					            </div>
-						    </div>	            
-		                </td>
-		                <td>
-				            <div>
-				                <div>
-				                    <div>
+		                </div>
+		                <div class="rTableCell">
+		                
 				                        <c:url var="loginUrl" value="/login" />
 				                        <form action="${loginUrl}" method="post">
 				                            <c:if test="${param.error != null}">
@@ -85,13 +78,10 @@
 			
 				                        
 				                        
-				                    </div>
-				                </div>
-				            </div>
 			            
-			            </td>
-	                </tr>
-                </table>
+			            </div>
+	                </div>
+                </div>
 	            
 	            
             </sec:authorize>
