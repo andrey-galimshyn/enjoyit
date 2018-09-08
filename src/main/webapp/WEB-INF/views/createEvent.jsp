@@ -74,7 +74,15 @@
 	            </div>
 	        </div>
 	        
-	        
+	        <c:choose>
+	            <c:when test="${edit}">
+	                <fmt:formatDate value="${event.when}" pattern="yyyy/MM/dd HH:mm" var="evStarts"/>
+	            </c:when>
+	            <c:otherwise>
+	                <c:set var="evStarts" value=""/>
+	            </c:otherwise>
+	        </c:choose>
+        	        
 	        <div>
 	            <div>
 	                <label for="when"><spring:message code="details.event.when"/></label>
@@ -177,7 +185,6 @@
                      <div class="rTableHeadCell"></div>
                      <div class="rTableHeadCell"><spring:message code="details.event.userName"/></div>
                      <div class="rTableHeadCell"><spring:message code="details.event.userSirname"/></div>
-                     <div class="rTableHeadCell"><spring:message code="details.event.userEmail"/></div>
                 </div>
 
                 <c:forEach items="${event.participants}" var="user">
@@ -191,7 +198,6 @@
                     
                         <div class="rTableCell">${user.firstName}</div>
                         <div class="rTableCell">${user.lastName}</div>
-                        <div class="rTableCell">${user.email}</div>
 
                     </div>
                 </c:forEach>
