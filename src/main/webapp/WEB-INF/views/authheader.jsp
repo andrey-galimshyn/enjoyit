@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<%@ page language="java" pageEncoding="UTF-8"%>
+<%@ page language="java" pageEncoding="UTF-8" import="java.sql.*"%>
 <%@ page contentType="text/html;charset=UTF-8"%>
 
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>

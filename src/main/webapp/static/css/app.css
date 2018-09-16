@@ -53,6 +53,10 @@ div.body-container {
     width: 60%;
 }
 
+div.body-event-edit-container {
+    width: 60%;
+}
+
 div.footer {
     height: 60px;
     background-color: #f9f9f9;
@@ -239,6 +243,12 @@ header.joiner {
 	div.body-container {
 	    width: 100%;
 	}
+	
+    div.body-event-edit-container {
+        width: 94%;
+    }
+
+	
 	div.footer {
 	    width: 100%;
 	}

@@ -62,9 +62,6 @@
                            <c:if test="${event.organizer.email != loggedinuserEmail}">
                                ${event.organizer.firstName} ${event.organizer.lastName}
                            </c:if>
-                           <c:if test="${event.organizer.email eq loggedinuserEmail}">
-                              <spring:message code="events.list.mine"/>
-                           </c:if>
                         </div>
                         <div class="rTableCell">${event.description}</div>
                         <div class="rTableCell">

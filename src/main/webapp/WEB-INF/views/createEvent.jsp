@@ -1,3 +1,7 @@
+<!DOCTYPE html>
+<%@ page language="java" pageEncoding="UTF-8" import="java.sql.*"%>
+<%@ page contentType="text/html;charset=UTF-8"%>
+
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
@@ -25,7 +29,7 @@
     
       <%@include file="authheader.jsp" %>
         
-      <div class="body-container" align="left">
+      <div class="body-event-edit-container" align="left">
     
 	    <div><h3><spring:message code="details.title"/></h3></div>
 
@@ -157,13 +161,13 @@
                      
 				<c:if test="${joined}">
                        <div>
-                           <a id="${event.id}jr" href="#" onclick="reject(${event.id});return false;"><spring:message code="details.event.reject"/></a>   
+                           <a id="${event.id}jr" class="rejectButtonlink" href="#" onclick="reject(${event.id});return false;"><spring:message code="details.event.reject"/></a>   
                        </div>
 				</c:if>
                          
 				<c:if test="${joined != true}">
                        <div>
-                           <a id="${event.id}jr" href="#" onclick="join(${event.id});return false;"><spring:message code="details.event.join"/></a>   
+                           <a id="${event.id}jr" class="joinButtonlink" href="#" onclick="join(${event.id});return false;"><spring:message code="details.event.join"/></a>   
                        </div>
 				</c:if>
               </c:if>
