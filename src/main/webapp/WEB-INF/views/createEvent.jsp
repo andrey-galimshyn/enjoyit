@@ -198,14 +198,14 @@
                 <c:forEach items="${event.participants}" var="user">
                     <div class="rTableRow">
                     
-                        <div class="rTableCell">
+                        <div class="rTableCellMembers">
                            <c:if test="${not empty user.socialProfImageURL}">
                                <img src="${user.socialProfImageURL}" alt="Organizer userpic">
                            </c:if>
                         </div>
                     
-                        <div class="rTableCell">${user.firstName}</div>
-                        <div class="rTableCell">${user.lastName}</div>
+                        <div class="rTableCellMembers">${user.firstName}</div>
+                        <div class="rTableCellMembers">${user.lastName}</div>
 
                     </div>
                 </c:forEach>

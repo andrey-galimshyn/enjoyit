@@ -222,6 +222,11 @@ header.joiner {
   	padding: 3px 10px;
 }
 
+.rTableCellMembers {
+  	display: table-cell;
+  	padding: 3px 10px;
+}
+
 .rTableHeadCell {
   	display: table-cell;
   	padding: 3px 10px;
@@ -265,6 +270,12 @@ header.joiner {
 	  	display: list-item;
 	  	width: 100%;
 	}
+	
+.rTableCellMembers {
+  	display: table-cell;
+  	padding: 1px;
+}	
+	
 	.rTableHeadRow {
   	    display: none;
     }
