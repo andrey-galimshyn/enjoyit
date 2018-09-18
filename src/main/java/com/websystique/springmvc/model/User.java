@@ -49,6 +49,9 @@ public class User {
     @Column(name="SOC_UPIC_URL", nullable=true)
     private String socialProfImageURL;
 
+    @Column(name="SOC_PROF_URL", nullable=true)
+    private String socialProfURL;
+
     @NotEmpty
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "APP_USER_USER_PROFILE", 
@@ -168,6 +171,14 @@ public class User {
 
 	public void setSocialProfImageURL(String socialURL) {
 		this.socialProfImageURL = socialURL;
+	}
+
+	public String getSocialProfURL() {
+		return socialProfURL;
+	}
+
+	public void setSocialProfURL(String socialProfURL) {
+		this.socialProfURL = socialProfURL;
 	}
  
 }

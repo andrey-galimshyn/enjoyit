@@ -117,6 +117,7 @@ public class RegistrationController {
         if (connection != null) {
         	org.springframework.social.connect.UserProfile socialMediaProfile = connection.fetchUserProfile();
         	dto.setSocialProfImageURL(connection.getImageUrl());
+        	dto.setSocialProfURL(connection.getProfileUrl());
         	dto.setEmail(socialMediaProfile.getEmail());
             dto.setFirstName(socialMediaProfile.getFirstName());
             dto.setLastName(socialMediaProfile.getLastName());

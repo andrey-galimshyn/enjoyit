@@ -46,6 +46,8 @@ public class RegistrationForm {
 
     private String socialProfImageURL;
     
+    private String socialProfURL;
+    
     public boolean isNormalRegistration() {
         return signInProvider == null;
     }
@@ -127,6 +129,14 @@ public class RegistrationForm {
 
 	public void setSocialProfImageURL(String socialURL) {
 		this.socialProfImageURL = socialURL;
+	}
+
+	public String getSocialProfURL() {
+		return socialProfURL;
+	}
+
+	public void setSocialProfURL(String socialProfURL) {
+		this.socialProfURL = socialProfURL;
 	}
 
 }

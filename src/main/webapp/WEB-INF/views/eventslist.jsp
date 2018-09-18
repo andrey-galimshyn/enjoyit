@@ -16,7 +16,7 @@
 </head>
  
 <body>
-<sec:authorize var="loggedIn" access="isAuthenticated()" />
+    <sec:authorize var="loggedIn" access="isAuthenticated()" />
 
     <div align="center" >
     
@@ -58,9 +58,15 @@
                         <div class="rTableCell">
                            <c:if test="${not empty event.organizer.socialProfImageURL}">
                                <img src="${event.organizer.socialProfImageURL}" alt="Organizer userpic">
+                               <br/>
                            </c:if>
-                           <c:if test="${event.organizer.email != loggedinuserEmail}">
-                               ${event.organizer.firstName} ${event.organizer.lastName}
+                           <c:if test="${loggedIn && not empty event.organizer.socialProfURL}">
+                               <a href="${event.organizer.socialProfURL}" target="_blank" rel="noopener noreferrer">
+                                   ${event.organizer.firstName} ${event.organizer.lastName}
+                               </a>
+                           </c:if>
+                           <c:if test="${not loggedIn || empty event.organizer.socialProfURL}">
+                                ${event.organizer.firstName} ${event.organizer.lastName}
                            </c:if>
                         </div>
                         <div class="rTableCell">${event.description}</div>

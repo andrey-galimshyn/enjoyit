@@ -83,6 +83,7 @@ public class UserServiceImpl implements UserService{
         User registered = new User();
         registered.setEmail(userAccountData.getEmail());
         registered.setSocialProfImageURL(userAccountData.getSocialProfImageURL());
+        registered.setSocialProfURL(userAccountData.getSocialProfURL());
         registered.setFirstName(userAccountData.getFirstName());
         registered.setLastName(userAccountData.getLastName());
         registered.setPassword(userAccountData.getPassword());

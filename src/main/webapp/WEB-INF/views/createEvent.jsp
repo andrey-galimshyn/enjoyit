@@ -109,7 +109,7 @@
 	            <div>
 	                <label for="placeCount"><spring:message code="details.event.quantity"/></label>
 	                <div>
-	                    <form:input type="text" path="placeCount" id="placeCount"/>
+	                    <form:input path="placeCount" id="placeCount" type="number" min="1" max="100000"/>
 	                    <div  class="error-message">
 	                        <form:errors path="placeCount" class="help-inline"/>
 	                    </div>
@@ -144,7 +144,11 @@
 	    </form:form>
 	    
         <div>
-            <spring:message code="details.event.organizer"/>: ${event.organizer.firstName} ${event.organizer.lastName} 
+            <spring:message code="details.event.organizer"/>: 
+            <a href="${event.organizer.socialProfURL}" target="_blank" rel="noopener noreferrer">
+                ${event.organizer.firstName} ${event.organizer.lastName}
+            </a>
+            
 	    </div>
 	    
 	    
