@@ -74,7 +74,7 @@ public class EmailServiceImpl  implements EmailService  {
     		       message.setSender(addressFrom);  
     		       //
     		       message.setSubject(subject);  
-    		       message.setContent(msg, "text/plain");  
+    		       message.setContent(msg, "text/plain; charset=utf-8");  
     		       message.addRecipient(Message.RecipientType.TO, new InternetAddress(to));  
 
     		       transport.connect();  

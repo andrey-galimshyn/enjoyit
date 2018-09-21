@@ -25,10 +25,25 @@
  
 <body>
 
+
     <div align="center">
     
       <%@include file="authheader.jsp" %>
-        
+      
+	  <script type="text/javascript">
+	  window.onload = function() {
+		  document.getElementById('name').onkeypress = replaceEmoji;
+		  document.getElementById('description').onkeypress = replaceEmoji;
+		    	
+		  function replaceEmoji() {
+		    var charox = String.fromCharCode(event.which);   
+		    if (charox.match(/([\uE000-\uF8FF]|\uD83C[\uDF00-\uDFFF]|\uD83D[\uDC00-\uDDFF])|\s/)) {
+		       event.preventDefault();
+		    }
+		  };	
+	  }
+	  </script>       
+     
       <div class="body-event-edit-container" align="left">
     
 	    <div><h3><spring:message code="details.title"/></h3></div>
@@ -45,6 +60,7 @@
 		    	document.getElementById("submitControls").style.display = 'none';
 		    	
 		    }
+		    
 		  </script>
 	
 	    </c:if>
@@ -145,10 +161,14 @@
 	    
         <div>
             <spring:message code="details.event.organizer"/>: 
-            <a href="${event.organizer.socialProfURL}" target="_blank" rel="noopener noreferrer">
-                ${event.organizer.firstName} ${event.organizer.lastName}
-            </a>
-            
+            <c:if test="${not empty event.organizer.socialProfURL}">
+                <a href="${event.organizer.socialProfURL}" target="_blank" rel="noopener noreferrer">
+                    ${event.organizer.firstName} ${event.organizer.lastName}
+                </a>
+            </c:if>
+            <c:if test="${empty event.organizer.socialProfURL}">
+                 ${event.organizer.firstName} ${event.organizer.lastName}
+            </c:if>
 	    </div>
 	    
 	    
@@ -204,9 +224,17 @@
                            </c:if>
                         </div>
                     
-                        <div class="rTableCellMembers">${user.firstName}</div>
-                        <div class="rTableCellMembers">${user.lastName}</div>
-
+                        <div class="rTableCellMembers">
+				            <c:if test="${not empty user.socialProfURL}">
+				                <a href="${user.socialProfURL}" target="_blank" rel="noopener noreferrer">
+				                    ${user.firstName} ${user.lastName}
+				                </a>
+				            </c:if>
+				            <c:if test="${empty user.socialProfURL}">
+				                 ${user.firstName} ${user.lastName}
+				            </c:if>
+                        </div>
+                        <div class="rTableCellMembers"></div>
                     </div>
                 </c:forEach>
 
