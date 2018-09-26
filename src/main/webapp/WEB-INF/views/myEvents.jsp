@@ -53,7 +53,7 @@
                         </div>
                         <sec:authorize access="isAuthenticated()">
 		                    <div class="rTableCell">
-	                            <a class="editButtonlink" href="<c:url value='/edit-event-${event.id}' />">edit</a>
+	                            <a class="editButtonlink" href="<c:url value='/event-details-${event.id}' />">edit</a>
 	                        </div>
 	                        <div class="rTableCell">
 	                            <a class="deleteButtonlink" href="<c:url value='/delete-event-${event.id}' />">delete</a>

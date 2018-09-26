@@ -32,15 +32,13 @@
       
 	  <script type="text/javascript">
 	  window.onload = function() {
+		  var replaceEmoji = function () {
+				this.value.replace(/([\uE000-\uF8FF]|\uD83C[\uDF00-\uDFFF]|\uD83D[\uDC00-\uDDFF])/g, '');
+				console.log("-> " + this.value);
+				return; 
+			  };	
 		  document.getElementById('name').onkeypress = replaceEmoji;
 		  document.getElementById('description').onkeypress = replaceEmoji;
-		    	
-		  function replaceEmoji() {
-		    var charox = String.fromCharCode(event.which);   
-		    if (charox.match(/([\uE000-\uF8FF]|\uD83C[\uDF00-\uDFFF]|\uD83D[\uDC00-\uDDFF])|\s/)) {
-		       event.preventDefault();
-		    }
-		  };	
 	  }
 	  </script>       
      
@@ -96,7 +94,7 @@
 	        
 	        <c:choose>
 	            <c:when test="${edit}">
-	                <fmt:formatDate value="${event.when}" pattern="yyyy/MM/dd HH:mm" var="evStarts"/>
+	                <fmt:formatDate value="${event.when}" pattern="dd.MM.yyyy H:m" var="evStarts"/>
 	            </c:when>
 	            <c:otherwise>
 	                <c:set var="evStarts" value=""/>
@@ -110,7 +108,9 @@
 	                    <form:input type="text" path="when" id="when" name="when" value="${evStarts}"/>
 						<script type="text/javascript">
 							$(function(){
-								$('*[name=when]').appendDtpicker();
+								$('*[name=when]').appendDtpicker(
+										{"dateFormat": "DD.MM.YYYY hh:mm"}
+										);
 							});
 						</script>
 	                    <div  class="error-message">
@@ -143,13 +143,13 @@
 	                        <spring:message code="details.event.update" var="update"/>
 	                        <input type="submit" value="${update}"/> 
 	                        <spring:message code="details.event.or"/>
-	                        <a href="<c:url value='/listEvents' />"><spring:message code="details.event.cancel"/></a>
+	                        <a href="<c:url value='/myEvents' />"><spring:message code="details.event.cancel"/></a>
 	                    </c:when>
 	                    <c:otherwise>
 	                        <spring:message code="details.event.create" var="create"/>
 	                        <input type="submit" value="${create}"/> 
 	                        <spring:message code="details.event.or"/>
-	                        <a href="<c:url value='/listEvents' />"><spring:message code="details.event.cancel"/></a>
+	                        <a href="<c:url value='/myEvents' />"><spring:message code="details.event.cancel"/></a>
 	                    </c:otherwise>
 	                </c:choose>
 	            </div>

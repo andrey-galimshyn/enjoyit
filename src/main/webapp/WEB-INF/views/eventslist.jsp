@@ -44,7 +44,7 @@
                     <div class="rTableRow">
                         <sec:authorize access="isAuthenticated()">
                             <div class="rTableCell">
-                                <a href="<c:url value='/edit-event-${event.id}' />">${event.name}</a>
+                                <a href="<c:url value='/event-details-${event.id}' />">${event.name}</a>
                             </div>
                         </sec:authorize>
                         <sec:authorize access="!isAuthenticated()">

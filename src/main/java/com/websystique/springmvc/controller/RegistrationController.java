@@ -106,9 +106,16 @@ public class RegistrationController {
         Connection<?> connection = providerSignInUtils.getConnectionFromSession(request);
  
         RegistrationForm registration = createRegistrationDTO(connection);
-        model.addAttribute("user", registration);
- 
-        return "registrationForm";
+        
+        User registered = createUserAccount(registration, null);
+        
+        if (registered == null) {
+            return "registrationForm";
+        }
+        SecurityUtil.logInUser(registered);
+        providerSignInUtils.doPostSignUp(registered.getSsoid(), request);
+
+        return "redirect:/";        
     }
  
     private RegistrationForm createRegistrationDTO(Connection<?> connection) {

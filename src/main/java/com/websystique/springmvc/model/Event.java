@@ -32,7 +32,7 @@ public class Event {
 
     @NotNull
     @Column(name="DATE", nullable=false)
-    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
+    @DateTimeFormat(pattern = "dd.MM.yyyy H:m")
     @Temporal(TemporalType.TIMESTAMP)
 	private Date when;
 	
@@ -43,7 +43,6 @@ public class Event {
     @Column(name="NAME")
     private String name;
 	
-    @NotEmpty
     @Column(name="DESCRIPTION", nullable=false)
     private String description;
 

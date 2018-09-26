@@ -298,7 +298,7 @@ public class AppController {
 		model.addAttribute("newEvent", true);
 		model.addAttribute("loggedinuser", getPrincipalName());
 		model.addAttribute("loggedinuserEmail", getPrincipalEmail());
-		return "createEvent";
+		return "eventDetails";
 	}
 
 	/**
@@ -309,7 +309,7 @@ public class AppController {
 	public String saveEvent(@Valid Event event, BindingResult result, ModelMap model) {
 
 		if (result.hasErrors()) {
-			return "createEvent";
+			return "eventDetails";
 		}
 
 		// Logged user is organizer of the event
@@ -322,7 +322,7 @@ public class AppController {
 		model.addAttribute("name", event.getName());
 
 		model.addAttribute("loggedinuser", getPrincipalName());
-		return "createEventSuccess";
+		return "redirect:/myEvents";
 	}
 
 	@RequestMapping(value = { "/delete-user-{ssoid}" }, method = RequestMethod.GET)
@@ -425,21 +425,21 @@ public class AppController {
 	/**
 	 * This method will provide the medium to update an existing user.
 	 */
-	@RequestMapping(value = { "/edit-event-{id}" }, method = RequestMethod.GET)
+	@RequestMapping(value = { "/event-details-{id}" }, method = RequestMethod.GET)
 	public String editEvent(@PathVariable Integer id, ModelMap model) {
 		Event event = eventService.findById(id);
 		model.addAttribute("event", event);
 		model.addAttribute("edit", true);
 		model.addAttribute("loggedinuser", getPrincipalName());
 		model.addAttribute("loggedinuserEmail", getPrincipalEmail());
-		return "createEvent";
+		return "eventDetails";
 	}
 
-	@RequestMapping(value = { "/edit-event-{id}" }, method = RequestMethod.POST)
+	@RequestMapping(value = { "/event-details-{id}" }, method = RequestMethod.POST)
 	public String updateEvent(@Valid Event event, BindingResult result, ModelMap model, @PathVariable Integer id) {
 
 		if (result.hasErrors()) {
-			return "createEvent";
+			return "eventDetails";
 		}
 
 		eventService.updateEvent(event);
@@ -448,7 +448,7 @@ public class AppController {
 		model.addAttribute("create", false);
 		model.addAttribute("name", event.getName());
 
-		return "createEventSuccess";
+		return "redirect:/myEvents";
 	}
 
 	/**

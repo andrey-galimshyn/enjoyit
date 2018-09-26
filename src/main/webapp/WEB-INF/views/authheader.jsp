@@ -82,7 +82,7 @@
     if (window.location.pathname == "/enjoyit/list") {
     	var link = document.getElementById("listOfUsersItem");
     	link.className += " selectedItem";
-    } else if (window.location.pathname.includes("/enjoyit/myEvents") || window.location.pathname.includes("/enjoyit/edit-event")) {
+    } else if (window.location.pathname.includes("/enjoyit/myEvents") || window.location.pathname.includes("/enjoyit/event-details")) {
     	var link = document.getElementById("listOfMyEvents");
     	link.className += " selectedItem";
     } else if (window.location.pathname.includes("/enjoyit/listEvents") && !window.location.search) {
