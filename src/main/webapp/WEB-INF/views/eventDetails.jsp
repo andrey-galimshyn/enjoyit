@@ -30,135 +30,167 @@
     
       <%@include file="authheader.jsp" %>
       
+      
+      <sec:authorize var="loggedIn" access="isAuthenticated()" />
+      
+      
 	  <script type="text/javascript">
 	  window.onload = function() {
 		  var replaceEmoji = function () {
 				this.value.replace(/([\uE000-\uF8FF]|\uD83C[\uDF00-\uDFFF]|\uD83D[\uDC00-\uDDFF])/g, '');
 				console.log("-> " + this.value);
+				alert("if you've just entered a smile please anter it again " +  
+						" and send screenshot with this alert to developer: >>>" + this.value + "<<<");
 				return; 
 			  };	
 		  document.getElementById('name').onkeypress = replaceEmoji;
 		  document.getElementById('description').onkeypress = replaceEmoji;
 	  }
 	  </script>       
+
+      <c:choose>
+          <c:when test="${edit}">
+              <fmt:formatDate value="${event.when}" pattern="dd.MM.yyyy H:m" var="evStarts"/>
+          </c:when>
+          <c:otherwise>
+              <c:set var="evStarts" value=""/>
+          </c:otherwise>
+      </c:choose>
      
       <div class="body-event-edit-container" align="left">
     
 	    <div><h3><spring:message code="details.title"/></h3></div>
 
-	    <c:if test="${ (!newEvent) && (event.organizer.email != loggedinuserEmail) }">
+	    <c:if test="${ loggedIn && (newEvent || (event.organizer.email == loggedinuserEmail)) }">
+		    <form:form method="POST" modelAttribute="event">
+		        <form:input type="hidden" path="id" id="id"/>
+		         
+		        <div>
+		            <div>
+		                <label for="name"><spring:message code="details.event.name"/></label>
+		                <div>
+		                    <form:input type="text" path="name" id="name"/>
+		                    <div class="error-message">
+		                        <form:errors path="name"/>
+		                    </div>
+		                </div>
+		            </div>
+		        </div>
+		 
+		        <div>
+		            <div>
+		                <label for="description"><spring:message code="details.event.description"/></label>
+		                <div>
+		                    <form:textarea type="text" path="description" id="description" rows="5" cols="40"/>
+		                    <div class="error-message">
+		                        <form:errors path="description"/>
+		                    </div>
+		                </div>
+		            </div>
+		        </div>
+		        
+		        <c:choose>
+		            <c:when test="${edit}">
+		                <fmt:formatDate value="${event.when}" pattern="dd.MM.yyyy H:m" var="evStarts"/>
+		            </c:when>
+		            <c:otherwise>
+		                <c:set var="evStarts" value=""/>
+		            </c:otherwise>
+		        </c:choose>
+	        	        
+		        <div>
+		            <div>
+		                <label for="when"><spring:message code="details.event.when"/></label>
+		                <div>
+		                    <form:input type="text" path="when" id="when" name="when" value="${evStarts}"/>
+							<script type="text/javascript">
+								$(function(){
+									$('*[name=when]').appendDtpicker(
+											{"dateFormat": "DD.MM.YYYY hh:mm"}
+											);
+								});
+							</script>
+		                    <div  class="error-message">
+		                        <form:errors path="when"/>
+		                    </div>
+		                </div>
+		            </div>
+		        </div>
+		
 	
-		  <script type="text/javascript">
-		    window.onload = function() {
-		    	
-		    	document.getElementById("name").readOnly = true;
-		    	document.getElementById("description").readOnly = true;
-		    	document.getElementById("when").disabled = true;
-		    	document.getElementById("placeCount").readOnly = true;
-		    	document.getElementById("submitControls").style.display = 'none';
-		    	
-		    }
-		    
-		  </script>
-	
+		        <div>
+		            <div>
+		                <label for="placeCount"><spring:message code="details.event.quantity"/></label>
+		                <div>
+		                    <form:input path="placeCount" id="placeCount" type="number" min="1" max="100000"/>
+		                    <div  class="error-message">
+		                        <form:errors path="placeCount" class="help-inline"/>
+		                    </div>
+		                </div>
+		            </div>
+		        </div>
+		        
+		        
+    	        <br/>
+		        <div id="submitControls">
+		            <div>
+		                <c:choose>
+		                    <c:when test="${edit}">
+		                        <spring:message code="details.event.update" var="update"/>
+		                        <input type="submit" value="${update}"/> 
+		                        <spring:message code="details.event.or"/>
+		                        <a href="<c:url value='/myEvents' />"><spring:message code="details.event.cancel"/></a>
+		                    </c:when>
+		                    <c:otherwise>
+		                        <spring:message code="details.event.create" var="create"/>
+		                        <input type="submit" value="${create}"/> 
+		                        <spring:message code="details.event.or"/>
+		                        <a href="<c:url value='/myEvents' />"><spring:message code="details.event.cancel"/></a>
+		                    </c:otherwise>
+		                </c:choose>
+		            </div>
+		        </div>
+		        
+		    </form:form>
+	    
 	    </c:if>
-    
-    
-    
-	    <form:form method="POST" modelAttribute="event">
-	        <form:input type="hidden" path="id" id="id"/>
-	         
+	    <!-- ======================= User is not logged in or not the author of event  =============================== -->
+	    <c:if test="${ not loggedIn || (event.organizer.email != loggedinuserEmail) }">
 	        <div>
 	            <div>
-	                <label for="name"><spring:message code="details.event.name"/></label>
+	                <span><spring:message code="details.event.name"/></span>
 	                <div>
-	                    <form:input type="text" path="name" id="name"/>
-	                    <div class="error-message">
-	                        <form:errors path="name"/>
-	                    </div>
+	                    <span> <b> ${event.name} </b> </span>
 	                </div>
 	            </div>
 	        </div>
 	 
 	        <div>
 	            <div>
-	                <label for="description"><spring:message code="details.event.description"/></label>
+	                <span><spring:message code="details.event.description"/></span>
 	                <div>
-	                    <form:textarea type="text" path="description" id="description" rows="5" cols="40"/>
-	                    <div class="error-message">
-	                        <form:errors path="description"/>
-	                    </div>
+	                    <span>  <b> ${event.description} </b> </span>
 	                </div>
 	            </div>
 	        </div>
 	        
-	        <c:choose>
-	            <c:when test="${edit}">
-	                <fmt:formatDate value="${event.when}" pattern="dd.MM.yyyy H:m" var="evStarts"/>
-	            </c:when>
-	            <c:otherwise>
-	                <c:set var="evStarts" value=""/>
-	            </c:otherwise>
-	        </c:choose>
-        	        
 	        <div>
 	            <div>
-	                <label for="when"><spring:message code="details.event.when"/></label>
-	                <div>
-	                    <form:input type="text" path="when" id="when" name="when" value="${evStarts}"/>
-						<script type="text/javascript">
-							$(function(){
-								$('*[name=when]').appendDtpicker(
-										{"dateFormat": "DD.MM.YYYY hh:mm"}
-										);
-							});
-						</script>
-	                    <div  class="error-message">
-	                        <form:errors path="when"/>
-	                    </div>
-	                </div>
+	                <span><spring:message code="details.event.when"/></span>
+                    <span> <b> ${evStarts} </b> </span>
 	            </div>
 	        </div>
-	
 
 	        <div>
 	            <div>
-	                <label for="placeCount"><spring:message code="details.event.quantity"/></label>
+	                <span><spring:message code="details.event.quantity"/></span>
 	                <div>
-	                    <form:input path="placeCount" id="placeCount" type="number" min="1" max="100000"/>
-	                    <div  class="error-message">
-	                        <form:errors path="placeCount" class="help-inline"/>
-	                    </div>
+	                    <span> <b> ${event.placeCount} </b> </span>
 	                </div>
 	            </div>
-	        </div>
-	        
-	        
-	    <c:if test="${ newEvent || (event.organizer.email == loggedinuserEmail) }">
-	        <br/>
-	        <div id="submitControls">
-	            <div>
-	                <c:choose>
-	                    <c:when test="${edit}">
-	                        <spring:message code="details.event.update" var="update"/>
-	                        <input type="submit" value="${update}"/> 
-	                        <spring:message code="details.event.or"/>
-	                        <a href="<c:url value='/myEvents' />"><spring:message code="details.event.cancel"/></a>
-	                    </c:when>
-	                    <c:otherwise>
-	                        <spring:message code="details.event.create" var="create"/>
-	                        <input type="submit" value="${create}"/> 
-	                        <spring:message code="details.event.or"/>
-	                        <a href="<c:url value='/myEvents' />"><spring:message code="details.event.cancel"/></a>
-	                    </c:otherwise>
-	                </c:choose>
-	            </div>
-	        </div>
-	      </c:if>   
-	        
-	        
-	    </form:form>
-	    
+	        </div>	    
+	    </c:if>
+        <!-- =================================================== -->	    
         <div>
             <spring:message code="details.event.organizer"/>: 
             <c:if test="${not empty event.organizer.socialProfURL}">
@@ -174,7 +206,7 @@
 	    
         <div id="joinReject">
             <div>
-              <c:if test="${(!newEvent) && (event.organizer.email != loggedinuserEmail)}">
+              <c:if test="${loggedIn && ((!newEvent) && (event.organizer.email != loggedinuserEmail))}">
                 
 				<c:set var="joined" value="false" />
 				<c:forEach var="participant" items="${event.participants}">

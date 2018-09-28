@@ -69,7 +69,14 @@
                                 ${event.organizer.firstName} ${event.organizer.lastName}
                            </c:if>
                         </div>
-                        <div class="rTableCell">${event.description}</div>
+                        <c:if test="${ not empty event.description }">
+                            <div class="rTableCell">
+                                ${event.description}
+                            </div>
+                        </c:if>
+                        <c:if test="${ empty event.description }">
+                            <div class="rTableCellEmpty"></div>
+                        </c:if>
                         <div class="rTableCell">
                             ${event.placeCount}
                         </div>

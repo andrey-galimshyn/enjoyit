@@ -21,7 +21,7 @@
         <div class="body-container" align="left">
 	        <sec:authorize access="isAuthenticated()">
 	            <div>
-	                <a class="buttonlink" href="<c:url value='/newevent' />"><spring:message code="myevents.list.addNewEvent"/></a>
+	                <a class="addEventButtonlink" href="<c:url value='/newevent' />"><spring:message code="myevents.list.addNewEvent"/></a>
 	            </div>
 	        </sec:authorize>
             <!-- Default panel contents -->
@@ -40,11 +40,20 @@
 
                 <c:forEach items="${events}" var="event">
                     <div class="rTableRow">
-                        <div class="rTableCell">${event.name}</div>
+                        <div class="rTableCell">
+                            <a href="<c:url value='/event-details-${event.id}' />">${event.name}</a>
+                        </div>
                         <div class="rTableCell">
                             <fmt:formatDate type = "both" dateStyle = "short" timeStyle = "short" value = "${event.when}" />
                         </div>
-                        <div class="rTableCell">${event.description}</div>
+                        <c:if test="${ not empty event.description }">
+                            <div class="rTableCell">
+                                ${event.description}
+                            </div>
+                        </c:if>
+                        <c:if test="${ empty event.description }">
+                            <div class="rTableCellEmpty"></div>
+                        </c:if>
                         <div class="rTableCell">
                             ${event.placeCount}
                         </div>

@@ -419,7 +419,7 @@ public class AppController {
 	@RequestMapping(value = { "/delete-event-{id}" }, method = RequestMethod.GET)
 	public String deleteEvent(@PathVariable Integer id) {
 		eventService.deleteEventById(id);
-		return "redirect:/listEvents";
+		return "redirect:/myEvents";
 	}
 
 	/**

@@ -18,9 +18,8 @@
     <br/>
 	<div class="footer" align="center" >
 		<div class="footer-align">
-		    Contact: andrey.galimshyn@gmail.com
-		</div>
-		<div class="footer-align">
+		    Contact: wellfed.ukraine@gmail.com
+		    <br/>
 		    <a target="_blank" rel="noopener noreferrer" href="https://termsfeed.com/privacy-policy/f4efa6a3ecfa7c539ad946b183d39f33">
 		        Privacy Policy
 		    </a>
