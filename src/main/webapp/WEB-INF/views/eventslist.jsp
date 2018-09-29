@@ -43,7 +43,7 @@
                 <c:forEach items="${events}" var="event">
                     <div class="rTableRow">
                         <sec:authorize access="isAuthenticated()">
-                            <div class="rTableCell">
+                            <div class="rTableCell eventHeaderContent">
                                 <a href="<c:url value='/event-details-${event.id}' />">${event.name}</a>
                             </div>
                         </sec:authorize>

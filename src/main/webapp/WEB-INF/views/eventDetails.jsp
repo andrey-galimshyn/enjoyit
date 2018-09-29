@@ -37,10 +37,8 @@
 	  <script type="text/javascript">
 	  window.onload = function() {
 		  var replaceEmoji = function () {
-				this.value.replace(/([\uE000-\uF8FF]|\uD83C[\uDF00-\uDFFF]|\uD83D[\uDC00-\uDDFF])/g, '');
+			    this.value = this.value.replace(/([\uE000-\uF8FF]|\uD83C[\uDF00-\uDFFF]|\uD83D[\uDC00-\uDDFF])/g, '');
 				console.log("-> " + this.value);
-				alert("if you've just entered a smile please anter it again " +  
-						" and send screenshot with this alert to developer: >>>" + this.value + "<<<");
 				return; 
 			  };	
 		  document.getElementById('name').onkeypress = replaceEmoji;
@@ -158,41 +156,39 @@
 	    <c:if test="${ not loggedIn || (event.organizer.email != loggedinuserEmail) }">
 	        <div>
 	            <div>
-	                <span><spring:message code="details.event.name"/></span>
+	                <span><b> <spring:message code="details.event.name"/> </b> </span>
 	                <div>
-	                    <span> <b> ${event.name} </b> </span>
+	                    <span>  ${event.name}  </span>
 	                </div>
 	            </div>
 	        </div>
 	 
 	        <div>
 	            <div>
-	                <span><spring:message code="details.event.description"/></span>
+	                <span>  <b> <spring:message code="details.event.description"/> </b> </span>
 	                <div>
-	                    <span>  <b> ${event.description} </b> </span>
+	                    <span>  ${event.description}  </span>
 	                </div>
 	            </div>
 	        </div>
 	        
 	        <div>
 	            <div>
-	                <span><spring:message code="details.event.when"/></span>
-                    <span> <b> ${evStarts} </b> </span>
+	                <span><b> <spring:message code="details.event.when"/> </b> </span>
+                    <span>  ${evStarts}  </span>
 	            </div>
 	        </div>
 
 	        <div>
 	            <div>
-	                <span><spring:message code="details.event.quantity"/></span>
-	                <div>
-	                    <span> <b> ${event.placeCount} </b> </span>
-	                </div>
+	                <span> <b> <spring:message code="details.event.quantity"/> </b> </span>
+                    <span>  ${event.placeCount}  </span>
 	            </div>
 	        </div>	    
 	    </c:if>
         <!-- =================================================== -->	    
         <div>
-            <spring:message code="details.event.organizer"/>: 
+            <b> <spring:message code="details.event.organizer"/>: </b>
             <c:if test="${not empty event.organizer.socialProfURL}">
                 <a href="${event.organizer.socialProfURL}" target="_blank" rel="noopener noreferrer">
                     ${event.organizer.firstName} ${event.organizer.lastName}
@@ -243,8 +239,10 @@
              <div class="rTable">
                 <div class="rTableHeadRow">
                      <div class="rTableHeadCell"></div>
-                     <div class="rTableHeadCell"><spring:message code="details.event.userName"/></div>
-                     <div class="rTableHeadCell"><spring:message code="details.event.userSirname"/></div>
+                     <div class="rTableHeadCell">
+                         <spring:message code="details.event.userName"/> 
+                         <spring:message code="details.event.userSirname"/> 
+                      </div>
                 </div>
 
                 <c:forEach items="${event.participants}" var="user">
@@ -266,7 +264,7 @@
 				                 ${user.firstName} ${user.lastName}
 				            </c:if>
                         </div>
-                        <div class="rTableCellMembers"></div>
+
                     </div>
                 </c:forEach>
 

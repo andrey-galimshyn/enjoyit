@@ -11,7 +11,7 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <link type="image/png" rel="icon" href="<c:url value='/static/images/favicon.png'/>">
+    <link rel="shortcut icon" href="<c:url value='/static/images/favicon_liF_icon.ico'/>" />
     
     <meta name="description" content="">
     <meta name="keywords" content="">
@@ -33,8 +33,11 @@
 	
 	            <header class="joiner">
 	              <br/>	
-	              <div align="left">
-	                <span><spring:message code="authheader.welcome" arguments="${loggedinuser}"/> </span> 
+	              <div class="logout">
+	                  <span> <a href="<c:url value="/logout" />"><spring:message code="authheader.logout"/></a> </span>
+	              </div>
+	              <div class="welcome">
+	                <span><spring:message code="authheader.welcome" arguments="${loggedinuser}"/> </span>
 	              </div>
 	              <br/>
 	              <div class="topper" align="right">
@@ -42,7 +45,7 @@
                          <img class="menu-top-logo" alt="Joit It" src="<c:url value="/static/images/Logotip.png" />" align="left">
                       </a>
 		              <div class="topper-align">
-				          <span><a class="topItem" href="<c:url value="/logout" />"><spring:message code="authheader.logout"/></a></span>
+				          
 				          
 				          <sec:authorize access="hasRole('ADMIN')">
 				              <span><a id="listOfUsersItem" class="topItem" href="<c:url value="/list" />"><spring:message code="authheader.users"/></a></span>
@@ -79,20 +82,20 @@
     	}
     }
     
-    if (window.location.pathname == "/enjoyit/list") {
+    if (window.location.pathname == "/list") {
     	var link = document.getElementById("listOfUsersItem");
     	link.className += " selectedItem";
-    } else if (window.location.pathname.includes("/enjoyit/myEvents") || window.location.pathname.includes("/enjoyit/event-details")) {
+    } else if (window.location.pathname.includes("/myEvents") || window.location.pathname.includes("/enjoyit/event-details")) {
     	var link = document.getElementById("listOfMyEvents");
     	link.className += " selectedItem";
-    } else if (window.location.pathname.includes("/enjoyit/listEvents") && !window.location.search) {
+    } else if (window.location.pathname.includes("/listEvents") && !window.location.search) {
     	var link = document.getElementById("listOfEventsItem");
     	link.className += " selectedItem";
-    } else if (window.location.pathname.includes("/enjoyit/listEvents") 
+    } else if (window.location.pathname.includes("/listEvents") 
     		&& window.location.search == "?subscribed=true") {
     	var link = document.getElementById("listOfEventsSubscribed");
     	link.className += " selectedItem";
-    } else if (window.location.pathname.includes("/enjoyit/listEvents") 
+    } else if (window.location.pathname.includes("/listEvents") 
 		    && window.location.search == "?free=true") {
 	    var link = document.getElementById("listOfEventsNotSubscribed");
 	    link.className += " selectedItem";

@@ -40,7 +40,7 @@
 
                 <c:forEach items="${events}" var="event">
                     <div class="rTableRow">
-                        <div class="rTableCell">
+                        <div class="rTableCell eventHeaderContent">
                             <a href="<c:url value='/event-details-${event.id}' />">${event.name}</a>
                         </div>
                         <div class="rTableCell">
