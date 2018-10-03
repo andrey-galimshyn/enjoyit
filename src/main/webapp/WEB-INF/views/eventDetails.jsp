@@ -35,7 +35,8 @@
       
       
 	  <script type="text/javascript">
-	  window.onload = function() {
+	  
+	  $(document).ready( function() {
 		  var replaceEmoji = function () {
 			    this.value = this.value.replace(/([\uE000-\uF8FF]|\uD83C[\uDF00-\uDFFF]|\uD83D[\uDC00-\uDDFF])/g, '');
 				console.log("-> " + this.value);
@@ -43,7 +44,7 @@
 			  };	
 		  document.getElementById('name').onkeypress = replaceEmoji;
 		  document.getElementById('description').onkeypress = replaceEmoji;
-	  }
+	  })
 	  </script>       
 
       <c:choose>

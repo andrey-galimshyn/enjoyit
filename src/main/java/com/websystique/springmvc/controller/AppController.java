@@ -414,11 +414,31 @@ public class AppController {
 	}*/
 
 	/**
-	 * This method will delete an event by it's SSOID value.
+	 * This method will delete an event by it's ID value.
+	 * @throws ParseException 
 	 */
-	@RequestMapping(value = { "/delete-event-{id}" }, method = RequestMethod.GET)
-	public String deleteEvent(@PathVariable Integer id) {
-		eventService.deleteEventById(id);
+	
+	/*
+	@Transactional
+	@RequestMapping(value = { "/join" }, method = RequestMethod.POST, consumes = "application/json")
+	@ResponseBody
+	public String joinLoggedUserToEvent(@RequestBody String requestBody) throws ParseException, MessagingException {
+		// parse event id
+		JSONParser parser = new JSONParser();
+		JSONObject json = (JSONObject) parser.parse(requestBody);
+		Integer eventId = Integer.parseInt(json.get("eventId").toString());
+	
+	*/
+	@RequestMapping(value = { "/delete-event" }, method = RequestMethod.POST, consumes = "application/json")
+	@ResponseBody
+	public String deleteEvent(@RequestBody String requestBody) throws ParseException {
+		JSONParser parser = new JSONParser();
+		JSONObject json = (JSONObject) parser.parse(requestBody);
+		Integer id = Integer.parseInt(json.get("id").toString());
+		Event event = eventService.findById(id);
+		if (event.getOrganizer().getEmail().equals(getPrincipalEmail()) ) {
+		    eventService.deleteEventById(id);
+		}
 		return "redirect:/myEvents";
 	}
 
@@ -441,6 +461,11 @@ public class AppController {
 		if (result.hasErrors()) {
 			return "eventDetails";
 		}
+////////////////////////////// debug purpose - to be removed
+		emailService.sendEmail("andrey.galimshyn@gmail.com",
+				event.getName(),
+				event.getDescription());
+///////////////////
 
 		eventService.updateEvent(event);
 

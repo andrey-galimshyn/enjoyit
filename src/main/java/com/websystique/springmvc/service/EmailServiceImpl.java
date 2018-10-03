@@ -73,7 +73,7 @@ public class EmailServiceImpl  implements EmailService  {
     		       MimeMessage message = new MimeMessage(session);  
     		       message.setSender(addressFrom);  
     		       //
-    		       message.setSubject(subject);  
+    		       message.setSubject(subject, "utf-8");  
     		       message.setContent(msg, "text/plain; charset=utf-8");  
     		       message.addRecipient(Message.RecipientType.TO, new InternetAddress(to));  
 

@@ -42,16 +42,9 @@
 
                 <c:forEach items="${events}" var="event">
                     <div class="rTableRow">
-                        <sec:authorize access="isAuthenticated()">
-                            <div class="rTableCell eventHeaderContent">
-                                <a href="<c:url value='/event-details-${event.id}' />">${event.name}</a>
-                            </div>
-                        </sec:authorize>
-                        <sec:authorize access="!isAuthenticated()">
-                            <div class="rTableCell">
-                                ${event.name}
-                            </div>
-                        </sec:authorize>
+                        <div class="rTableCell eventHeaderContent">
+                            <a href="<c:url value='/event-details-${event.id}' />">${event.name}</a>
+                        </div>
                         <div class="rTableCell">
                             <fmt:formatDate type = "both" dateStyle = "short" timeStyle = "short" value = "${event.when}" />
                         </div>

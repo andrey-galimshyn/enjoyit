@@ -8,10 +8,32 @@
  
 <head>
     <title><spring:message code="myevents.list.myListTitle"/></title>
+    
+    <script src="<c:url value='/static/js/confirmDialog.js' />"></script> 
+    <script src="<c:url value='/static/js/jquery-3.2.1.min.js' />"></script> 
+    <link type="text/css" rel="stylesheet" href="<c:url value='/static/css/customDialog.css' />" />
+    
 </head>
  
 <body>
     <sec:authorize var="loggedIn" access="isAuthenticated()" />
+    
+
+	  <script type="text/javascript">
+		  $(document).ready(function() {
+			  Confirm = new CustomConfirm();
+		  });
+		  abc= '<spring:message code="myevents.list.removeEvent"/>';
+	  </script>      
+	
+	<div id="dialogoverlay"></div>
+	<div id="dialogbox">
+	  <div>
+	    <div id="dialogboxhead"></div>
+	    <div id="dialogboxbody"></div>
+	    <div id="dialogboxfoot"></div>
+	  </div>
+	</div>
 
 
     <div align="center">
@@ -62,10 +84,18 @@
                         </div>
                         <sec:authorize access="isAuthenticated()">
 		                    <div class="rTableCell">
-	                            <a class="editButtonlink" href="<c:url value='/event-details-${event.id}' />">edit</a>
+	                            <a class="editButtonlink" href="<c:url value='/event-details-${event.id}' />">
+	                                <spring:message code="myevents.list.editEvent"/>
+	                            </a>
 	                        </div>
 	                        <div class="rTableCell">
-	                            <a class="deleteButtonlink" href="<c:url value='/delete-event-${event.id}' />">delete</a>
+	                            <a class="deleteButtonlink" onclick="Confirm.render('<spring:message code="myevents.list.confirmAction"/>',
+	                            '<spring:message code="myevents.list.removeEventFull"/>',
+	                            '<spring:message code="myevents.list.yesRemove"/>',
+	                            '<spring:message code="myevents.list.noRemove"/>',
+	                            'delete_event',${event.id})" href='#'>
+	                                <spring:message code="myevents.list.removeEvent"/>
+	                            </a>
 	                        </div>
                         </sec:authorize>
                     </div>

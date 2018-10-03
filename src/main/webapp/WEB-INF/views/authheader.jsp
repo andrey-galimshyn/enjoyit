@@ -32,12 +32,13 @@
 	    <c:when test="${loggedIn}">
 	
 	            <header class="joiner">
-	              <br/>	
-	              <div class="logout">
-	                  <span> <a href="<c:url value="/logout" />"><spring:message code="authheader.logout"/></a> </span>
-	              </div>
-	              <div class="welcome">
-	                <span><spring:message code="authheader.welcome" arguments="${loggedinuser}"/> </span>
+	              <div id="wrapper">
+		              <div class="welcome">
+		                <span><spring:message code="authheader.welcome" arguments="${loggedinuser}"/> </span>
+		              </div>
+		              <div class="logout">
+		                  <span> <a href="<c:url value="/logout" />"><spring:message code="authheader.logout"/></a> </span>
+		              </div>
 	              </div>
 	              <br/>
 	              <div class="topper" align="right">

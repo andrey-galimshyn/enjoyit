@@ -241,7 +241,6 @@ header.joiner {
   	background-color: #ddd;
 }
 
-
 .rTableFoot {
   	display: table-footer-group;
   	font-weight: bold;
@@ -253,9 +252,17 @@ header.joiner {
 
 div.welcome {
     text-align:left;
+    flex: 0 0 65%;
 }
+
 div.logout {
+	flex: 1;
     text-align:right;
+}
+
+#wrapper {
+  padding-top: 5px;
+  display: flex;
 }
 
 @media screen and (max-width: 940px) {
@@ -264,16 +271,13 @@ div.logout {
 	    width: 100%;
 	}
 	
-	div.welcome {
-	    width: 94%;
-	}	
-	div.logout {
-	    width: 94%;
-	}
     div.body-event-edit-container {
         width: 94%;
     }
-
+    
+	#wrapper {
+	  width: 94%;
+	}
 
 	div.footer {
 	    width: 100%;
