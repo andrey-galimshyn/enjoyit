@@ -43,7 +43,7 @@ public class Event {
     @Column(name="NAME")
     private String name;
 	
-    @Column(name="DESCRIPTION", nullable=false)
+    @Column(name="DESCRIPTION", nullable=false, columnDefinition="TEXT")
     private String description;
 
     @NotNull

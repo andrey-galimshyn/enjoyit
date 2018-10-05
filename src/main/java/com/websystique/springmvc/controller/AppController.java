@@ -461,12 +461,6 @@ public class AppController {
 		if (result.hasErrors()) {
 			return "eventDetails";
 		}
-////////////////////////////// debug purpose - to be removed
-		emailService.sendEmail("andrey.galimshyn@gmail.com",
-				event.getName(),
-				event.getDescription());
-///////////////////
-
 		eventService.updateEvent(event);
 
 		model.addAttribute("loggedinuser", getPrincipalName());
