@@ -12,9 +12,10 @@
 <head>
     <title><spring:message code="details.title"/></title>
 
-    <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+    <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
    
     <!--That's all for Date\Time picker-->
+    <script src="<c:url value='/static/js/nicEdit.js' />" type="text/javascript"></script>
 	<script type="text/javascript" src="<c:url value='/static/js/jquery.simple-dtpicker.js' />"></script>
 	<link type="text/css" rel="stylesheet" href="<c:url value='/static/css/jquery.simple-dtpicker.css' />" />
 	
@@ -36,16 +37,21 @@
       
 	  <script type="text/javascript">
 	  
-	  $(document).ready( function() {
-		  var replaceEmoji = function () {
-			    this.value = this.value.replace(/([\uE000-\uF8FF]|\uD83C[\uDF00-\uDFFF]|\uD83D[\uDC00-\uDDFF])/g, '');
-				console.log("-> " + this.value);
-				return; 
-			  };	
-		  document.getElementById('name').onkeypress = replaceEmoji;
-		  document.getElementById('description').onkeypress = replaceEmoji;
-	  })
-	  </script>       
+		  $(document).ready( function() {
+			  var replaceEmoji = function () {
+				    this.value = this.value.replace(/([\uE000-\uF8FF]|\uD83C[\uDF00-\uDFFF]|\uD83D[\uDC00-\uDDFF])/g, '');
+					console.log("-> " + this.value);
+					return; 
+				  };	
+			  document.getElementById('name').onkeypress = replaceEmoji;
+			  document.getElementById('description').onkeypress = replaceEmoji;
+		  });
+
+		  bkLib.onDomLoaded(function() {
+				new nicEditor().panelInstance('description');
+          });
+
+	  </script>
 
       <c:choose>
           <c:when test="${edit}">

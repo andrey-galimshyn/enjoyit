@@ -8,8 +8,8 @@ function CustomConfirm(){
 			no,
 			op,
 			id){
-		var winW = window.innerWidth;
-	    var winH = window.innerHeight;
+		var winW = document.documentElement.clientWidth;
+	    var winH = document.documentElement.clientHeight;;
 		var dialogoverlay = document.getElementById('dialogoverlay');
 	    var dialogbox = document.getElementById('dialogbox');
 		dialogoverlay.style.display = "block";
@@ -19,13 +19,17 @@ function CustomConfirm(){
 	    document.getElementById('dialogboxbody').innerHTML = dialog;
 		document.getElementById('dialogboxfoot').innerHTML = '<button onclick="Confirm.yes(\''+op+'\',\''+id+'\')">' + yes + '</button> <button onclick="Confirm.no()">' + no + '</button>';
 
-		var dwidth = document.getElementById('dialogbox').offsetWidth
-		dialogbox.style.left = (winW/2) - (dwidth * .5)+"px";
 		dialogbox.style.top = "100px";
 		dialogbox.style.display = "block";
+		var dwidth = document.getElementById('dialogbox').offsetWidth
+		var dheight = document.getElementById('dialogbox').offsetHeight
+		dialogbox.style.left = (winW/2) - (dwidth * .5)+"px";
+		dialogbox.style.top = (winH/2.5) - (dheight * .5)+"px";
+		dialogbox.style.visibility = "visible";
 	}
 	this.no = function(){
 		document.getElementById('dialogbox').style.display = "none";
+		document.getElementById('dialogbox').style.visibility = "hidden";
 		document.getElementById('dialogoverlay').style.display = "none";
 	}
 	this.yes = function(op,id){
@@ -51,6 +55,7 @@ function CustomConfirm(){
 			}});
 		}
 		document.getElementById('dialogbox').style.display = "none";
+		document.getElementById('dialogbox').style.visibility = "hidden";
 		document.getElementById('dialogoverlay').style.display = "none";
 	}
 }

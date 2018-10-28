@@ -48,7 +48,25 @@ public class RegistrationController {
         this.service = service;
         this.profileService = profileService;
 	}
+	@RequestMapping(value = "/user/register", method = RequestMethod.GET)
+    public String showRegistrationForm(WebRequest request, Model model) {
+        Connection<?> connection = providerSignInUtils.getConnectionFromSession(request);
+ 
+        RegistrationForm registration = createRegistrationDTO(connection);
+        model.addAttribute("user", registration);
+        if (registration == null || 
+        		registration.getEmail() == null || 
+        		registration.getEmail().isEmpty()) {
+            return "registrationForm";
+        }
 
+        User registered = createUserAccount(registration, null);
+
+        SecurityUtil.logInUser(registered);
+        providerSignInUtils.doPostSignUp(registered.getSsoid(), request);
+
+        return "redirect:/"; 
+    }
     @RequestMapping(value ="/user/register", method = RequestMethod.POST)
     public String registerUserAccount(@Valid @ModelAttribute("user") RegistrationForm userAccountData,
                                       BindingResult result,
@@ -101,22 +119,7 @@ public class RegistrationController {
         result.addError(error);
     }
     
-	@RequestMapping(value = "/user/register", method = RequestMethod.GET)
-    public String showRegistrationForm(WebRequest request, Model model) {
-        Connection<?> connection = providerSignInUtils.getConnectionFromSession(request);
- 
-        RegistrationForm registration = createRegistrationDTO(connection);
-        
-        User registered = createUserAccount(registration, null);
-        
-        if (registered == null) {
-            return "registrationForm";
-        }
-        SecurityUtil.logInUser(registered);
-        providerSignInUtils.doPostSignUp(registered.getSsoid(), request);
 
-        return "redirect:/";        
-    }
  
     private RegistrationForm createRegistrationDTO(Connection<?> connection) {
         RegistrationForm dto = new RegistrationForm();
@@ -128,7 +131,9 @@ public class RegistrationController {
         	dto.setEmail(socialMediaProfile.getEmail());
             dto.setFirstName(socialMediaProfile.getFirstName());
             dto.setLastName(socialMediaProfile.getLastName());
-            dto.setSsoid(socialMediaProfile.getEmail().split("@")[0]);
+            if (socialMediaProfile.getEmail() != null) {
+                dto.setSsoid(socialMediaProfile.getEmail().split("@")[0]);
+            }
             ConnectionKey providerKey = connection.getKey();
             dto.setSignInProvider(SocialMediaService.valueOf(providerKey.getProviderId().toUpperCase()));
         }

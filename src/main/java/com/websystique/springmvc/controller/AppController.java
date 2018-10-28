@@ -1,5 +1,6 @@
 package com.websystique.springmvc.controller;
 
+import java.nio.charset.Charset;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -315,7 +316,13 @@ public class AppController {
 		// Logged user is organizer of the event
 		User organizer = userService.findByEmail(getPrincipalEmail());
 		event.setOrganizer(organizer);
-
+		
+		Charset charset = Charset.forName("UTF-8");
+		String textToDecode = charset.decode(charset.encode(event.getName())).toString();
+		event.setName(textToDecode);
+		textToDecode = charset.decode(charset.encode(event.getDescription())).toString();
+		event.setDescription(textToDecode);
+		
 		eventService.saveEvent(event);
 
 		model.addAttribute("create", true);
@@ -461,6 +468,12 @@ public class AppController {
 		if (result.hasErrors()) {
 			return "eventDetails";
 		}
+		Charset charset = Charset.forName("UTF-8");
+		String textToDecode = charset.decode(charset.encode(event.getName())).toString();
+		event.setName(textToDecode);
+		textToDecode = charset.decode(charset.encode(event.getDescription())).toString();
+		event.setDescription(textToDecode);
+		
 		eventService.updateEvent(event);
 
 		model.addAttribute("loggedinuser", getPrincipalName());

@@ -40,10 +40,10 @@ public class Event {
 	private Duration duration;
 
     @NotEmpty
-    @Column(name="NAME")
+    @Column(name="NAME", nullable=false, columnDefinition="TEXT")
     private String name;
 	
-    @Column(name="DESCRIPTION", nullable=false, columnDefinition="TEXT")
+    @Column(name="DESCRIPTION", nullable=true, columnDefinition="TEXT")
     private String description;
 
     @NotNull

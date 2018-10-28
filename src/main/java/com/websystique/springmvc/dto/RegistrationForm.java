@@ -42,6 +42,7 @@ public class RegistrationForm {
 
     private SocialMediaService signInProvider;
     
+    @NotEmpty
     private String ssoid;
 
     private String socialProfImageURL;

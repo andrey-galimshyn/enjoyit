@@ -50,6 +50,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         .and().apply(new SpringSocialConfigurer());
         
         http.csrf().disable();
+        
+        http.requiresChannel().anyRequest().requiresSecure();
     }
     
     @Bean
