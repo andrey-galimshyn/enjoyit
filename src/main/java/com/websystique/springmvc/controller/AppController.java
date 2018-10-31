@@ -316,12 +316,11 @@ public class AppController {
 		// Logged user is organizer of the event
 		User organizer = userService.findByEmail(getPrincipalEmail());
 		event.setOrganizer(organizer);
-		
-		Charset charset = Charset.forName("UTF-8");
-		String textToDecode = charset.decode(charset.encode(event.getName())).toString();
-		event.setName(textToDecode);
-		textToDecode = charset.decode(charset.encode(event.getDescription())).toString();
+
+		String textToDecode = removeBadChars(event.getDescription());
 		event.setDescription(textToDecode);
+		textToDecode = removeBadChars(event.getName());
+		event.setName(textToDecode);
 		
 		eventService.saveEvent(event);
 
@@ -332,6 +331,16 @@ public class AppController {
 		return "redirect:/myEvents";
 	}
 
+	private static String removeBadChars(String s) {
+		  if (s == null) return null;
+		  StringBuilder sb = new StringBuilder();
+		  for(int i=0;i<s.length();i++){ 
+		    if (Character.isHighSurrogate(s.charAt(i))) continue;
+		    sb.append(s.charAt(i));
+		  }
+		  return sb.toString();
+	}
+	
 	@RequestMapping(value = { "/delete-user-{ssoid}" }, method = RequestMethod.GET)
 	public String deleteUser(@PathVariable String ssoid) {
 		userService.deleteUserBySSO(ssoid);
@@ -468,11 +477,10 @@ public class AppController {
 		if (result.hasErrors()) {
 			return "eventDetails";
 		}
-		Charset charset = Charset.forName("UTF-8");
-		String textToDecode = charset.decode(charset.encode(event.getName())).toString();
-		event.setName(textToDecode);
-		textToDecode = charset.decode(charset.encode(event.getDescription())).toString();
+		String textToDecode = removeBadChars(event.getDescription());
 		event.setDescription(textToDecode);
+		textToDecode = removeBadChars(event.getName());
+		event.setName(textToDecode);
 		
 		eventService.updateEvent(event);
 
