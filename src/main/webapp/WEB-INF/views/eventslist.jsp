@@ -13,10 +13,29 @@
     <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
   	<script src="<c:url value='/static/js/join_reject.js' />"></script> 
 
+    <script src="<c:url value='/static/js/confirmDialog.js' />"></script> 
+    <link type="text/css" rel="stylesheet" href="<c:url value='/static/css/customDialog.css' />" />
+
 </head>
  
 <body>
     <sec:authorize var="loggedIn" access="isAuthenticated()" />
+    
+	<script type="text/javascript">
+	  $(document).ready(function() {
+		  Confirm = new CustomConfirm();
+	  });
+	  abc= '<spring:message code="myevents.list.removeEvent"/>';
+	</script>      
+	
+	<div id="dialogoverlay"></div>
+	<div id="dialogbox">
+	  <div>
+	    <div id="dialogboxhead"></div>
+	    <div id="dialogboxbody"></div>
+	    <div id="dialogboxfoot"></div>
+	  </div>
+	</div>
 
     <div align="center" >
     
@@ -35,6 +54,7 @@
                         <div class="rTableHeadCell"><spring:message code="events.list.totalPlaces"/></div>
                         <div class="rTableHeadCell"><spring:message code="events.list.freePlaces"/></div>
                         <sec:authorize access="isAuthenticated()">
+                            <div class="rTableHeadCell"></div>
                             <div class="rTableHeadCell"></div>
                         </sec:authorize>
 
@@ -97,10 +117,24 @@
 			                            <a class="joinButtonlink"  id="${event.id}jr" href="#" onclick="join(${event.id});return false;"><spring:message code="events.list.join"/></a>   
 			                        </div>
 								</c:if>
+								<div class="rTableCell"></div>
 	                        </c:if>
 
 	                        <c:if test="${event.organizer.email == loggedinuserEmail}">
-	                            <div class="rTableCell"></div>
+		                    <div class="rTableCell">
+	                            <a class="editButtonlink" href="<c:url value='/event-details-${event.id}' />">
+	                                <spring:message code="myevents.list.editEvent"/>
+	                            </a>
+	                        </div>
+	                        <div class="rTableCell">
+	                            <a class="deleteButtonlink" onclick="Confirm.render('<spring:message code="myevents.list.confirmAction"/>',
+	                            '<spring:message code="myevents.list.removeEventFull"/>',
+	                            '<spring:message code="myevents.list.yesRemove"/>',
+	                            '<spring:message code="myevents.list.noRemove"/>',
+	                            'delete_event',${event.id})" href='#'>
+	                                <spring:message code="myevents.list.removeEvent"/>
+	                            </a>
+	                        </div>
 	                        </c:if>
                         </sec:authorize>
                     </div>

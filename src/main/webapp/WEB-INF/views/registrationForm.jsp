@@ -46,7 +46,7 @@
 	                        <div>
 								<label for="user-firstName"><spring:message	code="label.user.firstName" />:</label>
 	   	                        <div>
-									<form:input id="user-firstName" path="firstName" />
+									<form:input id="user-firstName" path="firstName" disabled="disabled" />
 									<div class = "error-message">
 									    <form:errors id="error-firstName" path="firstName" />
 									</div>
@@ -58,7 +58,7 @@
 	                        <div>
 								<label for="user-lastName"><spring:message code="label.user.lastName" />:</label>
 	   	                        <div>
-									<form:input id="user-lastName" path="lastName" />
+									<form:input id="user-lastName" path="lastName" disabled="disabled" />
 									<div class = "error-message">
 									    <form:errors id="error-lastName" path="lastName" />
 									</div>
@@ -70,7 +70,7 @@
 	                        <div>
 								<label for="user-email"><spring:message	code="label.user.email" />:</label>
 	   	                        <div>
-									<form:input id="user-email" path="email" />
+									<form:input id="user-email" path="email" disabled="disabled" />
 									<div class = "error-message">
 									    <form:errors id="error-email" path="email" />
 									</div>
@@ -78,17 +78,6 @@
 						    </div>
 						</div>
 						
-						<div>
-	                        <div>
-								<label for="user-ssoid"><spring:message	code="label.user.ssoid" />:</label>
-	   	                        <div>
-									<form:input id="user-ssoid" path="ssoid" />
-									<div class = "error-message">
-									    <form:errors id="error-ssoid" path="ssoid" />
-									</div>
-								</div>
-						    </div>
-						</div>
 												
 						<c:if test="${user.signInProvider == null}">
 							<div>

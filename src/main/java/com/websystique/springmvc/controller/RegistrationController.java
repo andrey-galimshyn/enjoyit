@@ -71,19 +71,8 @@ public class RegistrationController {
     public String registerUserAccount(@Valid @ModelAttribute("user") RegistrationForm userAccountData,
                                       BindingResult result,
                                       WebRequest request) throws DuplicateEmailException {
-        if (result.hasErrors()) {
-            return "registrationForm";
-        }
  
-        User registered = createUserAccount(userAccountData, result);
- 
-        if (registered == null) {
-            return "registrationForm";
-        }
-        SecurityUtil.logInUser(registered);
-        providerSignInUtils.doPostSignUp(registered.getSsoid(), request);
- 
-        return "redirect:/";
+        return "redirect:/login";
     }
 
     private User createUserAccount(RegistrationForm userAccountData, BindingResult result) {
