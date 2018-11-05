@@ -64,13 +64,12 @@
 	
 	    </c:when>
 	    <c:otherwise>
-	      <div class="body-container" align="left">
-	          <span><a href="<c:url value="/login" />"><spring:message code="authheader.login"/></a></span>
+	      <div class="login-container" align="left">
+	          <span><a class="login" href="<c:url value="/loginfb" />"><spring:message code="authheader.login"/></a></span>
 	      </div>
 	    </c:otherwise>
 	</c:choose>
 </div>
-<br/>
 </body>
 
 <c:if test="${loggedIn}">

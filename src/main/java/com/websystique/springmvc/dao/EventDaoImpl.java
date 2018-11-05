@@ -81,7 +81,7 @@ public class EventDaoImpl  extends AbstractDao<Integer, Event> implements EventD
         Criteria criteria = createEntityCriteria().addOrder(Order.asc("when"));
         criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);//To avoid duplicates.
         
-        criteria.add(Restrictions.ge("when", new Date())); 
+        criteria.add(Restrictions.ge("when", getCurrDayMidnight())); 
         List<Event> events = (List<Event>) criteria.list();
          
         return events;
@@ -125,7 +125,7 @@ public class EventDaoImpl  extends AbstractDao<Integer, Event> implements EventD
         criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);//To avoid duplicates.
         criteria.createAlias("participants", "participant");
         criteria.add(Restrictions.eq("participant.email", email));
-        criteria.add(Restrictions.ge("when", new Date())); 
+        criteria.add(Restrictions.ge("when", getCurrDayMidnight())); 
         List<Event> events = (List<Event>) criteria.list();
          
         return events;
@@ -136,7 +136,7 @@ public class EventDaoImpl  extends AbstractDao<Integer, Event> implements EventD
         Criteria criteria = createEntityCriteria().addOrder(Order.asc("when"));
         criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);//To avoid duplicates.
         //criteria.createAlias("participants", "participant");
-        criteria.add(Restrictions.ge("when", new Date())); 
+        criteria.add(Restrictions.ge("when", getCurrDayMidnight())); 
         List<Event> events = new ArrayList<Event>();
         List<Event> events2 = (List<Event>) criteria.list();
         for (Event event : events2) {

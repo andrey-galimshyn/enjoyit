@@ -8,6 +8,11 @@ a.topItem:link {
     text-decoration: underline;
 }
 
+a.login:link {
+    font-weight:bold;
+    font-size: 18px;
+}
+
 /* visited link */
 a.topItem:visited {
     color: green;
@@ -52,7 +57,10 @@ div.keeper {
 div.body-container {
     width: 60%;
 }
-
+div.login-container {
+	width: 60%;
+	margin: 5px;   
+}
 div.body-event-edit-container {
     width: 60%;
 }
@@ -270,7 +278,9 @@ div.logout {
 	div.body-container {
 	    width: 100%;
 	}
-	
+	div.login-container {
+		width: 100%;
+	}
     div.body-event-edit-container {
         width: 94%;
     }
@@ -291,6 +301,7 @@ div.logout {
 }
 
 @media screen and (orientation:portrait) {
+	
 	.rTableCell {
 	  	display: list-item;
 	  	width: 100%;

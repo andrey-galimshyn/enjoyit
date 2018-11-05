@@ -517,8 +517,18 @@ public class AppController {
 	 * This method handles login GET requests. If users is already logged-in and
 	 * tries to goto login page again, will be redirected to list page.
 	 */
+	@RequestMapping(value = "/loginfb", method = RequestMethod.GET)
+	public String loginFB(HttpServletRequest request) {
+		if (isCurrentAuthenticationAnonymous()) {
+		    String referrer = request.getHeader("Referer");
+		    request.getSession().setAttribute("url_prior_login", referrer);
+			return "redirect:/auth/facebook";
+		} else {
+			return "redirect:/list";
+		}
+	}
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
-	public String loginPage() {
+	public String loginPage(HttpServletRequest request) {
 		if (isCurrentAuthenticationAnonymous()) {
 			return "login";
 		} else {

@@ -9,18 +9,19 @@
 
 <html>
     <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+
         <title><spring:message code="login.title"/></title>
         <link rel="shortcut icon" href="<c:url value='/static/images/favicon_liF_icon.ico'/>" />    
         <!-- Latest compiled and minified CSS -->
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 
         <link type="text/css" rel="stylesheet" href="<c:url value='/static/css/app.css' />" />
+        <meta name="viewport" content="width=device-width, initial-scale=1">
         
     </head>
  
     <body>
-        <div class="keeper" align="center">
+        <div align="center">
           <div class="body-container" align="left">
             <sec:authorize access="isAnonymous()">
             
