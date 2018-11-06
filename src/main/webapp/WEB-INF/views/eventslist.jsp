@@ -42,7 +42,11 @@
         <%@include file="authheader.jsp" %>
         
         <div class="body-container" align="left">
-
+	        <sec:authorize access="isAuthenticated()">
+	            <div>
+	                <a class="addEventButtonlink" href="<c:url value='/newevent' />"><spring:message code="myevents.list.addNewEvent"/></a>
+	            </div>
+	        </sec:authorize>
             <div class="rTable">
 
                 <div class="rTableHeadRow">

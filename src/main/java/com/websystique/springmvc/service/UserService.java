@@ -26,6 +26,6 @@ public interface UserService {
     boolean isUserSSOUnique(Integer id, String sso);
     
     public User registerNewUserAccount(RegistrationForm userAccountData, UserProfile userProfile) 
-    		throws DuplicateEmailException;
+    		throws Exception;
 
 }

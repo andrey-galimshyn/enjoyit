@@ -49,7 +49,7 @@ public class RegistrationController {
         this.profileService = profileService;
 	}
 	@RequestMapping(value = "/user/register", method = RequestMethod.GET)
-    public String showRegistrationForm(WebRequest request, Model model) {
+    public String showRegistrationForm(WebRequest request, Model model) throws Exception {
         Connection<?> connection = providerSignInUtils.getConnectionFromSession(request);
  
         RegistrationForm registration = createRegistrationDTO(connection);
@@ -59,57 +59,38 @@ public class RegistrationController {
         		registration.getEmail().isEmpty()) {
             return "registrationForm";
         }
-
-        User registered = createUserAccount(registration, null);
-
+        User registered = null;
+        try {
+           registered = createUserAccount(registration);
+        } catch (Exception e){
+           model.addAttribute("exception", e.getMessage());
+           return "registrationForm";
+        }
         SecurityUtil.logInUser(registered);
         providerSignInUtils.doPostSignUp(registered.getSsoid(), request);
 
+
         return "redirect:/"; 
     }
+
     @RequestMapping(value ="/user/register", method = RequestMethod.POST)
     public String registerUserAccount(@Valid @ModelAttribute("user") RegistrationForm userAccountData,
                                       BindingResult result,
-                                      WebRequest request) throws DuplicateEmailException {
+                                      WebRequest request) throws Exception {
  
         return "redirect:/login";
     }
 
-    private User createUserAccount(RegistrationForm userAccountData, BindingResult result) {
+    private User createUserAccount(RegistrationForm userAccountData) throws Exception {
         User registered = null;
  
         UserProfile userProfile = profileService.findByType(UserProfileType.USER.getUserProfileType());
-        try {
-            registered = service.registerNewUserAccount(userAccountData, userProfile);
-        }
-        catch (DuplicateEmailException ex) {
-            addFieldError(
-                    "user",
-                    "email",
-                    userAccountData.getEmail(),
-                    "NotExist.user.email",
-                    result);
-        }
+        registered = service.registerNewUserAccount(userAccountData, userProfile);
  
         return registered;
     }    
     
-    private void addFieldError(String objectName, String fieldName, String fieldValue,  String errorCode, BindingResult result) {
-        FieldError error = new FieldError(
-                objectName,
-                fieldName,
-                fieldValue,
-                false,
-                new String[]{errorCode},
-                new Object[]{},
-                errorCode
-        );
- 
-        result.addError(error);
-    }
-    
 
- 
     private RegistrationForm createRegistrationDTO(Connection<?> connection) {
         RegistrationForm dto = new RegistrationForm();
  

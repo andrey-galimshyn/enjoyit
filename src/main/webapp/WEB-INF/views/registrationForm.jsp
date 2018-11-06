@@ -29,7 +29,13 @@
 
 			<sec:authorize access="isAnonymous() or hasRole('ROLE_ADMIN')">
 
-                <div class = "error-message"><h3><spring:message code="registration.failed.page.title"/></h3></div>
+                <div class = "error-message">
+                    <h3>
+                        <spring:message code="registration.failed.page.title"/> 
+                        <br>
+                        ${exception}
+                    </h3>
+                </div>
 
 				<div class="rTable">
 
@@ -46,7 +52,7 @@
 	                        <div>
 								<label for="user-firstName"><spring:message	code="label.user.firstName" />:</label>
 	   	                        <div>
-									<form:input id="user-firstName" path="firstName" disabled="disabled" />
+									<form:input id="user-firstName" path="firstName" disabled="true" />
 									<div class = "error-message">
 									    <form:errors id="error-firstName" path="firstName" />
 									</div>
@@ -58,7 +64,7 @@
 	                        <div>
 								<label for="user-lastName"><spring:message code="label.user.lastName" />:</label>
 	   	                        <div>
-									<form:input id="user-lastName" path="lastName" disabled="disabled" />
+									<form:input id="user-lastName" path="lastName" disabled="true" />
 									<div class = "error-message">
 									    <form:errors id="error-lastName" path="lastName" />
 									</div>
@@ -70,7 +76,7 @@
 	                        <div>
 								<label for="user-email"><spring:message	code="label.user.email" />:</label>
 	   	                        <div>
-									<form:input id="user-email" path="email" disabled="disabled" />
+									<form:input id="user-email" path="email" disabled="true" />
 									<div class = "error-message">
 									    <form:errors id="error-email" path="email" />
 									</div>

@@ -73,7 +73,7 @@ public class UserServiceImpl implements UserService{
      
     @Transactional
     @Override
-    public User registerNewUserAccount(RegistrationForm userAccountData, UserProfile userProfile) throws DuplicateEmailException {
+    public User registerNewUserAccount(RegistrationForm userAccountData, UserProfile userProfile) throws Exception {
 
         if (emailExist(userAccountData.getEmail())) {
             throw new DuplicateEmailException("The email address: " + userAccountData.getEmail() + " is already in use.");
