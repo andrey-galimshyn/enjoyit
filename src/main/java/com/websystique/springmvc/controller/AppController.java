@@ -106,7 +106,7 @@ public class AppController {
 		for (Visit visit : event.getVisits()) {
 			// user decided to return after reject
 			if (visit.getUser().getId().equals(user.getId())) {
-				visit.setJoined(true);
+				visit.setJoined(1);
 				visit.setLastUpdate(new Date());
 				returned = true;
 				break;
@@ -115,7 +115,7 @@ public class AppController {
         // new user joined
 		if (!returned) {
 			Visit visit = new Visit();
-			visit.setJoined(true);
+			visit.setJoined(1);
 			visit.setLastUpdate(new Date());
 			visit.setUser(user);
 			visit.setEvent(event);
@@ -154,7 +154,7 @@ public class AppController {
 		for (Visit visit : visits) {
 			// user decided to return after reject
 			if (visit.getUser().getId().equals(user.getId())) {
-				visit.setJoined(false);
+				visit.setJoined(0);
 				visit.setLastUpdate(new Date());
 				break;
 			}

@@ -38,8 +38,8 @@
 	</div>
 
     <div align="center" >
-    
-        <%@include file="authheader.jsp" %>
+
+		<%@include file="authheader.jsp" %>
         
         <div class="body-container" align="left">
 
@@ -102,7 +102,7 @@
 
 						<c:set var="freePlaceCount" value="0" />
 						<c:forEach var="visit" items="${event.visits}">
-							<c:if test="${visit.joined}">
+							<c:if test="${visit.joined == 1}">
 								<c:set var="freePlaceCount" value="${freePlaceCount + 1}" />
 							</c:if>
 						</c:forEach>
@@ -115,7 +115,7 @@
 	                   
 								<c:set var="joined" value="false" />
 								<c:forEach var="visit" items="${event.visits}">
-								  <c:if test="${visit.user.email eq loggedinuserEmail && visit.joined}">
+								  <c:if test="${visit.user.email eq loggedinuserEmail && visit.joined == 1}">
 								    <c:set var="joined" value="true" />
 								  </c:if>
 								</c:forEach>	                        
@@ -126,7 +126,7 @@
 			                        </div>
 								</c:if>
 	                            
-								<c:if test="${joined != true}">
+								<c:if test="${not joined}">
 			                        <div class="rTableCell">
 			                            <a class="joinButtonlink"  id="${event.id}jr" href="#" onclick="join(${event.id});return false;"><spring:message code="events.list.join"/></a>   
 			                        </div>

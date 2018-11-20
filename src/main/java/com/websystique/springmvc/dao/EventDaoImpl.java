@@ -133,7 +133,7 @@ public class EventDaoImpl  extends AbstractDao<Integer, Event> implements EventD
         	}
         	boolean add = true;
         	for (Visit visit : event.getVisits()) {
-        		if (visit.getUser().getEmail().equals(email) && !visit.getJoined()) {
+        		if (visit.getUser().getEmail().equals(email) && visit.getJoined() == 0) {
         			add = false;
         			break;
         		}
@@ -158,7 +158,7 @@ public class EventDaoImpl  extends AbstractDao<Integer, Event> implements EventD
         	}
         	boolean add = true;
         	for (Visit visit : event.getVisits()) {
-        		if (visit.getUser().getEmail().equals(email) && visit.getJoined()) {
+        		if (visit.getUser().getEmail().equals(email) && visit.getJoined() == 1) {
         			add = false;
         			break;
         		}

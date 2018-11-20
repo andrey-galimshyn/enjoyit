@@ -51,8 +51,9 @@ public class Visit implements Comparable<Visit>{
 
 
 
+
 	@Column(name = "JOINED")
-	private Boolean joined;
+	private int joined;
 
 	@NotNull
 	@Column(name = "LAST_UPDATE", nullable = false)
@@ -60,11 +61,11 @@ public class Visit implements Comparable<Visit>{
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date lastUpdate;
 
-	public Boolean getJoined() {
+	public int getJoined() {
 		return joined;
 	}
 
-	public void setJoined(Boolean joined) {
+	public void setJoined(int joined) {
 		this.joined = joined;
 	}
 

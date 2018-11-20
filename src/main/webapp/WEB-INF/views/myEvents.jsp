@@ -83,7 +83,7 @@
                         
 						<c:set var="freePlaceCount" value="0" />
 						<c:forEach var="visit" items="${event.visits}">
-							<c:if test="${visit.joined}">
+							<c:if test="${visit.joined == 1}">
 								<c:set var="freePlaceCount" value="${freePlaceCount + 1}" />
 							</c:if>
 						</c:forEach>

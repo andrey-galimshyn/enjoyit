@@ -204,7 +204,7 @@
                 
 				<c:set var="joined" value="false" />
 				<c:forEach var="visit" items="${event.visits}">
-				  <c:if test="${visit.user.email eq loggedinuserEmail && visit.joined}">
+				  <c:if test="${visit.user.email eq loggedinuserEmail && visit.joined == 1}">
 				    <c:set var="joined" value="true" />
 				  </c:if>
 				</c:forEach>	                        
@@ -242,13 +242,12 @@
                          <spring:message code="details.event.userName"/> 
                          <spring:message code="details.event.userSirname"/> 
                       </div>
-                     <div class="rTableHeadCell"><spring:message code="details.event.part.updated"/></div>
                 </div>
 
                 <c:set var="visitCount" value="0" />
                 <c:forEach items="${visits}" var="visit">
                 
-                    <c:if test="${visit.joined}">
+                    <c:if test="${visit.joined == 1}">
                         <c:set var="visitCount" value="${visitCount + 1}" />
 	                    <div class="rTableRow">
 	                    
@@ -272,12 +271,6 @@
 					                 ${visit.user.firstName} ${visit.user.lastName}
 					            </c:if>
 	                        </div>
-	                        
-	                        <fmt:formatDate value="${visit.lastUpdate}" pattern="dd.MM.yyyy H:m:s" var="lastUpdate"/>
-	                        <div class="rTableCellMembers">
-                                ${lastUpdate}
-	                        </div>
-	                        
 	                        
                         </div>
                     </c:if>
