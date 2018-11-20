@@ -1,9 +1,14 @@
 package com.websystique.springmvc.controller;
 
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.nio.charset.Charset;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -45,6 +50,7 @@ import com.websystique.springmvc.model.JoinMeUserDetails;
 import com.websystique.springmvc.model.Place;
 import com.websystique.springmvc.model.User;
 import com.websystique.springmvc.model.UserProfile;
+import com.websystique.springmvc.model.Visit;
 import com.websystique.springmvc.service.EmailService;
 import com.websystique.springmvc.service.EventService;
 import com.websystique.springmvc.service.PlaceService;
@@ -83,36 +89,59 @@ public class AppController {
 	@Transactional
 	@RequestMapping(value = { "/join" }, method = RequestMethod.POST, consumes = "application/json")
 	@ResponseBody
-	public String joinLoggedUserToEvent(@RequestBody String requestBody) throws ParseException, MessagingException {
+	public String joinLoggedUserToEvent(@RequestBody String requestBody, HttpServletRequest request) throws ParseException, MessagingException, MalformedURLException, URISyntaxException {
 		// parse event id
+	    		
+	    		
 		JSONParser parser = new JSONParser();
 		JSONObject json = (JSONObject) parser.parse(requestBody);
 		Integer eventId = Integer.parseInt(json.get("eventId").toString());
 		// get user and join she to event
 		User user = userService.findByEmail(getPrincipalEmail());
 		Event event = eventService.findById(eventId);
-		Set<User> users = event.getParticipants();
-		if (users == null || users.isEmpty()) {
-			users = new HashSet<User>();
+		
+		// use intermediate entuty
+		Set<Visit> visits = event.getVisits();
+		boolean returned = false;
+		for (Visit visit : event.getVisits()) {
+			// user decided to return after reject
+			if (visit.getUser().getId().equals(user.getId())) {
+				visit.setJoined(true);
+				visit.setLastUpdate(new Date());
+				returned = true;
+				break;
+			}
 		}
-		users.add(user);
-		event.setParticipants(users);
+        // new user joined
+		if (!returned) {
+			Visit visit = new Visit();
+			visit.setJoined(true);
+			visit.setLastUpdate(new Date());
+			visit.setUser(user);
+			visit.setEvent(event);
+			visits.add(visit);
+			event.setVisits(visits);
+		}
+		//
 		eventService.saveEvent(event);
+
+	    URL url = new URL(request.getRequestURL().toString());
+	    String host  = url.getHost();
+	    String scheme = url.getProtocol();
+	    String uri = scheme + "://" + host + "/event-details-" + event.getId();
 
 		emailService.sendEmail(event.getOrganizer().getEmail(),
 				user.getFirstName() + " " + user.getLastName() + " has Joined",
-				getEmailBody(event.getParticipants(), event.getName(), event.getWhen(),
-						user.getFirstName() + " " + user.getLastName(),
-						event.getOrganizer().getFirstName() + " " + event.getOrganizer().getLastName(), true));
+				getEmailBody(event, user.getFirstName() + " " + user.getLastName(), uri, true));
 
 		return "{\"message\":\"Handled application/json request\", \"freeSpaces\": \""
-				+ (event.getPlaceCount() - users.size()) + "\" }";
+				+ (event.getPlaceCount() - visits.size()) + "\" }";
 	}
 
 	@Transactional
 	@RequestMapping(value = { "/reject" }, method = RequestMethod.POST, consumes = "application/json")
 	@ResponseBody
-	public String rejectLoggedUserFromEvent(@RequestBody String requestBody) throws ParseException {
+	public String rejectLoggedUserFromEvent(@RequestBody String requestBody, HttpServletRequest request) throws ParseException, MalformedURLException, URISyntaxException {
 		// parse event id
 		JSONParser parser = new JSONParser();
 		JSONObject json = (JSONObject) parser.parse(requestBody);
@@ -120,42 +149,50 @@ public class AppController {
 		// get user and remove him from event participants
 		User user = userService.findByEmail(getPrincipalEmail());
 		Event event = eventService.findById(eventId);
-		Set<User> users = event.getParticipants();
-		for (Iterator<User> i = users.iterator(); i.hasNext();) {
-			User participant = i.next();
-			if (participant.getSsoid().equals(user.getSsoid())) {
-				i.remove();
+
+		Set<Visit> visits = event.getVisits();		
+		for (Visit visit : visits) {
+			// user decided to return after reject
+			if (visit.getUser().getId().equals(user.getId())) {
+				visit.setJoined(false);
+				visit.setLastUpdate(new Date());
+				break;
 			}
 		}
-		event.setParticipants(users);
+		
 		eventService.saveEvent(event);
 		// email to organizer
+	    URL url = new URL(request.getRequestURL().toString());
+	    String host  = url.getHost();
+	    String scheme = url.getProtocol();
+	    String uri = scheme + "://" + host + "/event-details-" + event.getId();
 		emailService.sendEmail(event.getOrganizer().getEmail(),
 				user.getFirstName() + " " + user.getLastName() + " has Left",
-				getEmailBody(event.getParticipants(), event.getName(), event.getWhen(),
-						user.getFirstName() + " " + user.getLastName(),
-						event.getOrganizer().getFirstName() + " " + event.getOrganizer().getLastName(), false));
+				getEmailBody(event,	user.getFirstName() + " " + user.getLastName(), uri, false));
 
 		return "{\"message\":\"Handled application/json request\", \"freeSpaces\": \""
-				+ (event.getPlaceCount() - users.size()) + "\" }";
+				+ (event.getPlaceCount() - visits.size()) + "\" }";
 	}
 
-	private String getEmailBody(Set<User> participants, String eventName, Date eventDate, String hero, String organizer,
-			boolean joined) {
+	private String getEmailBody(Event event, String hero, String url, boolean joined) {
 		StringBuffer emailBody = new StringBuffer();
-		emailBody.append("Hello Dear " + organizer + "\n\n");
+		emailBody.append("Hello Dear " + event.getOrganizer().getFirstName() + " " + event.getOrganizer().getLastName() + "<br><br>");
 		if (joined) {
-			emailBody.append(hero + " has joined\n\n");
+			emailBody.append(hero + " has joined <br><br>");
 		} else {
-			emailBody.append(hero + " unfortunately has left\n\n");
+			emailBody.append(hero + " unfortunately has left <br><br>");
 		}
 		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-		emailBody.append("Event: " + eventName + " at " + dateFormat.format(eventDate) + "\n\n");
-		emailBody.append("Total participants count: " + participants.size() + "\n");
-		for (User user : participants) {
-			emailBody.append(user.getFirstName() + " " + user.getLastName() + "\n");
+		emailBody.append("Event: " + 
+				"<a href=\"" + url + "\"> "  + event.getName() + "</a>"  
+				 
+		
+		        + " at " + dateFormat.format(event.getWhen()) + "<br><br>");
+		emailBody.append("Total participants count: " + event.getVisits().size() + "<br>");
+		for (Visit visit : event.getVisits()) {
+			emailBody.append(visit.getUser().getFirstName() + " " + visit.getUser().getLastName() + "<br>");
 		}
-		emailBody.append("\n");
+		emailBody.append("<br>");
 		emailBody.append("Best Regards,\nenjoyit!");
 		return emailBody.toString();
 	}
@@ -464,7 +501,10 @@ public class AppController {
 	@RequestMapping(value = { "/event-details-{id}" }, method = RequestMethod.GET)
 	public String editEvent(@PathVariable Integer id, ModelMap model) {
 		Event event = eventService.findById(id);
+		List<Visit> visits = new ArrayList<Visit>(event.getVisits());
+		Collections.sort(visits);
 		model.addAttribute("event", event);
+		model.addAttribute("visits", visits);
 		model.addAttribute("edit", true);
 		model.addAttribute("loggedinuser", getPrincipalName());
 		model.addAttribute("loggedinuserEmail", getPrincipalEmail());

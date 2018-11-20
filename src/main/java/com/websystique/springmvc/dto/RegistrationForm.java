@@ -8,6 +8,7 @@ import com.websystique.springmvc.model.SocialMediaService;
 import com.websystique.springmvc.validation.PasswordsNotEmpty;
 import com.websystique.springmvc.validation.PasswordsNotEqual;
 
+import javax.persistence.Column;
 import javax.validation.constraints.Size;
 
 @PasswordsNotEmpty(
@@ -49,6 +50,8 @@ public class RegistrationForm {
     
     private String socialProfURL;
     
+    private String socialId;
+
     public boolean isNormalRegistration() {
         return signInProvider == null;
     }
@@ -138,6 +141,14 @@ public class RegistrationForm {
 
 	public void setSocialProfURL(String socialProfURL) {
 		this.socialProfURL = socialProfURL;
+	}
+
+	public String getSocialId() {
+		return socialId;
+	}
+
+	public void setSocialId(String socialId) {
+		this.socialId = socialId;
 	}
 
 }

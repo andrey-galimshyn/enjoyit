@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -15,6 +16,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -23,11 +25,12 @@ import javax.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.format.annotation.DateTimeFormat;
 
-@Entity
+@Entity(name="Event")
 @Table(name="EVENT")
 public class Event {
 	
-    @Id @GeneratedValue(strategy=GenerationType.AUTO)
+    @Id 
+    @GeneratedValue(strategy=GenerationType.AUTO)
     private Integer id;
 
     @NotNull
@@ -54,20 +57,9 @@ public class Event {
 	@JoinColumn(name = "ORGANIZER_ID")
 	private User organizer;
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "EVENT_PARTICIPANT", 
-             joinColumns = { @JoinColumn(name = "EVENT_ID") }, 
-             inverseJoinColumns = { @JoinColumn(name = "USER_ID") })
-    private Set<User> participants = new HashSet<User>();
-
-	public Integer getId() {
-		return id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
-	}
-
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "event", cascade=CascadeType.ALL)
+    private Set<Visit> visits = new HashSet<Visit>();
+    
 	public Date getWhen() {
 		return when;
 	}
@@ -100,14 +92,6 @@ public class Event {
 		this.duration = duration;
 	}
 
-	public Set<User> getParticipants() {
-		return participants;
-	}
-
-	public void setParticipants(Set<User> participants) {
-		this.participants = participants;
-	}
-
 	public User getOrganizer() {
 		return organizer;
 	}
@@ -122,6 +106,22 @@ public class Event {
 
 	public void setPlaceCount(Integer placeCount) {
 		this.placeCount = placeCount;
+	}
+
+	public Set<Visit> getVisits() {
+		return visits;
+	}
+
+	public void setVisits(Set<Visit> visits) {
+		this.visits = visits;
+	}
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
 	}
 
 }

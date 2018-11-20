@@ -88,10 +88,14 @@ public class UserServiceImpl implements UserService{
         registered.setLastName(userAccountData.getLastName());
         registered.setPassword(userAccountData.getPassword());
         registered.setSsoid(userAccountData.getSsoid());
+        
         Set<UserProfile> userProfiles = new HashSet<UserProfile>();
         userProfiles.add(userProfile);
         registered.setUserProfiles(userProfiles);
-
+        
+        registered.setSocialType(userAccountData.getSignInProvider().name());
+        registered.setSocialId(userAccountData.getSocialId());
+        
 
         if (userAccountData.isSocialSignIn()) {
         	registered.setSignInProvider(userAccountData.getSignInProvider());

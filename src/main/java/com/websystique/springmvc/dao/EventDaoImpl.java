@@ -12,6 +12,7 @@ import org.springframework.stereotype.Repository;
 
 import com.websystique.springmvc.model.Event;
 import com.websystique.springmvc.model.User;
+import com.websystique.springmvc.model.Visit;
 
 @Repository("eventDao")
 public class EventDaoImpl  extends AbstractDao<Integer, Event> implements EventDao {
@@ -123,19 +124,6 @@ public class EventDaoImpl  extends AbstractDao<Integer, Event> implements EventD
 	public List<Event> findSuscribedEvents(String email) {
         Criteria criteria = createEntityCriteria().addOrder(Order.asc("when"));
         criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);//To avoid duplicates.
-        criteria.createAlias("participants", "participant");
-        criteria.add(Restrictions.eq("participant.email", email));
-        criteria.add(Restrictions.ge("when", getCurrDayMidnight())); 
-        List<Event> events = (List<Event>) criteria.list();
-         
-        return events;
-    }
-
-	@Override
-	public List<Event> findNotSubsribedEvents(String email) {
-        Criteria criteria = createEntityCriteria().addOrder(Order.asc("when"));
-        criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);//To avoid duplicates.
-        //criteria.createAlias("participants", "participant");
         criteria.add(Restrictions.ge("when", getCurrDayMidnight())); 
         List<Event> events = new ArrayList<Event>();
         List<Event> events2 = (List<Event>) criteria.list();
@@ -144,8 +132,33 @@ public class EventDaoImpl  extends AbstractDao<Integer, Event> implements EventD
         		continue;
         	}
         	boolean add = true;
-        	for (User user : event.getParticipants()) {
-        		if (user.getEmail().equals(email)) {
+        	for (Visit visit : event.getVisits()) {
+        		if (visit.getUser().getEmail().equals(email) && !visit.getJoined()) {
+        			add = false;
+        			break;
+        		}
+        	}
+        	if (add) {
+        		events.add(event);
+        	}
+        }
+        return events;
+    }
+
+	@Override
+	public List<Event> findNotSubsribedEvents(String email) {
+        Criteria criteria = createEntityCriteria().addOrder(Order.asc("when"));
+        criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);//To avoid duplicates.
+        criteria.add(Restrictions.ge("when", getCurrDayMidnight())); 
+        List<Event> events = new ArrayList<Event>();
+        List<Event> events2 = (List<Event>) criteria.list();
+        for (Event event : events2) {
+        	if (event.getOrganizer().getEmail().equals(email)) {
+        		continue;
+        	}
+        	boolean add = true;
+        	for (Visit visit : event.getVisits()) {
+        		if (visit.getUser().getEmail().equals(email) && visit.getJoined()) {
         			add = false;
         			break;
         		}

@@ -11,6 +11,9 @@
     <head>
 
         <title><spring:message code="login.title"/></title>
+        
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        
         <link rel="shortcut icon" href="<c:url value='/static/images/favicon_liF_icon.ico'/>" />    
         <!-- Latest compiled and minified CSS -->
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
@@ -18,7 +21,6 @@
         <link rel="image_src" href="<c:url value='/static/images/messengerLogo.png'/>" />
 
         <link type="text/css" rel="stylesheet" href="<c:url value='/static/css/app.css' />" />
-        <meta name="viewport" content="width=device-width, initial-scale=1">
         
     </head>
  

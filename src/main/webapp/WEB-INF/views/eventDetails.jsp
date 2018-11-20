@@ -11,6 +11,7 @@
  
 <head>
     <title><spring:message code="details.title"/></title>
+    <link rel="shortcut icon" href="<c:url value='/static/images/favicon_liF_icon.ico'/>" />
 
     <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
    
@@ -36,16 +37,6 @@
       
       
 	  <script type="text/javascript">
-	  
-		  $(document).ready( function() {
-			  var replaceEmoji = function () {
-				    this.value = this.value.replace(/([\uE000-\uF8FF]|\uD83C[\uDF00-\uDFFF]|\uD83D[\uDC00-\uDDFF])/g, '');
-					console.log("-> " + this.value);
-					return; 
-				  };	
-			  document.getElementById('name').onkeypress = replaceEmoji;
-			  document.getElementById('description').onkeypress = replaceEmoji;
-		  });
 
 		  bkLib.onDomLoaded(function() {
 				new nicEditor().panelInstance('description');
@@ -212,25 +203,25 @@
               <c:if test="${loggedIn && ((!newEvent) && (event.organizer.email != loggedinuserEmail))}">
                 
 				<c:set var="joined" value="false" />
-				<c:forEach var="participant" items="${event.participants}">
-				  <c:if test="${participant.email eq loggedinuserEmail}">
+				<c:forEach var="visit" items="${event.visits}">
+				  <c:if test="${visit.user.email eq loggedinuserEmail && visit.joined}">
 				    <c:set var="joined" value="true" />
 				  </c:if>
 				</c:forEach>	                        
-                     
+
 				<c:if test="${joined}">
                        <div>
                            <a id="${event.id}jr" class="rejectButtonlink" href="#" onclick="reject(${event.id});return false;"><spring:message code="details.event.reject"/></a>   
                        </div>
 				</c:if>
-                         
-				<c:if test="${joined != true}">
+
+				<c:if test="${not joined}">
                        <div>
                            <a id="${event.id}jr" class="joinButtonlink" href="#" onclick="join(${event.id});return false;"><spring:message code="details.event.join"/></a>   
                        </div>
 				</c:if>
               </c:if>
-                
+
             </div>
         </div>
 	    
@@ -245,34 +236,51 @@
             <div><span><spring:message code="details.event.joinedList"/></span></div>
              <div class="rTable">
                 <div class="rTableHeadRow">
-                     <div class="rTableHeadCell"></div>
+                     <div class="rTableHeadCell"><spring:message code="details.event.part.num"/></div>
+                     <div class="rTableHeadCell"><spring:message code="details.event.part.upic"/></div>
                      <div class="rTableHeadCell">
                          <spring:message code="details.event.userName"/> 
                          <spring:message code="details.event.userSirname"/> 
                       </div>
+                     <div class="rTableHeadCell"><spring:message code="details.event.part.updated"/></div>
                 </div>
 
-                <c:forEach items="${event.participants}" var="user">
-                    <div class="rTableRow">
-                    
-                        <div class="rTableCellMembers">
-                           <c:if test="${not empty user.socialProfImageURL}">
-                               <img src="${user.socialProfImageURL}" alt="Organizer userpic">
-                           </c:if>
-                        </div>
-                    
-                        <div class="rTableCellMembers">
-				            <c:if test="${not empty user.socialProfURL}">
-				                <a href="${user.socialProfURL}" target="_blank" rel="noopener noreferrer">
-				                    ${user.firstName} ${user.lastName}
-				                </a>
-				            </c:if>
-				            <c:if test="${empty user.socialProfURL}">
-				                 ${user.firstName} ${user.lastName}
-				            </c:if>
-                        </div>
+                <c:set var="visitCount" value="0" />
+                <c:forEach items="${visits}" var="visit">
+                
+                    <c:if test="${visit.joined}">
+                        <c:set var="visitCount" value="${visitCount + 1}" />
+	                    <div class="rTableRow">
+	                    
+	                        <div class="rTableCellMembers">
+                                ${visitCount}
+	                        </div>
 
-                    </div>
+	                        <div class="rTableCellMembers">
+	                           <c:if test="${not empty visit.user.socialProfImageURL}">
+	                               <img src="${visit.user.socialProfImageURL}" alt="Organizer userpic">
+	                           </c:if>
+	                        </div>
+	                    
+	                        <div class="rTableCellMembers">
+					            <c:if test="${not empty visit.user.socialProfURL}">
+					                <a href="${visit.user.socialProfURL}" target="_blank" rel="noopener noreferrer">
+					                    ${visit.user.firstName} ${visit.user.lastName}
+					                </a>
+					            </c:if>
+					            <c:if test="${empty visit.user.socialProfURL}">
+					                 ${visit.user.firstName} ${visit.user.lastName}
+					            </c:if>
+	                        </div>
+	                        
+	                        <fmt:formatDate value="${visit.lastUpdate}" pattern="dd.MM.yyyy H:m:s" var="lastUpdate"/>
+	                        <div class="rTableCellMembers">
+                                ${lastUpdate}
+	                        </div>
+	                        
+	                        
+                        </div>
+                    </c:if>
                 </c:forEach>
 
             </div>

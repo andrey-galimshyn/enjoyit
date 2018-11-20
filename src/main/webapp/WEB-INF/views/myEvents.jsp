@@ -8,7 +8,8 @@
  
 <head>
     <title><spring:message code="myevents.list.myListTitle"/></title>
-    
+    <link rel="shortcut icon" href="<c:url value='/static/images/favicon_liF_icon.ico'/>" />
+
     <script src="<c:url value='/static/js/confirmDialog.js' />"></script> 
     <script src="<c:url value='/static/js/jquery-3.2.1.min.js' />"></script> 
     <link type="text/css" rel="stylesheet" href="<c:url value='/static/css/customDialog.css' />" />
@@ -79,8 +80,15 @@
                         <div class="rTableCell">
                             ${event.placeCount}
                         </div>
-                        <div class="rTableCell" id="${event.id}fs">
-                            ${event.placeCount - fn:length(event.participants)}
+                        
+						<c:set var="freePlaceCount" value="0" />
+						<c:forEach var="visit" items="${event.visits}">
+							<c:if test="${visit.joined}">
+								<c:set var="freePlaceCount" value="${freePlaceCount + 1}" />
+							</c:if>
+						</c:forEach>
+						<div class="rTableCell" id="${event.id}fs">
+                            ${freePlaceCount}
                         </div>
                         <sec:authorize access="isAuthenticated()">
 		                    <div class="rTableCell">

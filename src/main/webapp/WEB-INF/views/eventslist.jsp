@@ -42,11 +42,13 @@
         <%@include file="authheader.jsp" %>
         
         <div class="body-container" align="left">
+
 	        <sec:authorize access="isAuthenticated()">
-	            <div>
+	            <div class="fillParent">
 	                <a class="addEventButtonlink" href="<c:url value='/newevent' />"><spring:message code="myevents.list.addNewEvent"/></a>
 	            </div>
 	        </sec:authorize>
+
             <div class="rTable">
 
                 <div class="rTableHeadRow">
@@ -97,15 +99,23 @@
                         <div class="rTableCell">
                             ${event.placeCount}
                         </div>
-                        <div class="rTableCell" id="${event.id}fs">
-                            ${event.placeCount - fn:length(event.participants)}
+
+						<c:set var="freePlaceCount" value="0" />
+						<c:forEach var="visit" items="${event.visits}">
+							<c:if test="${visit.joined}">
+								<c:set var="freePlaceCount" value="${freePlaceCount + 1}" />
+							</c:if>
+						</c:forEach>
+
+						<div class="rTableCell" id="${event.id}fs">
+                            ${event.placeCount - freePlaceCount}
                         </div>
                         <sec:authorize access="isAuthenticated()">
 	                        <c:if test="${event.organizer.email != loggedinuserEmail}">
 	                   
 								<c:set var="joined" value="false" />
-								<c:forEach var="participant" items="${event.participants}">
-								  <c:if test="${participant.email eq loggedinuserEmail}">
+								<c:forEach var="visit" items="${event.visits}">
+								  <c:if test="${visit.user.email eq loggedinuserEmail && visit.joined}">
 								    <c:set var="joined" value="true" />
 								  </c:if>
 								</c:forEach>	                        

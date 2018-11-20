@@ -228,7 +228,6 @@ header.joiner {
 
 .rTableCell {
   	display: table-cell;
-  	padding: 3px 10px;
 }
 
 .eventHeaderContent {}
@@ -245,7 +244,7 @@ header.joiner {
 
 .rTableHeadCell {
   	display: table-cell;
-  	padding: 3px 10px;
+
   	background-color: #ddd;
 }
 

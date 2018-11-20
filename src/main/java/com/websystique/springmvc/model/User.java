@@ -1,7 +1,8 @@
 package com.websystique.springmvc.model;
 import java.util.HashSet;
 import java.util.Set;
- 
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -13,6 +14,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.hibernate.validator.constraints.Email;
@@ -22,7 +24,8 @@ import org.hibernate.validator.constraints.NotEmpty;
 @Table(name="APP_USER")
 public class User {
  
-    @Id @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @Id 
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Integer id;
  
     @NotEmpty
@@ -41,7 +44,6 @@ public class User {
     private String lastName;
  
     @Email
-    //@NotExist
     @NotEmpty
     @Column(name="EMAIL", nullable=false)
     private String email;
@@ -51,6 +53,12 @@ public class User {
 
     @Column(name="SOC_PROF_URL", nullable=true)
     private String socialProfURL;
+
+    @Column(name="SOC_ID", nullable=true)
+    private String socialId;
+
+    @Column(name="SOC_TYPE", nullable=true)
+    private String socialType;
 
     @NotEmpty
     @ManyToMany(fetch = FetchType.LAZY)
@@ -62,6 +70,10 @@ public class User {
     @Enumerated(EnumType.STRING)
     @Column(name = "sign_in_provider", length = 20)
     private SocialMediaService signInProvider;
+    
+    
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
+    private Set<Visit> visits = new HashSet<Visit>();
     
     public Integer getId() {
         return id;
@@ -179,6 +191,30 @@ public class User {
 
 	public void setSocialProfURL(String socialProfURL) {
 		this.socialProfURL = socialProfURL;
+	}
+
+	public String getSocialId() {
+		return socialId;
+	}
+
+	public void setSocialId(String socialId) {
+		this.socialId = socialId;
+	}
+
+	public String getSocialType() {
+		return socialType;
+	}
+
+	public void setSocialType(String socialType) {
+		this.socialType = socialType;
+	}
+
+	public Set<Visit> getVisits() {
+		return visits;
+	}
+
+	public void setVisits(Set<Visit> visits) {
+		this.visits = visits;
 	}
  
 }
