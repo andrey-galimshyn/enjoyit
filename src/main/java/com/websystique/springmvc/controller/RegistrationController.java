@@ -1,18 +1,18 @@
 package com.websystique.springmvc.controller;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.social.connect.Connection;
 import org.springframework.social.connect.ConnectionFactoryLocator;
 import org.springframework.social.connect.ConnectionKey;
-
 import org.springframework.social.connect.UsersConnectionRepository;
 import org.springframework.social.connect.web.ProviderSignInUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -25,15 +25,18 @@ import com.websystique.springmvc.model.User;
 import com.websystique.springmvc.model.UserProfile;
 import com.websystique.springmvc.model.UserProfileType;
 import com.websystique.springmvc.security.util.SecurityUtil;
-import com.websystique.springmvc.service.DuplicateEmailException;
 import com.websystique.springmvc.service.UserProfileService;
 import com.websystique.springmvc.service.UserService;
+
  
 @Controller
 @SessionAttributes("user")
 public class RegistrationController {
 	
 	private final ProviderSignInUtils providerSignInUtils;
+	
+    @Autowired
+    FacebookProvider facebookProvider;
 	
     private UserService service;
     private UserProfileService profileService;
@@ -73,7 +76,7 @@ public class RegistrationController {
         return "redirect:/"; 
     }
 
-    @RequestMapping(value ="/user/register", method = RequestMethod.POST)
+	@RequestMapping(value ="/user/register", method = RequestMethod.POST)
     public String registerUserAccount(@Valid @ModelAttribute("user") RegistrationForm userAccountData,
                                       BindingResult result,
                                       WebRequest request) throws Exception {
@@ -81,6 +84,16 @@ public class RegistrationController {
         return "redirect:/login";
     }
 
+    @RequestMapping(value = "/connect/facebook/response", method = RequestMethod.GET)
+    public String loginToFacebook(Model model, HttpServletRequest request) {
+        String page = request.getHeader("Referer");
+        facebookProvider.getFacebookUserData(model, new User());
+        if (page.contains("login")) {
+        	return "redirect:/";
+        }
+        return "redirect:" + page;
+    }
+	
     private User createUserAccount(RegistrationForm userAccountData) throws Exception {
         User registered = null;
  

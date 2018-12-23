@@ -67,7 +67,14 @@
 	    </c:when>
 	    <c:otherwise>
 	      <div class="login-container" align="left">
-	          <span><a class="login" href="<c:url value="/loginfb" />"><spring:message code="authheader.login"/></a></span>
+	          <span>
+				<form action="<c:url value="/connect/facebook" />" method="POST" style="display: inline">
+					<input type="hidden" name="scope" value="public_profile,email" />
+					<button type="submit" class="btn btn-primary">
+						Facebook <span class="fa fa-facebook"></span>
+					</button>
+				</form>
+	          </span>
 	      </div>
 	    </c:otherwise>
 	</c:choose>

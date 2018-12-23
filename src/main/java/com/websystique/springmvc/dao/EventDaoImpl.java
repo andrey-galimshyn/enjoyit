@@ -131,15 +131,11 @@ public class EventDaoImpl  extends AbstractDao<Integer, Event> implements EventD
         	if (event.getOrganizer().getEmail().equals(email)) {
         		continue;
         	}
-        	boolean add = true;
         	for (Visit visit : event.getVisits()) {
-        		if (visit.getUser().getEmail().equals(email) && visit.getJoined() == 0) {
-        			add = false;
+        		if (visit.getUser().getEmail().equals(email) && visit.getJoined() == 1) {
+        			events.add(event);
         			break;
         		}
-        	}
-        	if (add) {
-        		events.add(event);
         	}
         }
         return events;

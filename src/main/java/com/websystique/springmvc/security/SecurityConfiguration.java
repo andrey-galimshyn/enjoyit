@@ -17,9 +17,14 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenBasedRememberMeServices;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 import org.springframework.security.web.csrf.CsrfFilter;
+import org.springframework.social.connect.ConnectionFactoryLocator;
+import org.springframework.social.connect.ConnectionRepository;
+import org.springframework.social.connect.web.ConnectController;
 import org.springframework.social.security.SocialUserDetailsService;
 import org.springframework.social.security.SpringSocialConfigurer;
 import org.springframework.web.filter.CharacterEncodingFilter;
+
+import com.websystique.springmvc.controller.CustomConnectController;
  
 @Configuration
 @EnableWebSecurity
@@ -83,4 +88,5 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     public SocialUserDetailsService socialUserDetailsService() {
         return new SimpleSocialUserDetailsService();
     }
+    
 }

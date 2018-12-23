@@ -23,12 +23,5 @@ public class AppInitializer extends AbstractAnnotationConfigDispatcherServletIni
     protected String[] getServletMappings() {
         return new String[] { "/" };
     }
-   /* 
-    public void onStartup(ServletContext servletContext) throws ServletException {
-        FilterRegistration.Dynamic encodingFilter = servletContext.addFilter("encoding-filter", new CharacterEncodingFilter());
-        encodingFilter.setInitParameter("encoding", "UTF-8");
-        encodingFilter.setInitParameter("forceEncoding", "true");
-        encodingFilter.addMappingForUrlPatterns(null, true, "/*");
-  }
-  */
+
 }

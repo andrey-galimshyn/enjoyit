@@ -1,17 +1,14 @@
 package com.websystique.springmvc.controller;
 
+import java.io.IOException;
 import java.net.MalformedURLException;
-import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.nio.charset.Charset;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
@@ -21,6 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
+import org.apache.http.client.ClientProtocolException;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -57,11 +55,14 @@ import com.websystique.springmvc.service.PlaceService;
 import com.websystique.springmvc.service.UserProfileService;
 import com.websystique.springmvc.service.UserService;
 
+
+
+
 @Controller
 @RequestMapping("/")
 @SessionAttributes("roles")
 public class AppController {
-
+	
 	@Autowired
 	UserService userService;
 
@@ -500,6 +501,8 @@ public class AppController {
 	 */
 	@RequestMapping(value = { "/event-details-{id}" }, method = RequestMethod.GET)
 	public String editEvent(@PathVariable Integer id, ModelMap model) {
+		//
+        //
 		Event event = eventService.findById(id);
 		List<Visit> visits = new ArrayList<Visit>(event.getVisits());
 		Collections.sort(visits);
@@ -553,20 +556,6 @@ public class AppController {
 		return "accessDenied";
 	}
 
-	/**
-	 * This method handles login GET requests. If users is already logged-in and
-	 * tries to goto login page again, will be redirected to list page.
-	 */
-	@RequestMapping(value = "/loginfb", method = RequestMethod.GET)
-	public String loginFB(HttpServletRequest request) {
-		if (isCurrentAuthenticationAnonymous()) {
-		    String referrer = request.getHeader("Referer");
-		    request.getSession().setAttribute("url_prior_login", referrer);
-			return "redirect:/auth/facebook";
-		} else {
-			return "redirect:/list";
-		}
-	}
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
 	public String loginPage(HttpServletRequest request) {
 		if (isCurrentAuthenticationAnonymous()) {

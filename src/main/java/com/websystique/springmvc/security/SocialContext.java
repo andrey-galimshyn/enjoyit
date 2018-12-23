@@ -12,16 +12,19 @@ import org.springframework.social.connect.ConnectionRepository;
 import org.springframework.social.connect.UsersConnectionRepository;
 import org.springframework.social.connect.jdbc.JdbcUsersConnectionRepository;
 import org.springframework.social.connect.web.ConnectController;
+import org.springframework.social.facebook.api.Facebook;
 import org.springframework.social.facebook.connect.FacebookConnectionFactory;
 import org.springframework.social.security.AuthenticationNameUserIdSource;
 
- 
+import com.websystique.springmvc.controller.BaseProvider;
+import com.websystique.springmvc.controller.CustomConnectController;
+
 import javax.sql.DataSource;
  
 @Configuration
 @EnableSocial
 public class SocialContext implements SocialConfigurer {
- 
+	
     @Autowired
     private DataSource dataSource;
  
@@ -48,9 +51,23 @@ public class SocialContext implements SocialConfigurer {
                 Encryptors.noOpText()
         );
     }
- 
+
     @Bean
     public ConnectController connectController(ConnectionFactoryLocator connectionFactoryLocator, ConnectionRepository connectionRepository) {
-        return new ConnectController(connectionFactoryLocator, connectionRepository);
+    	ConnectController connectController = new CustomConnectController(connectionFactoryLocator, connectionRepository);
+        return connectController;
     }
+    
+    @Bean
+    public BaseProvider baseProvider(Facebook facebook, ConnectionRepository connectionRepository) {
+    	BaseProvider baseProvider = new BaseProvider(facebook, connectionRepository);
+        return baseProvider;
+    }
+
+	@Bean
+	@Scope(value="request", proxyMode=ScopedProxyMode.INTERFACES)	
+	public Facebook facebook(ConnectionRepository connectionRepository) {
+	    return connectionRepository.getPrimaryConnection(Facebook.class).getApi();
+	}
+
 }

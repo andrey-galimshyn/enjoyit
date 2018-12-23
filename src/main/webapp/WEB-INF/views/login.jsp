@@ -49,11 +49,12 @@
 		                <div class="rTableCell">
 						    <!-- Social Sign In -->
 				                    <!-- Add Facebook sign in button -->
-				                    <a href="${pageContext.request.contextPath}/auth/facebook">
-				                        <button>
-				                            FACEBOOK
-				                        </button>
-				                    </a>
+									<form action="<c:url value="/connect/facebook" />" method="POST" style="display: inline">
+										<input type="hidden" name="scope" value="public_profile,email" />
+										<button type="submit" class="btn btn-primary">
+											Facebook <span class="fa fa-facebook"></span>
+										</button>
+									</form>
 				                    <br/>
 				                    <a target="_blank" rel="noopener noreferrer" href="https://termsfeed.com/privacy-policy/f4efa6a3ecfa7c539ad946b183d39f33">
 		                                Privacy Policy
