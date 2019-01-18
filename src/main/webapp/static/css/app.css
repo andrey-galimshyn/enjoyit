@@ -6,6 +6,7 @@ a.topItem:link {
     text-transform: uppercase;
     margin-right: 10px;   
     text-decoration: underline;
+    visibility: hidden;
 }
 
 a.login:link {
@@ -38,6 +39,7 @@ div.topper {
     background-color: #f9f9f9;
     display: table;
     width: 100%;
+
 }
 
 img.menu-top-logo{
@@ -46,8 +48,10 @@ img.menu-top-logo{
 }
 
 div.topper-align {
+	width: 100%;
 	display: table-cell; 
     vertical-align: middle;
+    text-align: left;
 }
 
 div.keeper {

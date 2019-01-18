@@ -43,22 +43,63 @@
 		              </div>
 	              </div>
 	              <br/>
-	              <div class="topper" align="right">
+
+				  <script>
+						function foo(select) {
+						    var x = document.getElementsByClassName("rTableRow");
+							var i;
+							for (i = 0; i < x.length; i++) {
+							  var optionSelected = select.options[select.selectedIndex].getAttribute("id");
+							  
+							  x[i].style.visibility = "visible";
+							  if (select.options[select.selectedIndex].getAttribute("id") === "typeFilterOwner" &&
+									  x[i].children[6].children[0].className !== 'editButtonlink') {
+								  x[i].style.visibility = "collapse";
+								  continue;
+							  }
+							  if (select.options[select.selectedIndex].getAttribute("id") === "typeFilterAssigned" &&
+									  x[i].children[6].children[0].className !== 'rejectButtonlink') {
+								  x[i].style.visibility = "collapse";
+								  continue;
+							  }
+							  if (select.options[select.selectedIndex].getAttribute("id") === "typeFilterNotAssigned" &&
+									  x[i].children[6].children[0].className !== 'joinButtonlink') {
+								  x[i].style.visibility = "collapse";
+								  continue;
+							  }
+						    }
+						}
+				  </script>
+
+
+	              <div class="topper">
+	              
 	                  <a href="<c:url value="/listEvents" />">
                          <img class="menu-top-logo" alt="Joit It" src="<c:url value="/static/images/Logotip.png" />" align="left">
                       </a>
-		              <div class="topper-align">
+                      
+                      
+                      <div class="topper-align">   
+		              
 				          
-				          
+						  <select id="eventsTypeFilter" onchange=foo(this)>
+							  <option id="typeFilterAll" selected="selected"><spring:message code="authheader.events"/></option>
+							  <option id="typeFilterAssigned"><spring:message code="authheader.subscribed"/></option>
+							  <option id="typeFilterNotAssigned"><spring:message code="authheader.notsubscribed"/></option>
+							  <option id="typeFilterOwner"><spring:message code="authheader.edit"/></option>
+						  </select>
+						  
+						  
+						  
+				      
 				          <sec:authorize access="hasRole('ADMIN')">
 				              <span><a id="listOfUsersItem" class="topItem" href="<c:url value="/list" />"><spring:message code="authheader.users"/></a></span>
 				          </sec:authorize>
 				          
-				          <span><a id="listOfEventsItem" class="topItem" href="<c:url value="/listEvents" />"><spring:message code="authheader.events"/></a></span>
-				          <span><a id="listOfEventsSubscribed" class="topItem" href="<c:url value="/listEvents?subscribed=true" />"><spring:message code="authheader.subscribed"/></a></span>
-				          <span><a id="listOfEventsNotSubscribed" class="topItem" href="<c:url value="/listEvents?free=true" />"><spring:message code="authheader.notsubscribed"/></a></span>
-				          <span><a id="listOfMyEvents" class="topItem" href="<c:url value="/myEvents" />"><spring:message code="authheader.edit"/></a></span>
+				          <span><a id="listOfEventsItem" class="topItem" href="<c:url value="/listEvents" />">&lt;&lt;<spring:message code="authheader.events"/></a></span>
 		              </div>
+		              
+		              
 	              </div>   
 	              
            	               
@@ -89,25 +130,6 @@
     	if (window.location.href.indexOf('#_=_') > 0) {
     		window.location = window.location.href.replace(/#.*/, '');
     	}
-    }
-    
-    if (window.location.pathname == "/list") {
-    	var link = document.getElementById("listOfUsersItem");
-    	link.className += " selectedItem";
-    } else if (window.location.pathname.includes("/myEvents") || window.location.pathname.includes("/enjoyit/event-details")) {
-    	var link = document.getElementById("listOfMyEvents");
-    	link.className += " selectedItem";
-    } else if (window.location.pathname.includes("/listEvents") && !window.location.search) {
-    	var link = document.getElementById("listOfEventsItem");
-    	link.className += " selectedItem";
-    } else if (window.location.pathname.includes("/listEvents") 
-    		&& window.location.search == "?subscribed=true") {
-    	var link = document.getElementById("listOfEventsSubscribed");
-    	link.className += " selectedItem";
-    } else if (window.location.pathname.includes("/listEvents") 
-		    && window.location.search == "?free=true") {
-	    var link = document.getElementById("listOfEventsNotSubscribed");
-	    link.className += " selectedItem";
     }
   </script>
 </c:if>

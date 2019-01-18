@@ -41,6 +41,17 @@
 		  bkLib.onDomLoaded(function() {
 				new nicEditor().panelInstance('description');
           });
+		  
+		  
+		  var listOfEventsItemShow = document.getElementById("listOfEventsItem");
+		  if (listOfEventsItemShow !== null) {
+			  listOfEventsItemShow.style.visibility = "visible";
+		  }
+
+		  var eventsTypeFilterDropdown = document.getElementById("eventsTypeFilter");
+		  if (eventsTypeFilterDropdown !== null) {
+			  eventsTypeFilterDropdown.style.display = "none";
+		  }
 
 	  </script>
 

@@ -135,20 +135,20 @@
 	                        </c:if>
 
 	                        <c:if test="${event.organizer.email == loggedinuserEmail}">
-		                    <div class="rTableCell">
-	                            <a class="editButtonlink" href="<c:url value='/event-details-${event.id}' />">
-	                                <spring:message code="myevents.list.editEvent"/>
-	                            </a>
-	                        </div>
-	                        <div class="rTableCell">
-	                            <a class="deleteButtonlink" onclick="Confirm.render('<spring:message code="myevents.list.confirmAction"/>',
-	                            '<spring:message code="myevents.list.removeEventFull"/>',
-	                            '<spring:message code="myevents.list.yesRemove"/>',
-	                            '<spring:message code="myevents.list.noRemove"/>',
-	                            'delete_event',${event.id})" href='#'>
-	                                <spring:message code="myevents.list.removeEvent"/>
-	                            </a>
-	                        </div>
+			                    <div class="rTableCell">
+		                            <a class="editButtonlink" href="<c:url value='/event-details-${event.id}' />">
+		                                <spring:message code="myevents.list.editEvent"/>
+		                            </a>
+		                        </div>
+		                        <div class="rTableCell">
+		                            <a class="deleteButtonlink" onclick="Confirm.render('<spring:message code="myevents.list.confirmAction"/>',
+		                            '<spring:message code="myevents.list.removeEventFull"/>',
+		                            '<spring:message code="myevents.list.yesRemove"/>',
+		                            '<spring:message code="myevents.list.noRemove"/>',
+		                            'delete_event',${event.id})" href='#'>
+		                                <spring:message code="myevents.list.removeEvent"/>
+		                            </a>
+		                        </div>
 	                        </c:if>
                         </sec:authorize>
                     </div>

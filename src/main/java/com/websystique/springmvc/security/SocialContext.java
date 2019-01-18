@@ -15,9 +15,13 @@ import org.springframework.social.connect.web.ConnectController;
 import org.springframework.social.facebook.api.Facebook;
 import org.springframework.social.facebook.connect.FacebookConnectionFactory;
 import org.springframework.social.security.AuthenticationNameUserIdSource;
+import org.springframework.web.context.request.RequestAttributes;
+import org.springframework.web.context.request.RequestContextHolder;
 
 import com.websystique.springmvc.controller.BaseProvider;
 import com.websystique.springmvc.controller.CustomConnectController;
+
+import java.util.UUID;
 
 import javax.sql.DataSource;
  
@@ -40,7 +44,20 @@ public class SocialContext implements SocialConfigurer {
  
     @Override
     public UserIdSource getUserIdSource() {
-        return new AuthenticationNameUserIdSource();
+    	return new SessionIdUserIdSource();
+    }
+    
+    private static final class SessionIdUserIdSource implements UserIdSource {
+    	@Override
+        public String getUserId() {
+            RequestAttributes request = RequestContextHolder.currentRequestAttributes();
+            String uuid = (String) request.getAttribute("_socialUserUUID", RequestAttributes.SCOPE_SESSION);
+            if (uuid == null) {
+                uuid = UUID.randomUUID().toString();
+                request.setAttribute("_socialUserUUID", uuid, RequestAttributes.SCOPE_SESSION);
+            }
+            return uuid;
+        }
     }
  
     @Override
