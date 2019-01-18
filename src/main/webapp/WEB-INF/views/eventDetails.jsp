@@ -146,13 +146,13 @@
 		                        <spring:message code="details.event.update" var="update"/>
 		                        <input type="submit" value="${update}"/> 
 		                        <spring:message code="details.event.or"/>
-		                        <a href="<c:url value='/myEvents' />"><spring:message code="details.event.cancel"/></a>
+		                        <a href="<c:url value='/listEvents' />"><spring:message code="details.event.cancel"/></a>
 		                    </c:when>
 		                    <c:otherwise>
 		                        <spring:message code="details.event.create" var="create"/>
 		                        <input type="submit" value="${create}"/> 
 		                        <spring:message code="details.event.or"/>
-		                        <a href="<c:url value='/myEvents' />"><spring:message code="details.event.cancel"/></a>
+		                        <a href="<c:url value='/listEvents' />"><spring:message code="details.event.cancel"/></a>
 		                    </c:otherwise>
 		                </c:choose>
 		            </div>

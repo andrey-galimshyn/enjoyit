@@ -234,15 +234,6 @@ public class AppController {
 		return "eventslist";
 	}
 
-	@RequestMapping(value = { "/myEvents" }, method = RequestMethod.GET)
-	public String myEvents(ModelMap model, @RequestParam(value = "range", required = false) String range)
-			throws java.text.ParseException {
-		List<Event> events = eventService.findEventsByOrganizer(getPrincipalEmail());
-		model.addAttribute("events", events);
-		model.addAttribute("loggedinuser", getPrincipalName());
-		return "myEvents";
-	}
-
 	/**
 	 * This method will provide the medium to add a new user.
 	 */
@@ -366,7 +357,7 @@ public class AppController {
 		model.addAttribute("name", event.getName());
 
 		model.addAttribute("loggedinuser", getPrincipalName());
-		return "redirect:/myEvents";
+		return "redirect:/listEvents";
 	}
 
 	private static String removeBadChars(String s) {
@@ -493,7 +484,7 @@ public class AppController {
 		if (event.getOrganizer().getEmail().equals(getPrincipalEmail()) ) {
 		    eventService.deleteEventById(id);
 		}
-		return "redirect:/myEvents";
+		return "redirect:/listEvents";
 	}
 
 	/**
@@ -531,7 +522,7 @@ public class AppController {
 		model.addAttribute("create", false);
 		model.addAttribute("name", event.getName());
 
-		return "redirect:/myEvents";
+		return "redirect:/listEvents";
 	}
 
 	/**
