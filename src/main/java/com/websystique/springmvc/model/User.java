@@ -75,6 +75,10 @@ public class User {
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
     private Set<Visit> visits = new HashSet<Visit>();
     
+    @Column(name="ABOUT_ME", nullable=true)
+    private String aboutMe;
+
+    
     public Integer getId() {
         return id;
     }
@@ -215,6 +219,14 @@ public class User {
 
 	public void setVisits(Set<Visit> visits) {
 		this.visits = visits;
+	}
+
+	public String getAboutMe() {
+		return aboutMe;
+	}
+
+	public void setAboutMe(String aboutMe) {
+		this.aboutMe = aboutMe;
 	}
  
 }

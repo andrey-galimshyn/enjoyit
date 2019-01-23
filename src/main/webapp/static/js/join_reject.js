@@ -1,6 +1,7 @@
     var csrfParameter = '${_csrf.parameterName}';
     var csrfToken = '${_csrf.token}';    // join to the event
     window.onload = function() {
+    	
     	if (window.location.href.indexOf('#_=_') > 0) {
     		window.location = window.location.href.replace(/#.*/, '');
     	}

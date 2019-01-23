@@ -74,20 +74,17 @@
                         <div class="rTableCell">
                             <fmt:formatDate type = "both" dateStyle = "short" timeStyle = "short" value = "${event.when}" />
                         </div>
+                        
                         <div class="rTableCell">
-                           <c:if test="${not empty event.organizer.socialProfImageURL}">
-                               <img src="${event.organizer.socialProfImageURL}" alt="Organizer userpic">
-                               <br/>
-                           </c:if>
-                           <c:if test="${loggedIn && not empty event.organizer.socialProfURL}">
-                               <a href="${event.organizer.socialProfURL}" target="_blank" rel="noopener noreferrer">
-                                   ${event.organizer.firstName} ${event.organizer.lastName}
-                               </a>
-                           </c:if>
-                           <c:if test="${not loggedIn || empty event.organizer.socialProfURL}">
-                                ${event.organizer.firstName} ${event.organizer.lastName}
-                           </c:if>
+                           <a href="<c:url value='/userprofile-${event.organizer.id}'/>">
+	                           <c:if test="${not empty event.organizer.socialProfImageURL}">
+	                               <img src="${event.organizer.socialProfImageURL}" alt="Organizer userpic">
+	                               <br/>
+	                           </c:if>
+                               ${event.organizer.firstName} ${event.organizer.lastName}
+                           </a>
                         </div>
+                        
                         <c:if test="${ not empty event.description }">
                             <div class="rTableCell">
                                 ${event.description}

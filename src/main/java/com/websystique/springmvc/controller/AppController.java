@@ -43,6 +43,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
+import com.websystique.springmvc.dto.UserDTO;
 import com.websystique.springmvc.model.Event;
 import com.websystique.springmvc.model.JoinMeUserDetails;
 import com.websystique.springmvc.model.Place;
@@ -232,6 +233,41 @@ public class AppController {
 		model.addAttribute("loggedinuser", getPrincipalName());
 		model.addAttribute("loggedinuserEmail", getPrincipalEmail());
 		return "eventslist";
+	}
+
+	/**
+	 * This method will provide the medium to add a new user.
+	 */
+	@RequestMapping(value = { "/userprofile-{id}" }, method = RequestMethod.GET)
+	public String editProfile(@PathVariable Integer id, ModelMap model) {
+		User user = userService.findById(id);
+		UserDTO userDTO = new UserDTO();
+		userDTO.setAboutMe(user.getAboutMe());
+		userDTO.setEmail(user.getEmail());
+		userDTO.setFirstName(user.getFirstName());
+		userDTO.setLastName(user.getLastName());
+		userDTO.setSocialProfURL(user.getSocialProfURL());
+		//
+		model.addAttribute("user", userDTO);
+		model.addAttribute("loggedinuser", getPrincipalName());
+		model.addAttribute("loggedinuserEmail", getPrincipalEmail());
+		return "userProfile";
+	}
+	
+	@RequestMapping(value = { "/userprofile-{id}" }, method = RequestMethod.POST)
+	public String saveProfile(@Valid UserDTO user, BindingResult result, ModelMap model) {
+		if (result.hasErrors()) {
+			return "userProfile";
+		}
+		User userUpdate = userService.findByEmail(user.getEmail());
+		userUpdate.setAboutMe(user.getAboutMe());
+		userUpdate.setSocialProfURL(user.getSocialProfURL());
+		userUpdate.setFirstName(user.getFirstName());
+		userUpdate.setLastName(user.getLastName());
+
+		userService.updateUser(userUpdate);
+
+		return "redirect:/listEvents";
 	}
 
 	/**

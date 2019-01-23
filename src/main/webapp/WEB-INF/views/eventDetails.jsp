@@ -195,17 +195,19 @@
 	            </div>
 	        </div>	    
 	    </c:if>
-        <!-- =================================================== -->	    
+	    
+	    
+        <!-- =================================================== -->
+            
         <div>
             <b> <spring:message code="details.event.organizer"/>: </b>
-            <c:if test="${not empty event.organizer.socialProfURL}">
-                <a href="${event.organizer.socialProfURL}" target="_blank" rel="noopener noreferrer">
-                    ${event.organizer.firstName} ${event.organizer.lastName}
-                </a>
-            </c:if>
-            <c:if test="${empty event.organizer.socialProfURL}">
-                 ${event.organizer.firstName} ${event.organizer.lastName}
-            </c:if>
+            <a href="<c:url value='/userprofile-${event.organizer.id}'/>">
+                <c:if test="${not empty event.organizer.socialProfImageURL}">
+                  <img src="${event.organizer.socialProfImageURL}" alt="Organizer userpic">
+                  <br/>
+                </c:if>
+                ${event.organizer.firstName} ${event.organizer.lastName}
+            </a>
 	    </div>
 	    
 	    
@@ -256,7 +258,7 @@
                 </div>
 
                 <c:set var="visitCount" value="0" />
-                <c:forEach items="${visits}" var="visit">
+                <c:forEach items="${event.visits}" var="visit">
                 
                     <c:if test="${visit.joined == 1}">
                         <c:set var="visitCount" value="${visitCount + 1}" />
@@ -268,19 +270,17 @@
 
 	                        <div class="rTableCellMembers">
 	                           <c:if test="${not empty visit.user.socialProfImageURL}">
-	                               <img src="${visit.user.socialProfImageURL}" alt="Organizer userpic">
+						           <a href="<c:url value='/userprofile-${visit.user.id}'/>">
+						               <img src="${visit.user.socialProfImageURL}" alt="Organizer userpic">
+						               <br/>
+						           </a>
 	                           </c:if>
 	                        </div>
-	                    
+
 	                        <div class="rTableCellMembers">
-					            <c:if test="${not empty visit.user.socialProfURL}">
-					                <a href="${visit.user.socialProfURL}" target="_blank" rel="noopener noreferrer">
-					                    ${visit.user.firstName} ${visit.user.lastName}
-					                </a>
-					            </c:if>
-					            <c:if test="${empty visit.user.socialProfURL}">
-					                 ${visit.user.firstName} ${visit.user.lastName}
-					            </c:if>
+					            <a href="<c:url value='/userprofile-${visit.user.id}'/>">
+					                ${visit.user.firstName} ${visit.user.lastName}
+					            </a>
 	                        </div>
 	                        
                         </div>
