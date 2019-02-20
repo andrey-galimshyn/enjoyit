@@ -141,6 +141,19 @@ html,body
 	text-align:center;
 	text-decoration:none;
 }
+
+.copyButtonlink{
+	display:block;
+	border-style:solid;
+	border-color:#bbb #888 #666 #aaa;
+	border-width:3px 4px 4px 3px;
+	background:#80ffff;
+	color:#333;
+	line-height:2;
+	text-align:center;
+	text-decoration:none;
+}
+
 .editButtonlink:hover{
 	border-color: #666 #aaa #bbb #888;
 	border-width:4px 3px 3px 4px;

@@ -59,6 +59,7 @@
                         <div class="rTableHeadCell"><spring:message code="events.list.description"/></div>
                         <div class="rTableHeadCell"><spring:message code="events.list.totalPlaces"/></div>
                         <div class="rTableHeadCell"><spring:message code="events.list.freePlaces"/></div>
+                        <div class="rTableHeadCell"></div>
                         <sec:authorize access="isAuthenticated()">
                             <div class="rTableHeadCell"></div>
                             <div class="rTableHeadCell"></div>
@@ -107,7 +108,15 @@
 						<div class="rTableCell" id="${event.id}fs">
                             ${event.placeCount - freePlaceCount}
                         </div>
-                        <sec:authorize access="isAuthenticated()">
+
+						<c:if test="${!loggedIn}">
+							<div class="rTableCell">
+								Join via Facebook
+							</div>
+						</c:if>
+
+
+						<sec:authorize access="isAuthenticated()">
 	                        <c:if test="${event.organizer.email != loggedinuserEmail}">
 	                   
 								<c:set var="joined" value="false" />
@@ -135,6 +144,11 @@
 			                    <div class="rTableCell">
 		                            <a class="editButtonlink" href="<c:url value='/event-details-${event.id}' />">
 		                                <spring:message code="myevents.list.editEvent"/>
+		                            </a>
+		                        </div>
+			                    <div class="rTableCell">
+		                            <a class="copyButtonlink" href="<c:url value='/copy-event-${event.id}' />">
+		                                <spring:message code="myevents.list.copyEvent"/>
 		                            </a>
 		                        </div>
 		                        <div class="rTableCell">

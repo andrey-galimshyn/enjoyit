@@ -9,6 +9,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
@@ -474,42 +475,6 @@ public class AppController {
 		return "createPlace";
 	}
 
-	// Obsolete if edit place 
-	/*
-	@RequestMapping(value = { "/edit-place-{id}" }, method = RequestMethod.POST)
-	public String updatePlace(@Valid Place place, BindingResult result, ModelMap model, @PathVariable Integer id) {
-
-		if (result.hasErrors()) {
-			return "createPlace";
-		}
-
-		// Set recorder of place as currently logged in user
-		User user = userService.findBySSO(getPrincipal());
-		place.setRecorder(user);
-
-		placeService.updatePlace(place);
-
-		model.addAttribute("success", "Place " + place.getName() + " " + place.getAddress() + " updated successfully");
-		model.addAttribute("loggedinuser", getPrincipal());
-		return "createPlaceSuccess";
-	}*/
-
-	/**
-	 * This method will delete an event by it's ID value.
-	 * @throws ParseException 
-	 */
-	
-	/*
-	@Transactional
-	@RequestMapping(value = { "/join" }, method = RequestMethod.POST, consumes = "application/json")
-	@ResponseBody
-	public String joinLoggedUserToEvent(@RequestBody String requestBody) throws ParseException, MessagingException {
-		// parse event id
-		JSONParser parser = new JSONParser();
-		JSONObject json = (JSONObject) parser.parse(requestBody);
-		Integer eventId = Integer.parseInt(json.get("eventId").toString());
-	
-	*/
 	@RequestMapping(value = { "/delete-event" }, method = RequestMethod.POST, consumes = "application/json")
 	@ResponseBody
 	public String deleteEvent(@RequestBody String requestBody) throws ParseException {
@@ -541,6 +506,51 @@ public class AppController {
 		return "eventDetails";
 	}
 
+	@RequestMapping(value = { "copy-event-{id}" }, method = RequestMethod.GET)
+	public String copyEvent(@PathVariable Integer id, ModelMap model) {
+		//
+		Event event = eventService.findById(id);
+		Set<Visit> visits = new HashSet<Visit>();
+		//
+		Event copiedEvent = new Event();
+		copiedEvent.setVisits(visits);
+		copiedEvent.setDescription(event.getDescription());
+		copiedEvent.setDuration(event.getDuration());
+		copiedEvent.setName("COPY " + event.getName());
+		copiedEvent.setOrganizer(event.getOrganizer());
+		copiedEvent.setPlaceCount(event.getPlaceCount());
+		copiedEvent.setWhen(event.getWhen());
+		//
+		model.addAttribute("event", copiedEvent);
+		model.addAttribute("visits", visits);
+		model.addAttribute("edit", false);
+		model.addAttribute("loggedinuser", getPrincipalName());
+		model.addAttribute("loggedinuserEmail", getPrincipalEmail());
+		return "eventDetails";
+	}
+
+	@RequestMapping(value = { "copy-event-{id}" }, method = RequestMethod.POST)
+	public String copyEventSave(@Valid Event event, BindingResult result, ModelMap model, @PathVariable Integer id) {
+		if (result.hasErrors()) {
+			return "eventDetails";
+		}
+		String textToDecode = removeBadChars(event.getDescription());
+		event.setDescription(textToDecode);
+		textToDecode = removeBadChars(event.getName());
+		event.setName(textToDecode);
+		
+		User organizer = userService.findByEmail(getPrincipalEmail());
+		event.setOrganizer(organizer);
+		
+		eventService.saveEvent(event);
+
+		model.addAttribute("loggedinuser", getPrincipalName());
+		model.addAttribute("create", false);
+		model.addAttribute("name", event.getName());
+
+		return "redirect:/listEvents";
+	}
+	
 	@RequestMapping(value = { "/event-details-{id}" }, method = RequestMethod.POST)
 	public String updateEvent(@Valid Event event, BindingResult result, ModelMap model, @PathVariable Integer id) {
 
@@ -619,6 +629,22 @@ public class AppController {
 			userName = principal.toString();
 		}
 		return userName;
+	}
+
+	@ModelAttribute("principalId")
+	public String getPrincipalId(){
+		String principalId = null;
+
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		if (auth == null) {
+			return principalId;
+		}
+
+		Object principal = auth.getPrincipal();
+		if (principal instanceof JoinMeUserDetails) {
+			principalId = ((JoinMeUserDetails) principal).getId().toString();
+		} 		
+		return principalId;
 	}
 
 	private String getPrincipalName() {

@@ -35,9 +35,11 @@
 	
 	            <header class="joiner">
 	              <div id="wrapper">
-		              <div class="welcome">
-		                <span><spring:message code="authheader.welcome" arguments="${loggedinuser}"/> </span>
+	              
+    	              <div class="welcome">
+                          <a href="<c:url value='/userprofile-${principalId}'/>">${loggedinuser}</a><span><spring:message code="authheader.welcome"/></span>
 		              </div>
+
 		              <div class="logout">
 		                  <span> <a href="<c:url value="/logout" />"><spring:message code="authheader.logout"/></a> </span>
 		              </div>

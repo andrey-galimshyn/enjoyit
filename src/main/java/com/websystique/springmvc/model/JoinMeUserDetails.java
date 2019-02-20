@@ -143,4 +143,12 @@ public class JoinMeUserDetails extends SocialUser {
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
 	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
 }
