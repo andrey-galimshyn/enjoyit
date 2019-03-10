@@ -45,7 +45,11 @@ function CustomConfirm(){
 				timeout : 100000,
 				success : function(data) {
 					console.log("SUCCESS");
-					location.reload();
+					if (location.href.match("localhost")) {
+					    location.href = "/enjoyit/";
+					} else {
+					    location.href = "/";
+					}
 				},
 				error : function(e) {
 					console.log("ERROR: ", e);

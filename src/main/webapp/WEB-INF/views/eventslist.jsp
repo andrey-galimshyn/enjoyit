@@ -16,6 +16,8 @@
     <script src="<c:url value='/static/js/confirmDialog.js' />"></script> 
     <link type="text/css" rel="stylesheet" href="<c:url value='/static/css/customDialog.css' />" />
 
+    <link rel="shortcut icon" href="<c:url value='/static/images/favicon_liF_icon.ico'/>" />
+
 </head>
  
 <body>

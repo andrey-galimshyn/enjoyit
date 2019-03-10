@@ -20,13 +20,23 @@
 	<script type="text/javascript" src="<c:url value='/static/js/jquery.simple-dtpicker.js' />"></script>
 	<link type="text/css" rel="stylesheet" href="<c:url value='/static/css/jquery.simple-dtpicker.css' />" />
 	
-
   	<script src="<c:url value='/static/js/join_reject.js' />"></script> 
+
+    <script src="<c:url value='/static/js/confirmDialog.js' />"></script> 
+    <link type="text/css" rel="stylesheet" href="<c:url value='/static/css/customDialog.css' />" />
 
 </head>
  
 <body>
 
+	<div id="dialogoverlay"></div>
+	<div id="dialogbox">
+	  <div>
+	    <div id="dialogboxhead"></div>
+	    <div id="dialogboxbody"></div>
+	    <div id="dialogboxfoot"></div>
+	  </div>
+	</div>
 
     <div align="center">
     
@@ -53,6 +63,13 @@
 			  eventsTypeFilterDropdown.style.display = "none";
 		  }
 
+		  
+		  $(document).ready(function() {
+			  Confirm = new CustomConfirm();
+		  });
+		  abc= '<spring:message code="myevents.list.removeEvent"/>';
+		  
+		  
 	  </script>
 
       <c:choose>
@@ -143,10 +160,21 @@
 		            <div>
 		                <c:choose>
 		                    <c:when test="${edit}">
-		                        <spring:message code="details.event.update" var="update"/>
-		                        <input type="submit" value="${update}"/> 
-		                        <spring:message code="details.event.or"/>
-		                        <a href="<c:url value='/listEvents' />"><spring:message code="details.event.cancel"/></a>
+		                        <div>
+			                        <spring:message code="details.event.update" var="update"/>
+			                        <input type="submit" value="${update}"/> 
+			                        <spring:message code="details.event.or"/>
+			                        <a href="<c:url value='/listEvents' />"><spring:message code="details.event.cancel"/></a>
+		                        </div>
+		                        <div>
+		                            <a class="deleteButtonlink" onclick="Confirm.render('<spring:message code="myevents.list.confirmAction"/>',
+		                            '<spring:message code="myevents.list.removeEventFull"/>',
+		                            '<spring:message code="myevents.list.yesRemove"/>',
+		                            '<spring:message code="myevents.list.noRemove"/>',
+		                            'delete_event',${event.id})" href="#">
+		                                <spring:message code="myevents.list.removeEvent"/>
+		                            </a>
+		                        </div>
 		                    </c:when>
 		                    <c:otherwise>
 		                        <spring:message code="details.event.create" var="create"/>
@@ -156,6 +184,12 @@
 		                    </c:otherwise>
 		                </c:choose>
 		            </div>
+		            
+		            
+		            
+		            
+		            
+		            
 		        </div>
 		        
 		    </form:form>

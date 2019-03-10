@@ -1,11 +1,27 @@
 package com.websystique.springmvc.controller;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.text.DateFormat;
+import java.text.Format;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -20,11 +36,16 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.apache.http.client.ClientProtocolException;
+import org.apache.poi.ss.usermodel.CreationHelper;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationTrustResolver;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -33,6 +54,7 @@ import org.springframework.security.web.authentication.rememberme.PersistentToke
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.ModelMap;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -56,7 +78,7 @@ import com.websystique.springmvc.service.EventService;
 import com.websystique.springmvc.service.PlaceService;
 import com.websystique.springmvc.service.UserProfileService;
 import com.websystique.springmvc.service.UserService;
-
+import org.apache.poi.ss.usermodel.*;
 
 
 
@@ -220,20 +242,109 @@ public class AppController {
 	}
 
 	@RequestMapping(value = { "/", "/listEvents" }, method = RequestMethod.GET)
-	public String listEvents(ModelMap model, @RequestParam(value = "subscribed", required = false) String subscribed,
-			@RequestParam(value = "free", required = false) String free) throws java.text.ParseException {
+	public String listEvents(ModelMap model, @RequestParam(value = "subscribed", required = false) String subscribed) throws java.text.ParseException {
 		List<Event> events = new ArrayList<Event>();
-		if (subscribed != null) {
-			events = eventService.findSuscribedEvents(getPrincipalEmail());
-		} else if (free != null) {
-			events = eventService.findNotSubsribedEvents(getPrincipalEmail());
-		} else {
-			events = eventService.findEventsForVisitor();
-		}
+    	events = eventService.findEventsForVisitor();
 		model.addAttribute("events", events);
 		model.addAttribute("loggedinuser", getPrincipalName());
 		model.addAttribute("loggedinuserEmail", getPrincipalEmail());
 		return "eventslist";
+	}
+
+	@RequestMapping(value = {"/report" }, method = RequestMethod.GET)
+	public String eventsReport(ModelMap model, @RequestParam(value = "start", required = false) Long start,
+			@RequestParam(value = "end", required = false) Long end) {
+		List<Event> events = new ArrayList<Event>();
+
+		if (start == null || end == null) {
+			LocalDate previousMonthSameDay = LocalDate.now().minus(1, ChronoUnit.MONTHS);
+			Date startdate = Date.from(previousMonthSameDay.atStartOfDay(ZoneId.systemDefault()).toInstant());
+			LocalDateTime tomorrowIncluding = LocalDate.now().plusDays(1).atTime(LocalTime.MAX); 
+			Date endDate = Date.from(tomorrowIncluding.atZone(ZoneId.systemDefault()).toInstant());
+			//Date endDate = Date.from(tomorrow.atStartOfDay(ZoneId.systemDefault()).toInstant());
+			model.addAttribute("startMs", startdate.getTime());
+			model.addAttribute("endMs", endDate.getTime());
+			events = eventService.findEventsInRangByOrganizer(startdate, endDate, getPrincipalEmail());
+		} else {
+			model.addAttribute("startMs", start);
+			model.addAttribute("endMs", end);
+			events = eventService.findEventsInRangByOrganizer(new Date(start), new Date(end), getPrincipalEmail());
+		}
+
+		model.addAttribute("loggedinuser", getPrincipalName());
+		model.addAttribute("events", events);
+		return "eventsReport";
+	}
+
+	@RequestMapping(value = {"/report-download" }, produces = MediaType.APPLICATION_OCTET_STREAM_VALUE , method = RequestMethod.GET)
+	@ResponseBody
+	public void eventsReportDownload(HttpServletResponse response,
+			@RequestParam(value = "start", required = false) Long start,
+			@RequestParam(value = "end", required = false) Long end) throws IOException {
+
+    	File temp = File.createTempFile("tempfile", ".tmp");
+		
+		Workbook workbook = new XSSFWorkbook();
+		//
+		CreationHelper createHelper = workbook.getCreationHelper();
+		CellStyle dateCellStyle = workbook.createCellStyle();
+        dateCellStyle.setDataFormat(createHelper.createDataFormat().getFormat("dd-MM-yyyy"));
+        //
+		Sheet sheet = workbook.createSheet("Report");
+		// Create header 
+		Row headerRow = sheet.createRow(0);
+		Cell cell = headerRow.createCell(0);
+		cell.setCellValue("Name");
+		cell = headerRow.createCell(1);
+		cell.setCellValue("Date");
+		cell = headerRow.createCell(2);
+		cell.setCellValue("Description");
+		cell = headerRow.createCell(3);
+		cell.setCellValue("Occupied places");
+		//
+		List<Event> events = eventService.findEventsInRangByOrganizer(new Date(start), new Date(end), getPrincipalEmail());
+		int rowNum = 1;
+		for (Event event : events) {
+			Row row = sheet.createRow(rowNum++);
+			row.createCell(0).setCellValue(event.getName());
+			//
+			Cell dateCell = row.createCell(1);
+			dateCell.setCellStyle(dateCellStyle);
+			dateCell.setCellValue(event.getWhen());
+			//
+			row.createCell(2).setCellValue(event.getDescription());
+			row.createCell(3).setCellValue(event.getVisits().size());
+						
+		    for (Visit visit : event.getVisits()) {
+		    	Row rowVisitor = sheet.createRow(rowNum++);
+		    	rowVisitor.createCell(0).setCellValue(visit.getUser().getFirstName() + " " + visit.getUser().getLastName());
+		    	rowVisitor.createCell(1).setCellValue(visit.getUser().getEmail());
+		    }
+		}
+	    
+		// Resize all columns to fit the content size
+        for(int i = 0; i < 4; i++) {
+            sheet.autoSizeColumn(i);
+        }
+		
+        // Write the output to a file
+        FileOutputStream fileOut = new FileOutputStream(temp);
+        workbook.write(fileOut);
+        fileOut.close();
+
+        // Closing the workbook
+        workbook.close();
+        Format formatter = new SimpleDateFormat("yyyy-MM-dd");
+    	response.setContentType("application/octet-stream");
+    	response.setHeader("Content-Disposition", String.format("inline; filename=\"report"  + 
+    	    formatter.format(new Date(start)) + "_" +
+    	    formatter.format(new Date(end)) +
+    	    ".xlsx\""));
+    	response.setContentLength((int)temp.length());
+
+    	InputStream inputStream = new BufferedInputStream(new FileInputStream(temp));
+    	FileCopyUtils.copy(inputStream, response.getOutputStream());
+
 	}
 
 	/**

@@ -161,7 +161,7 @@ html,body
 }
 
 .deleteButtonlink{
-	display:block;
+	display:inline-block;
 	border-style:solid;
 	border-color:#bbb #888 #666 #aaa;
 	border-width:3px 4px 4px 3px;
@@ -238,6 +238,13 @@ header.joiner {
   	display: table-row;
   	border: 1px solid #999999;
 }
+
+.rTableRowVisitor {
+  	display: table-row;
+  	border: 1px solid #999999;
+  	background-color: lightblue;
+}
+
 .rTableHeadRow {
   	display: table-row;
   	border: 1px solid #999999;

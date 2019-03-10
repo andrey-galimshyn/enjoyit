@@ -110,6 +110,15 @@
 		                </div>
 		            </div>
 		        </form:form>
+		        
+		        <!-- Reports -->
+	            <div>
+	                <div>
+	                    <a href="<c:url value='/report'/>">
+	                        <spring:message code="user.profile.events.report"/>
+	                    </a>
+	                </div>
+	            </div>
 
 	        </c:if>
 	        
