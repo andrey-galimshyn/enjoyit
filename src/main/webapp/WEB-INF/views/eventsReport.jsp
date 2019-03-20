@@ -36,7 +36,33 @@
 		<%@include file="authheader.jsp" %>
 
 		<script>
-		
+
+		    function set_missed(id, checked) {
+		    	
+		    	var jsonParams = {};
+		    	jsonParams['visitId'] = id;
+		    	jsonParams['missed'] = checked;
+		    	jsonParams[csrfParameter] = csrfToken;
+				$.ajax({
+					type : "POST",
+					contentType : "application/json",
+					async: false,
+					url : "missed",
+					data : JSON.stringify(jsonParams),
+					timeout : 100000,
+					success : function(data) {
+						console.log("SUCCESS Update Visit");
+					},
+					error : function(e) {
+						console.log("ERROR: ", e);
+					},
+					done : function(e) {
+						console.log("DONE");
+					}
+				});
+				
+		    };
+
 			function replaceUrlParam(url, paramName, paramValue)
 			{
 			    if (paramValue == null) {
@@ -132,7 +158,14 @@
 								<div class="rTableCell">
 		                            ${visit.user.email}
 		                        </div>
-						        <div class="rTableCellEmpty"></div>
+						        <div class="rTableCell">
+						            <input id="${visit.id}_hooky" type="checkbox" onclick="set_missed(${visit.id}, this.checked)" name="${event.name}_${visit.user.firstName}_hooky" 
+						            
+						                <c:if test="${visit.missed == 1}">checked</c:if>
+						            
+						            />
+						            <spring:message code="user.events.report.missed"/>
+						        </div>
 						        <div class="rTableCellEmpty"></div>
 								
 						    </div>

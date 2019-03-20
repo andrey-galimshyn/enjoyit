@@ -78,6 +78,8 @@ import com.websystique.springmvc.service.EventService;
 import com.websystique.springmvc.service.PlaceService;
 import com.websystique.springmvc.service.UserProfileService;
 import com.websystique.springmvc.service.UserService;
+import com.websystique.springmvc.service.VisitService;
+
 import org.apache.poi.ss.usermodel.*;
 
 
@@ -92,6 +94,9 @@ public class AppController {
 
 	@Autowired
 	EventService eventService;
+
+	@Autowired
+	VisitService visitService;
 
 	@Autowired
 	EmailService emailService;
@@ -161,6 +166,23 @@ public class AppController {
 
 		return "{\"message\":\"Handled application/json request\", \"freeSpaces\": \""
 				+ (event.getPlaceCount() - visits.size()) + "\" }";
+	}
+
+	@Transactional
+	@RequestMapping(value = { "/missed" }, method = RequestMethod.POST, consumes = "application/json")
+	@ResponseBody
+	public void blameHookyUser(@RequestBody String requestBody, HttpServletRequest request) throws ParseException, MessagingException, MalformedURLException, URISyntaxException {
+        //
+		JSONParser parser = new JSONParser();
+		JSONObject json = (JSONObject) parser.parse(requestBody);
+		Integer visitId = Integer.parseInt(json.get("visitId").toString());
+		Boolean checked = Boolean.parseBoolean(json.get("missed").toString());
+		
+		// get user and join she to event
+		Visit visit = visitService.findById(visitId);
+		visit.setMissed(checked ? 1 : 0);
+		
+		visitService.saveVisit(visit);
 	}
 
 	@Transactional

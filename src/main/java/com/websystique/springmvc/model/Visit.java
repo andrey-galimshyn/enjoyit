@@ -41,20 +41,15 @@ public class Visit implements Comparable<Visit>{
         this.id = id;
     }
 
-
-
-
 	public Visit() {
 	}
 	
-
-
-
-
-
 	@Column(name = "JOINED")
 	private int joined;
-
+	
+	@Column(name = "MISSED", columnDefinition="default 0")
+	private int missed;	
+	
 	@NotNull
 	@Column(name = "LAST_UPDATE", nullable = false)
 	@DateTimeFormat(pattern = "dd.MM.yyyy H:m:s")
@@ -100,5 +95,13 @@ public class Visit implements Comparable<Visit>{
 	@Override
 	public int compareTo(Visit o) {
 	    return getLastUpdate().compareTo(o.getLastUpdate());
+	}
+
+	public int getMissed() {
+		return missed;
+	}
+
+	public void setMissed(int missed) {
+		this.missed = missed;
 	}
 }
