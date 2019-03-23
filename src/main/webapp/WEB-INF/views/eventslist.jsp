@@ -26,6 +26,17 @@
 	<script type="text/javascript">
 	  $(document).ready(function() {
 		  Confirm = new CustomConfirm();
+		  //hide passed today events
+		  var currTime = Date.now();
+		  var x = document.getElementsByClassName("rTableRow");
+		  var i = 0;
+
+		  for (i = 0; i < x.length; i++) {
+			  if (currTime > (x[i].getAttribute("data-event-timestamp") - 3600000)) { //minus 1 hour
+		          x[i].style.display = "none";
+			  }
+		  }		  
+		  ////
 	  });
 	  abc= '<spring:message code="myevents.list.removeEvent"/>';
 	</script>      
@@ -70,7 +81,7 @@
                 </div>
 
                 <c:forEach items="${events}" var="event">
-                    <div class="rTableRow">
+                    <div class="rTableRow" data-event-timestamp="${event.when.time}">
                         <div class="rTableCell eventHeaderContent">
                             <a href="<c:url value='/event-details-${event.id}' />">${event.name}</a>
                         </div>
