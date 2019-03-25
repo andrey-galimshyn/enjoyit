@@ -109,6 +109,8 @@
 
         <div class="body-container" align="left">
         
+            <h2><spring:message code="user.events.organized.header"/></h2>
+        
             <input type="text" name="daterange"/>
 
             <div class="rTable">

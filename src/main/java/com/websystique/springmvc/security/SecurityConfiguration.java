@@ -47,7 +47,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
         .antMatchers("/listPlaces", "/newplace", "/newevent", "/edit-place-*", 
-        		"/join", "/reject", "/report").access("hasRole('USER') or hasRole('ADMIN')")
+        		"/join", "/reject", "/report", "/subscribed").access("hasRole('USER') or hasRole('ADMIN')")
         .antMatchers("/list", "/newuser/**", "/delete-user-*", "/edit-user-*").access("hasRole('ADMIN')")
         .and().formLogin().loginPage("/login").loginProcessingUrl("/login").usernameParameter("ssoid").passwordParameter("password")
         .and().rememberMe().rememberMeParameter("remember-me").tokenRepository(tokenRepository).tokenValiditySeconds(86400)

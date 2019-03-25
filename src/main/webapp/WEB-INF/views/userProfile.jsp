@@ -34,6 +34,8 @@
 	  </script>
 
         <div class="body-event-edit-container" align="left">
+        
+           <h2><spring:message code="user.profile.header"/></h2>
 
            <c:if test="${ loggedIn && user.email == loggedinuserEmail }">
 
@@ -116,6 +118,14 @@
 	                <div>
 	                    <a href="<c:url value='/report'/>">
 	                        <spring:message code="user.profile.events.report"/>
+	                    </a>
+	                </div>
+	            </div>
+		        <!-- Subscribed -->
+	            <div>
+	                <div>
+	                    <a href="<c:url value='/subscribed'/>">
+	                        <spring:message code="user.profile.events.subscribed"/>
 	                    </a>
 	                </div>
 	            </div>

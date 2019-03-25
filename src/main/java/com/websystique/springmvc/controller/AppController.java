@@ -273,6 +273,16 @@ public class AppController {
 		return "eventslist";
 	}
 
+	@RequestMapping(value = { "/subscribed" }, method = RequestMethod.GET)
+	public String subscribedEvents(ModelMap model) {
+		List<Event> events = new ArrayList<Event>();
+    	events = eventService.findSuscribedEvents(getPrincipalEmail());
+		model.addAttribute("events", events);
+		model.addAttribute("loggedinuser", getPrincipalName());
+		model.addAttribute("loggedinuserEmail", getPrincipalEmail());
+		return "eventsSubscribed";
+	}
+
 	@RequestMapping(value = {"/report" }, method = RequestMethod.GET)
 	public String eventsReport(ModelMap model, @RequestParam(value = "start", required = false) Long start,
 			@RequestParam(value = "end", required = false) Long end) {

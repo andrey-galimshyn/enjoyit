@@ -122,9 +122,8 @@ public class EventDaoImpl  extends AbstractDao<Integer, Event> implements EventD
 
 	@Override
 	public List<Event> findSuscribedEvents(String email) {
-        Criteria criteria = createEntityCriteria().addOrder(Order.asc("when"));
+        Criteria criteria = createEntityCriteria().addOrder(Order.desc("when"));
         criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);//To avoid duplicates.
-        criteria.add(Restrictions.ge("when", getCurrDayMidnight())); 
         List<Event> events = new ArrayList<Event>();
         List<Event> events2 = (List<Event>) criteria.list();
         for (Event event : events2) {
