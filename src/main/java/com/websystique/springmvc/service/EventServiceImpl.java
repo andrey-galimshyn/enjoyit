@@ -61,6 +61,7 @@ public class EventServiceImpl implements EventService {
             entity.setPlaceCount(event.getPlaceCount());
             entity.setWhen(event.getWhen());
             entity.setDuration(event.getDuration());
+            entity.setAddress(event.getAddress());
         }
     }
 

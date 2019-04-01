@@ -49,6 +49,9 @@ public class Event {
     @Column(name="DESCRIPTION", nullable=true, columnDefinition="TEXT")
     private String description;
 
+    @Column(name="ADDRESS", nullable=true, columnDefinition="TEXT")
+    private String address;
+
     @NotNull
     @Column(name="PLACE_COUNT", nullable=true)
 	private Integer placeCount;
@@ -122,6 +125,14 @@ public class Event {
 
 	public void setId(Integer id) {
 		this.id = id;
+	}
+
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
 	}
 
 }

@@ -663,6 +663,7 @@ public class AppController {
 		copiedEvent.setOrganizer(event.getOrganizer());
 		copiedEvent.setPlaceCount(event.getPlaceCount());
 		copiedEvent.setWhen(event.getWhen());
+		copiedEvent.setAddress(event.getAddress());
 		//
 		model.addAttribute("event", copiedEvent);
 		model.addAttribute("visits", visits);

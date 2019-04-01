@@ -24,6 +24,10 @@
 
     <script src="<c:url value='/static/js/confirmDialog.js' />"></script> 
     <link type="text/css" rel="stylesheet" href="<c:url value='/static/css/customDialog.css' />" />
+    
+    
+    <!-- Google maps -->
+    <script type="text/javascript" src="https://maps.google.com/maps/api/js?sensor=false&key=AIzaSyAdomkGS1M5vfS7C1BMGI2V8RlvbgEWdmw"></script>
 
 </head>
  
@@ -66,10 +70,50 @@
 		  
 		  $(document).ready(function() {
 			  Confirm = new CustomConfirm();
+			  initialize();
 		  });
-		  abc= '<spring:message code="myevents.list.removeEvent"/>';
-		  
-		  
+
+		  //////////////////////////////////////////////////////////////////
+		  var map;
+		  function initialize() {
+		    var mapOptions = {
+			  zoom: 8,
+			  center: new google.maps.LatLng(-34.397, 150.644)
+			};
+			map = new google.maps.Map(document.getElementById('map-canvas'),
+			    mapOptions);
+
+			//////////////////
+
+			var geocoder = new google.maps.Geocoder();
+			var address = "new york";
+		    var latitude = -34.397;
+		    var longitude = 150.644;
+
+			geocoder.geocode( { 'address': "${event.address}"}, function(results, status) {
+				if (status == google.maps.GeocoderStatus.OK) {
+				    latitude = results[0].geometry.location.lat();
+				    longitude = results[0].geometry.location.lng();
+				    ////////
+				    var gpsPoint = new google.maps.LatLng(latitude, longitude);
+		            map.setCenter(gpsPoint);
+		            map.setZoom(16);
+			        marker = new google.maps.Marker({
+			            position:gpsPoint,
+			            map:map
+			        });			
+				} else {
+				    var mapCanvas = document.getElementById("map-canvas");
+				    if (mapCanvas !== null) {
+				    	mapCanvas.style.display = "none";
+				    }
+				}
+			}); 
+
+			//////////////////
+		  }
+          //////////////////////////////////////////////////////////////////
+
 	  </script>
 
       <c:choose>
@@ -153,8 +197,20 @@
 		                </div>
 		            </div>
 		        </div>
-		        
-		        
+
+		        <div>
+		            <div>
+		                <label for="address"><spring:message code="details.event.address"/></label>
+		                <div>
+		                    <form:input type="text" path="address" id="address" size="50"/>
+		                    <span> <spring:message code="details.event.address.hint"/> </span>
+		                    <div class="error-message">
+		                        <form:errors path="address"/>
+		                    </div>
+		                </div>
+		            </div>
+		        </div>
+
     	        <br/>
 		        <div id="submitControls">
 		            <div>
@@ -227,7 +283,16 @@
 	                <span> <b> <spring:message code="details.event.quantity"/> </b> </span>
                     <span>  ${event.placeCount}  </span>
 	            </div>
-	        </div>	    
+	        </div>	 
+	        
+	        
+	        <div>
+	            <div>
+	                <span> <b> <spring:message code="details.event.address"/> </b> </span>
+                    <span>  ${event.address}  </span>
+	            </div>
+	        </div>	 
+	        
 	    </c:if>
 	    
 	    
@@ -323,6 +388,10 @@
 
             </div>
         </div>
+        
+        <!-- Map with location -->
+        <div id="map-canvas" style="height:300px; width:500px"></div>
+        
       </div>
 
       <%@include file="footer.jsp" %>
